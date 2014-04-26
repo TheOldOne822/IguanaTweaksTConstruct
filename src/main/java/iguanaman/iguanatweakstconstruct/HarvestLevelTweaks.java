@@ -23,18 +23,18 @@ public class HarvestLevelTweaks {
 	// HarvestLevels
 	public static String[][] oreDictLevels = {
 		{},
-		{"Copper", "Coal", "Tetrahedrite", "Aluminum", "Aluminium", "NaturalAluminum", "AluminumBrass", "Shard", "Bauxite", "Zinc"},
-		{"Iron", "Pyrite", "Lead", "Silver"},
-		{"Tin", "Cassiterite", "Gold", "Lapis", "Steel", "Galena", "Nickel", "Invar", "Electrum", "Sphalerite"},
-		{"Diamond", "Emerald", "Redstone", "Ruby", "Sapphire", "Cinnabar", "Quartz",
-			"Obsidian", "CertusQuartz", "Tungstate", "Sodalite", "GreenSapphire", "BlackGranite", "RedGranite"},
-			{"Ardite", "Uranium", "Olivine", "Sheldonite", "Osmium", "Platinum"},
-			{"Cobalt", "Iridium", "Cooperite", "Titanium"},
-			{"Manyullyn"}
+		{"Copper", "Coal", "Tetrahedrite", "Aluminum", "Aluminium", "NaturalAluminum", "AluminumBrass", "Shard", "Bauxite", "Zinc", "CertusQuartz"},
+		{"Iron", "Pyrite", "Lead", "Tin", "Silver"},
+		{"Cassiterite", "Gold", "Lapis", "Steel", "Galena", "Nickel", "Invar", "Electrum", "Sphalerite"},
+		{"Diamond", "Emerald", "Redstone", "Ruby", "Sapphire", "Cinnabar", "Quartz", "Obsidian", "Tungstate", "Sodalite", "GreenSapphire", "BlackGranite", "RedGranite"},
+		{"Ardite", "Uranium", "Olivine", "Sheldonite", "Osmium", "Platinum"},
+		{"Cobalt", "Iridium", "Cooperite", "Titanium"},
+		{"Manyullyn"}
 	};
 
 	public static void init()
 	{
+	if (IguanaConfig.changeMininglevels){
 		// TOOLS
 		IguanaLog.log("Modifying harvest levels of tools");
 		ForgeHooks hooks = new ForgeHooks();
@@ -229,17 +229,19 @@ public class HarvestLevelTweaks {
 				SetHarvestLevel(new ItemStack(blockId, 1, meta), level);
 			}
 		}
-
+	}
 	}
 
 	public static void SetHarvestLevel(ItemStack oreStack, int level)
 	{
+	if (IguanaConfig.changeMininglevels){
 		if (oreStack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
 			MinecraftForge.setBlockHarvestLevel(Block.blocksList[oreStack.itemID], "pickaxe", level);
 		//FMLLog.warning("IguanaTweaksTConstruct: Setting required harvest level of " + oreStack.getUnlocalizedName() + " to " + level);
 		else
 			MinecraftForge.setBlockHarvestLevel(Block.blocksList[oreStack.itemID], oreStack.getItemDamage(), "pickaxe", level);
 		//FMLLog.warning("IguanaTweaksTConstruct: Setting required harvest level of " + oreStack.getUnlocalizedName() + ":" + oreStack.getItemDamage() + " to " + level);
+	}
 	}
 
 }

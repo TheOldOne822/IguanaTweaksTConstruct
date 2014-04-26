@@ -102,7 +102,8 @@ public class IguanaTweaksTConstruct {
 
 	public static String getHarvestLevelName (int num)
 	{
-		if (IguanaConfig.pickaxeBoostRequired && num > 1) --num;
+		if (IguanaConfig.pickaxeBoostRequired && IguanaConfig.changeMininglevels && num > 1) --num;
+		if (IguanaConfig.changeMininglevels){
 		switch (num)
 		{
 		case 0: return "\u00a77Stone";
@@ -115,6 +116,17 @@ public class IguanaTweaksTConstruct {
 		case 7: return "\u00a75Manyullyn";
 		default: return "\u00a7k\u00a7k\u00a7k\u00a7k\u00a7k\u00a7k";
 		}
+		} else {
+		switch (num)
+		{
+		case 0: return "\u00a77Stone";
+		case 1: return "\u00a76Iron";
+		case 2: return "\u00a74Redstone";
+		case 3: return "\u00a7fObsidian";
+		case 4: return "\u00a7bCobalt";
+		case 5: return "\u00a7cManyullyn";
+		default: return "\u00a7k\u00a7k\u00a7k\u00a7k\u00a7k\u00a7k";
+		}}
 	}
 
 }

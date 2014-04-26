@@ -31,6 +31,7 @@ public class IguanaConfig {
 	public static double xpPerLevelMultiplier;
 
 	// pick boost
+	public static boolean changeMininglevels;
 	public static boolean pickaxeBoostRequired;
 	public static boolean mobHeadPickaxeBoost;
 	public static boolean levelingPickaxeBoost;
@@ -206,7 +207,11 @@ public class IguanaConfig {
 
 		// pick leveling
 		ConfigCategory pickboostingCategory = config.getCategory("pickboosting");
-		pickboostingCategory.setComment("Options to configure to pickaxe mining level boost mechanics");
+		pickboostingCategory.setComment("Options to configure to pickaxe mining level boost and mechanics");
+
+		Property changeMininglevelsProperty = config.get("pickboosting", "changeMininglevels", true);
+		changeMininglevelsProperty.comment = "Changes material and block mining levels. Boost options only work when this is enabled";
+		changeMininglevels = changeMininglevelsProperty.getBoolean(true);
 
 		Property pickaxeBoostRequiredProperty = config.get("pickboosting", "pickaxeBoostRequired", true);
 		pickaxeBoostRequiredProperty.comment = "Pickaxes only mine upto their head material level and need a mob head modifier OR leveling boost to advance";
@@ -597,6 +602,12 @@ public class IguanaConfig {
 
 
 		config.save();
+		
+		if (!changeMininglevels){
+			pickaxeBoostRequired = false;
+			levelingPickaxeBoost = false;
+			mobHeadPickaxeBoost = false;
+		}
 	}
 
 }

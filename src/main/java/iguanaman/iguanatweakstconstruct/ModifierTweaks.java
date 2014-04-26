@@ -100,7 +100,7 @@ public class ModifierTweaks {
 		if (IguanaConfig.addCleanModifier) ToolBuilder.registerToolMod(new IguanaModClean());
 
 		// MINING BOOST MODIFIERS
-		if (IguanaConfig.mobHeadPickaxeBoost)
+		if (IguanaConfig.mobHeadPickaxeBoost && IguanaConfig.changeMininglevels)
 		{
 			IguanaLog.log("Adding mob head modifiers");
 

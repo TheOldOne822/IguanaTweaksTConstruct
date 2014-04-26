@@ -12,6 +12,9 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import tconstruct.common.TContent;
 import tconstruct.items.Pattern;
 import tconstruct.library.TConstructRegistry;
@@ -119,7 +122,7 @@ public class VariousTweaks {
 		if (IguanaConfig.easyBlankPatternRecipe)
 		{
 			IguanaLog.log("Adding easy blank pattern recipe");
-			GameRegistry.addShapedRecipe(new ItemStack(TContent.blankPattern), "ss", "ss", 's', new ItemStack(Item.stick));
+			CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(TContent.blankPattern), true, new Object[]{ "ss", "ss", Character.valueOf('s'), "stickWood"}));
 		}
 
 

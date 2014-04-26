@@ -8,6 +8,8 @@ public class MaterialTweaks {
 
 	public static void init()
 	{
+	if (IguanaConfig.changeMininglevels){
+
 
 		// TINKERS
 		IguanaLog.log("Modifying TConstruct materials");
@@ -192,6 +194,75 @@ public class MaterialTweaks {
 			TConstructRegistry.addToolMaterial(131, "Tartarite", 8, Math.round(3000F * durMod), Math.round(1400F * speedMod), 6, 3.0F, 0, 0.0F, "", "");
 
 		}
-	}
+		} else {
+			// TINKERS
+		IguanaLog.log("Modifying TConstruct materials");
 
+		float durMod = IguanaConfig.durabilityPercentage / 100F;
+		float speedMod = IguanaConfig.miningSpeedPercentage / 100F;
+
+		TConstructRegistry.toolMaterials.remove(0);
+        TConstructRegistry.addToolMaterial(0, "Wood", "Wooden ", 0, Math.round(59F * durMod), Math.round(200F * speedMod), 0, 1.0F, 0, 0f, "\u00A7e", "");
+
+		TConstructRegistry.toolMaterials.remove(1);
+        TConstructRegistry.addToolMaterial(1, "Stone", 1, Math.round(131F * durMod), Math.round(400F * speedMod), 1, 0.5F, 0, 1f, "", "Stonebound");
+
+		TConstructRegistry.toolMaterials.remove(2);
+        TConstructRegistry.addToolMaterial(2, "Iron", 2, Math.round(250F * durMod), Math.round(600F * speedMod), 2, 1.3F, 1, 0f, "\u00A7f", "");
+
+		TConstructRegistry.toolMaterials.remove(3);
+        TConstructRegistry.addToolMaterial(3, "Flint", 1, Math.round(171F * durMod), Math.round(525F * speedMod), 2, 0.7F, 0, 0f, "\u00A78", "");
+
+		TConstructRegistry.toolMaterials.remove(4);
+        TConstructRegistry.addToolMaterial(4, "Cactus", 1, Math.round(150F * durMod), Math.round(500F * speedMod), 2, 1.0F, 0, -1f, "\u00A72", "Jagged");
+
+		TConstructRegistry.toolMaterials.remove(5);
+        TConstructRegistry.addToolMaterial(5, "Bone", 1, Math.round(200F * durMod), Math.round(400F * speedMod), 1, 1.0F, 0, 0f, "\u00A7e", "");
+
+		TConstructRegistry.toolMaterials.remove(6);
+        TConstructRegistry.addToolMaterial(6, "Obsidian", 3, Math.round(89F * durMod), Math.round(700F * speedMod), 2, 0.8F, 3, 0f, "\u00A7d", "");
+
+		TConstructRegistry.toolMaterials.remove(7);
+        TConstructRegistry.addToolMaterial(7, "Netherrack", 2, Math.round(131F * durMod), Math.round(400F * speedMod), 1, 1.2F, 0, 1f, "\u00A74", "Stonebound");
+
+		TConstructRegistry.toolMaterials.remove(8);
+        TConstructRegistry.addToolMaterial(8, "Slime", 0, Math.round(500F * durMod), Math.round(150F * speedMod), 0, 1.5F, 0, 0f, "\u00A7a", "");
+
+		TConstructRegistry.toolMaterials.remove(9);
+        TConstructRegistry.addToolMaterial(9, "Paper", 0, Math.round(30F * durMod), Math.round(200F * speedMod), 0, 0.3F, 0, 0f, "\u00A7f", "Writable");
+
+		TConstructRegistry.toolMaterials.remove(10);
+        TConstructRegistry.addToolMaterial(10, "Cobalt", 4, Math.round(800F * durMod), Math.round(1100F * speedMod), 3, 1.75F, 2, 0f, "\u00A73", "");
+
+		TConstructRegistry.toolMaterials.remove(11);
+        TConstructRegistry.addToolMaterial(11, "Ardite", 4, Math.round(600F * durMod), Math.round(800F * speedMod), 3, 2.0F, 0, 2f, "\u00A74", "Stonebound");
+
+		TConstructRegistry.toolMaterials.remove(12);
+        TConstructRegistry.addToolMaterial(12, "Manyullyn", 5, Math.round(1200F * durMod), Math.round(900F * speedMod), 4, 2.5F, 0, 0f, "\u00A75", "");
+
+		TConstructRegistry.toolMaterials.remove(13);
+        TConstructRegistry.addToolMaterial(13, "Copper", 1, Math.round(180F * durMod), Math.round(500F * speedMod), 2, 1.15F, 0, 0f, "\u00A7c", "");
+
+		TConstructRegistry.toolMaterials.remove(14);
+        TConstructRegistry.addToolMaterial(14, "Bronze", 2, Math.round(350F * durMod), Math.round(700F * speedMod), 2, 1.3F, 1, 0f, "\u00A76", "");
+
+		TConstructRegistry.toolMaterials.remove(15);
+        TConstructRegistry.addToolMaterial(15, "Alumite", 4, Math.round(550F * durMod), Math.round(800F * speedMod), 3, 1.3F, 2, 0f, "\u00A7d", "");
+
+		TConstructRegistry.toolMaterials.remove(16);
+        TConstructRegistry.addToolMaterial(16, "Steel", 4, Math.round(750F * durMod), Math.round(800F * speedMod), 3, 1.3F, 2, 0f, "", "");
+
+		TConstructRegistry.toolMaterials.remove(17);
+        TConstructRegistry.addToolMaterial(17, "BlueSlime", "Slime ", 0, Math.round(1200F * durMod), Math.round(150F * speedMod), 0, 2.0F, 0, 0f, "\u00A7b", "");
+
+		TConstructRegistry.toolMaterials.remove(18);
+        TConstructRegistry.addToolMaterial(18, "PigIron", "Pig Iron ", 3, Math.round(250F * durMod), Math.round(600F * speedMod), 2, 1.3F, 1, 0f, "\u00A7c", "Tasty");
+
+		if (TContent.thaumcraftAvailable)
+		{
+			TConstructRegistry.toolMaterials.remove(31);
+			TConstructRegistry.addToolMaterial(31, "Thaumium", 3, Math.round(400f * durMod), Math.round(700f * speedMod), 2, 1.3F, 0, 0f, "\u00A75", "Thaumic");
+		}
+		}
+}
 }

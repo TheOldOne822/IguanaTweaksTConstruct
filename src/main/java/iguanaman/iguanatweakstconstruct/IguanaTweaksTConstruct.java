@@ -12,9 +12,6 @@ import net.minecraft.command.ServerCommandManager;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 
-import org.modstats.ModstatInfo;
-import org.modstats.Modstats;
-
 import tconstruct.common.TContent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -31,7 +28,6 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 @Mod(modid="IguanaTweaksTConstruct", name="Iguana Tweaks for Tinker's Construct", version="1.6.X-1q",
 dependencies = "required-after:TConstruct;after:*")
 @NetworkMod(clientSideRequired=true, serverSideRequired=true)
-@ModstatInfo(prefix="igtweakstc")
 public class IguanaTweaksTConstruct {
 
 	// The instance of your mod that Forge uses.
@@ -70,7 +66,6 @@ public class IguanaTweaksTConstruct {
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		IguanaLog.log("Registering with modstats");
-		Modstats.instance().getReporter().registerMod(this);
 	}
 
 	@EventHandler

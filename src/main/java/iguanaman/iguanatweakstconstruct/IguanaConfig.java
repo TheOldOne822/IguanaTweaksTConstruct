@@ -36,6 +36,7 @@ public class IguanaConfig {
 	public static boolean mobHeadPickaxeBoost;
 	public static boolean levelingPickaxeBoost;
 	public static int levelingPickaxeBoostXpPercentage;
+	public static boolean diamondPickaxeBoost;
 
 	// repairs
 	public static boolean repairCostScaling;
@@ -212,6 +213,10 @@ public class IguanaConfig {
 		Property changeMininglevelsProperty = config.get("pickboosting", "changeMininglevels", true);
 		changeMininglevelsProperty.comment = "Changes material and block mining levels. Boost options only work when this is enabled";
 		changeMininglevels = changeMininglevelsProperty.getBoolean(true);
+
+		Property diamondPickaxeBoostProperty = config.get("pickboosting", "diamondPickaxeBoost", true);
+		diamondPickaxeBoostProperty.comment = "Diamond mod allows mining obsidian";
+		diamondPickaxeBoost = diamondPickaxeBoostProperty.getBoolean(true);
 
 		Property pickaxeBoostRequiredProperty = config.get("pickboosting", "pickaxeBoostRequired", true);
 		pickaxeBoostRequiredProperty.comment = "Pickaxes only mine upto their head material level and need a mob head modifier OR leveling boost to advance";

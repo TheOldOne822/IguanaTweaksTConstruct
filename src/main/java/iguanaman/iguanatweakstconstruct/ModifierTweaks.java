@@ -69,7 +69,12 @@ public class ModifierTweaks {
 			ToolBuilder.registerToolMod(new ModExtraModifier(new ItemStack[] { new ItemStack(Item.skull, 1, 6), new ItemStack(Item.skull, 1, 7) }, "Tier2Free"));
 		ToolBuilder.registerToolMod(new ModInteger(new ItemStack[] { new ItemStack(TContent.materials, 1, 6) }, 4, "Moss", IguanaConfig.mossRepairSpeed, "\u00a72", "Auto-Repair"));
 		ToolBuilder.registerToolMod(new ModDurability(new ItemStack[] { new ItemStack(Item.emerald) }, 1, 0, 0.5f, TConstructRegistry.getMaterial("Bronze").harvestLevel(), "Emerald", "\u00a72Durability +50%", "\u00a72"));
+		if (IguanaConfig.diamondPickaxeBoost || !IguanaConfig.changeMininglevels)
+		{
+		ToolBuilder.registerToolMod(new ModDurability(new ItemStack[] { new ItemStack(Item.diamond) }, 0, 500, 0f, TConstructRegistry.getMaterial("Obsidian").harvestLevel(), "Diamond", "\u00a7bDurability +500", "\u00a7b"));
+		} else {
 		ToolBuilder.registerToolMod(new ModDurability(new ItemStack[] { new ItemStack(Item.diamond) }, 0, 500, 0f, 0, "Diamond", "\u00a7bDurability +500", "\u00a7b"));
+		}
 
 		ItemStack lapisItem = new ItemStack(Item.dyePowder, 1, 4);
 		ItemStack lapisBlock = new ItemStack(Block.blockLapis);

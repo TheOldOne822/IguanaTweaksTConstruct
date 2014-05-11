@@ -70,13 +70,17 @@ public class IguanaLevelingLogic {
 	{
 		switch (level)
 		{
-		case 1: return "Skill Level: \u00a74Clumsy";
-		case 2: return "Skill Level: \u00a76Comfortable";
-		case 3: return "Skill Level: \u00a7eAccustomed";
-		case 4: return "Skill Level: \u00a72Adept";
-		case 5: return "Skill Level: \u00a73Expert";
-		case 6: return "Skill Level: \u00a7dMaster";
-		default: return null;
+		case 1: return "Skill Level: \u00a74" + IguanaLevelsConfig.level1name;
+		case 2: return "Skill Level: \u00a76" + IguanaLevelsConfig.level2name;
+		case 3: return "Skill Level: \u00a7e" + IguanaLevelsConfig.level3name;
+		case 4: return "Skill Level: \u00a72" + IguanaLevelsConfig.level4name;
+		case 5: return "Skill Level: \u00a73" + IguanaLevelsConfig.level5name;
+		case 6: return "Skill Level: \u00a7d" + IguanaLevelsConfig.level6name;
+		case 7: return "Skill Level: \u00a7d" + IguanaLevelsConfig.level7name;
+		case 8: return "Skill Level: \u00a7d" + IguanaLevelsConfig.level8name;
+		case 9: return "Skill Level: \u00a7d" + IguanaLevelsConfig.level9name;
+		case 10: return "Skill Level: \u00a7d" + IguanaLevelsConfig.level10name;
+		default: return "Skill Level: \u00a7d" + IguanaLevelsConfig.level10name;
 		}
 	}
 
@@ -93,7 +97,7 @@ public class IguanaLevelingLogic {
 		boolean leveled = false;
 		boolean pickLeveled = false;
 
-		if (tags.hasKey("ToolEXP") && level >= 1 && level <= 5 && toolXP >= 0)
+		if (tags.hasKey("ToolEXP") && level >= 1 && level < IguanaLevelsConfig.maxlevel && toolXP >= 0)
 		{
 			tags.setLong("ToolEXP", toolXP);
 
@@ -106,7 +110,7 @@ public class IguanaLevelingLogic {
 		}
 
 		if (IguanaConfig.levelingPickaxeBoost && tags.hasKey("HeadEXP") && !tags.hasKey("HarvestLevelModified"))
-			if (hLevel >= TConstructRegistry.getMaterial("Copper").harvestLevel() && (!IguanaConfig.pickaxeBoostRequired && hLevel < 6 || IguanaConfig.pickaxeBoostRequired && hLevel < 7))
+			if (hLevel >= 1 && (!IguanaConfig.pickaxeBoostRequired && hLevel < 15 || IguanaConfig.pickaxeBoostRequired && hLevel < 16))
 			{
 				tags.setLong("HeadEXP", headXP);
 
@@ -141,14 +145,14 @@ public class IguanaLevelingLogic {
 
 		if (IguanaConfig.showTooltipXP)
 		{
-			if (level <= 5)
+			if (level < IguanaLevelsConfig.maxlevel)
 			{
 				tips.add(getXpString(tool, false, false));
 				modifierTips.add("");
 			}
 
 			if (IguanaConfig.levelingPickaxeBoost)
-				if (hLevel >= TConstructRegistry.getMaterial("Copper").harvestLevel() && hLevel < TConstructRegistry.getMaterial("Manyullyn").harvestLevel()
+				if (hLevel >= 1 && hLevel < 16
 				&& !tags.hasKey("HarvestLevelModified")
 				&& (tool.getItem() instanceof Pickaxe || tool.getItem() instanceof Hammer))
 				{
@@ -269,9 +273,8 @@ public class IguanaLevelingLogic {
 
 		if (pick)
 		{
-			int harvestLevelCopper = TConstructRegistry.getMaterial("Copper").harvestLevel();
 			int harvestLevel = TConstructRegistry.getMaterial(tags.getInteger("Head")).harvestLevel();
-			if (harvestLevel >= harvestLevelCopper) base *= Math.pow(IguanaConfig.xpPerLevelMultiplier, harvestLevel - harvestLevelCopper);
+			if (harvestLevel >= 1) base *= Math.pow(IguanaConfig.xpPerLevelMultiplier, harvestLevel - 1);
 			base *= IguanaConfig.levelingPickaxeBoostXpPercentage / 100f;
 		}
 		else
@@ -304,6 +307,11 @@ public class IguanaLevelingLogic {
 			case 4: player.addChatMessage("\u00a73You have become adept at handling the " + stack.getDisplayName()); break;
 			case 5: player.addChatMessage("\u00a73You are now an expert at using the " + stack.getDisplayName() + "\u00a73!"); break;
 			case 6: player.addChatMessage("\u00a73You have mastered the " + stack.getDisplayName() + "\u00a73!"); break;
+			case 7: player.addChatMessage("\u00a73You have mastered the " + stack.getDisplayName() + "\u00a73!"); break;
+			case 8: player.addChatMessage("\u00a73You have mastered the " + stack.getDisplayName() + "\u00a73!"); break;
+			case 9: player.addChatMessage("\u00a73You have mastered the " + stack.getDisplayName() + "\u00a73!"); break;
+			case 10: player.addChatMessage("\u00a73You have mastered the " + stack.getDisplayName() + "\u00a73!"); break;
+			default: player.addChatMessage("\u00a73Youre mastery of the " + stack.getDisplayName() + "\u00a73 grows!"); break;
 			}
 
 			if (!IguanaConfig.toolLevelingRandomBonuses || level % 2 == 0 && IguanaConfig.toolLevelingExtraModifiers)

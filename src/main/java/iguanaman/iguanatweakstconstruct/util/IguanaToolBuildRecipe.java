@@ -81,7 +81,7 @@ public class IguanaToolBuildRecipe implements IRecipe {
 						if (IguanaConfig.easyToolCreation && !toolFound)
 							output = ToolBuilder.instance.buildTool(input1, input2, input3, input4, "");
 						else if (input1.getItem() instanceof ToolCore)
-							output = ToolBuilder.instance.modifyTool(input1, input2, input3, input4);
+							output = ToolBuilder.instance.modifyTool(input1, input2, input3, input4, "");
                             //Could it really be this easy?
                             //ItemStack, ItemStack[], String
                             //slots[0] = input2;

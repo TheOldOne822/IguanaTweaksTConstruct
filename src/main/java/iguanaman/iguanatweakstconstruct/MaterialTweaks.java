@@ -8,7 +8,6 @@ public class MaterialTweaks {
 
 	public static void init()
 	{
-	if (IguanaConfig.changeMininglevels){
 
 
 		// TINKERS
@@ -18,78 +17,80 @@ public class MaterialTweaks {
 		float speedMod = IguanaConfig.miningSpeedPercentage / 100F;
 
 		TConstructRegistry.toolMaterials.remove(0);
-		TConstructRegistry.addToolMaterial(0, "Wood", "Wooden ", 0, Math.round(59F * durMod), Math.round(150f * speedMod), 1, 1.0F, 0, 0f, "\u00A7e", "");
+		TConstructRegistry.addToolMaterial(0, "Wood", "Wooden ", IguanaMaterialConfig.woodharvestLevel, Math.round(IguanaMaterialConfig.wooddurability * durMod), Math.round(IguanaMaterialConfig.woodminingspeed * speedMod), IguanaMaterialConfig.woodattack, IguanaMaterialConfig.woodhandleModifier, IguanaMaterialConfig.woodreinforced, IguanaMaterialConfig.woodstonebound, "\u00A7e", "");
 
 		TConstructRegistry.toolMaterials.remove(4);
-		TConstructRegistry.addToolMaterial(4, "Cactus", 0, Math.round(150F * durMod), Math.round(500f * speedMod), 2, 1.0F, 0, -1f, "\u00A72", "Jagged");
+		TConstructRegistry.addToolMaterial(4, "Cactus", IguanaMaterialConfig.cactusharvestLevel, Math.round(IguanaMaterialConfig.cactusdurability * durMod), Math.round(IguanaMaterialConfig.cactusminingspeed * speedMod), IguanaMaterialConfig.cactusattack, IguanaMaterialConfig.cactushandleModifier, IguanaMaterialConfig.cactusreinforced, IguanaMaterialConfig.cactusstonebound, "\u00A72", "Jagged");
 
 		TConstructRegistry.toolMaterials.remove(8);
-		TConstructRegistry.addToolMaterial(8, "Slime", 0, Math.round(500f * durMod), Math.round(100f * speedMod), 1, 2.0F, 0, 0f, "\u00A7a", "");
+		TConstructRegistry.addToolMaterial(8, "Slime", IguanaMaterialConfig.slimeharvestLevel, Math.round(IguanaMaterialConfig.slimedurability * durMod), Math.round(IguanaMaterialConfig.slimeminingspeed * speedMod), IguanaMaterialConfig.slimeattack, IguanaMaterialConfig.slimehandleModifier, IguanaMaterialConfig.slimereinforced, IguanaMaterialConfig.slimestonebound, "\u00A7a", "");
 
 		TConstructRegistry.toolMaterials.remove(17);
-		TConstructRegistry.addToolMaterial(17, "BlueSlime", "Slime ", 0, Math.round(1200f * durMod), Math.round(100f * speedMod), 1, 1.5F, 0, 0f, "\u00A7b", "");
+		TConstructRegistry.addToolMaterial(17, "BlueSlime", "Slime ", IguanaMaterialConfig.blueslimeharvestLevel, Math.round(IguanaMaterialConfig.blueslimedurability * durMod), Math.round(IguanaMaterialConfig.blueslimeminingspeed * speedMod), IguanaMaterialConfig.blueslimeattack, IguanaMaterialConfig.blueslimehandleModifier, IguanaMaterialConfig.blueslimereinforced, IguanaMaterialConfig.blueslimestonebound, "\u00A7b", "");
 
 		TConstructRegistry.toolMaterials.remove(9);
-		TConstructRegistry.addToolMaterial(9, "Paper", 0, Math.round(30F * durMod), Math.round(100f * speedMod), 1, 0.3F, 0, 0f, "\u00A7f", "Writable");
+		TConstructRegistry.addToolMaterial(9, "Paper", IguanaMaterialConfig.paperharvestLevel, Math.round(IguanaMaterialConfig.paperdurability * durMod), Math.round(IguanaMaterialConfig.paperminingspeed * speedMod), IguanaMaterialConfig.paperattack, IguanaMaterialConfig.paperhandleModifier, IguanaMaterialConfig.paperreinforced, IguanaMaterialConfig.paperstonebound, "\u00A7f", "Writable");
 
 		TConstructRegistry.toolMaterials.remove(1);
-		TConstructRegistry.addToolMaterial(1, "Stone", 0, Math.round(131F * durMod), Math.round(300f * speedMod), 2, 0.5F, 0, 1f, "", "Stonebound");
+		TConstructRegistry.addToolMaterial(1, "Stone", IguanaMaterialConfig.stoneharvestLevel, Math.round(IguanaMaterialConfig.stonedurability * durMod), Math.round(IguanaMaterialConfig.stoneminingspeed * speedMod), IguanaMaterialConfig.stoneattack, IguanaMaterialConfig.stonehandleModifier, IguanaMaterialConfig.stonereinforced, IguanaMaterialConfig.stonestonebound, "", "Stonebound");
 
 		TConstructRegistry.toolMaterials.remove(3);
-		TConstructRegistry.addToolMaterial(3, "Flint", 1, Math.round(171F * durMod), Math.round(400f * speedMod), 2, 0.5F, 0, 0f, "\u00A78", "");
+		TConstructRegistry.addToolMaterial(3, "Flint", IguanaMaterialConfig.flintharvestLevel, Math.round(IguanaMaterialConfig.flintdurability * durMod), Math.round(IguanaMaterialConfig.flintminingspeed * speedMod), IguanaMaterialConfig.flintattack, IguanaMaterialConfig.flinthandleModifier, IguanaMaterialConfig.flintreinforced, IguanaMaterialConfig.flintstonebound, "\u00A78", "");
 
 		TConstructRegistry.toolMaterials.remove(5);
-		TConstructRegistry.addToolMaterial(5, "Bone", 1, Math.round(200f * durMod), Math.round(400f * speedMod), 2, 1.0F, 0, 0f, "\u00A7e", "");
+		TConstructRegistry.addToolMaterial(5, "Bone", IguanaMaterialConfig.boneharvestLevel, Math.round(IguanaMaterialConfig.bonedurability * durMod), Math.round(IguanaMaterialConfig.boneminingspeed * speedMod), IguanaMaterialConfig.boneattack, IguanaMaterialConfig.bonehandleModifier, IguanaMaterialConfig.bonereinforced, IguanaMaterialConfig.bonestonebound, "\u00A7e", "");
 
 		TConstructRegistry.toolMaterials.remove(7);
-		TConstructRegistry.addToolMaterial(7, "Netherrack", 0, Math.round(131f * durMod), Math.round(400f * speedMod), 3, 1.2F, 0, 1f, "\u00A74", "Stonebound");
+		TConstructRegistry.addToolMaterial(7, "Netherrack", IguanaMaterialConfig.netherrackharvestLevel, Math.round(IguanaMaterialConfig.netherrackdurability * durMod), Math.round(IguanaMaterialConfig.netherrackminingspeed * speedMod), IguanaMaterialConfig.netherrackattack, IguanaMaterialConfig.netherrackhandleModifier, IguanaMaterialConfig.netherrackreinforced, IguanaMaterialConfig.netherrackstonebound, "\u00A74", "Stonebound");
 
 		TConstructRegistry.toolMaterials.remove(13);
-		TConstructRegistry.addToolMaterial(13, "Copper", 2, Math.round(180f * durMod), Math.round(500f * speedMod), 2, 1.15F, 0, 0f, "\u00A7c", "");
+		TConstructRegistry.addToolMaterial(13, "Copper", IguanaMaterialConfig.copperharvestLevel, Math.round(IguanaMaterialConfig.copperdurability * durMod), Math.round(IguanaMaterialConfig.copperminingspeed * speedMod), IguanaMaterialConfig.copperattack, IguanaMaterialConfig.copperhandleModifier, IguanaMaterialConfig.copperreinforced, IguanaMaterialConfig.copperstonebound, "\u00A7c", "");
 
 		TConstructRegistry.toolMaterials.remove(2);
-		TConstructRegistry.addToolMaterial(2, "Iron", 3, Math.round(250f * durMod), Math.round(600f * speedMod), 3, 1.3F, 1, 0f, "\u00A7f", "");
+		TConstructRegistry.addToolMaterial(2, "Iron", IguanaMaterialConfig.ironharvestLevel, Math.round(IguanaMaterialConfig.irondurability * durMod), Math.round(IguanaMaterialConfig.ironminingspeed * speedMod), IguanaMaterialConfig.ironattack, IguanaMaterialConfig.ironhandleModifier, IguanaMaterialConfig.ironreinforced, IguanaMaterialConfig.ironstonebound, "\u00A7f", "");
 
 		TConstructRegistry.toolMaterials.remove(14);
-		TConstructRegistry.addToolMaterial(14, "Bronze", 4, Math.round(350f * durMod), Math.round(700f * speedMod), 3, 1.3F, 1, 0f, "\u00A76", "");
+		TConstructRegistry.addToolMaterial(14, "Bronze", IguanaMaterialConfig.bronzeharvestLevel, Math.round(IguanaMaterialConfig.bronzedurability * durMod), Math.round(IguanaMaterialConfig.bronzeminingspeed * speedMod), IguanaMaterialConfig.bronzeattack, IguanaMaterialConfig.bronzehandleModifier, IguanaMaterialConfig.bronzereinforced, IguanaMaterialConfig.bronzestonebound, "\u00A76", "");
 
 		if (TContent.thaumcraftAvailable)
 		{
 			TConstructRegistry.toolMaterials.remove(31);
-			TConstructRegistry.addToolMaterial(31, "Thaumium", 3, Math.round(200f * durMod), Math.round(600f * speedMod), 3, 1.3F, 0, 0f, "\u00A75", "Thaumic");
+			TConstructRegistry.addToolMaterial(31, "Thaumium", IguanaMaterialConfig.thaumiumharvestLevel, Math.round(IguanaMaterialConfig.thaumiumdurability * durMod), Math.round(IguanaMaterialConfig.thaumiumminingspeed * speedMod), IguanaMaterialConfig.thaumiumattack, IguanaMaterialConfig.thaumiumhandleModifier, IguanaMaterialConfig.thaumiumreinforced, IguanaMaterialConfig.thaumiumstonebound, "\u00A75", "Thaumic");
 		}
 
 		TConstructRegistry.toolMaterials.remove(16);
-		TConstructRegistry.addToolMaterial(16, "Steel", 4, Math.round(400f * durMod), Math.round(800f * speedMod), 3, 1.3F, 2, 0f, "\u00A7f", "");
+		TConstructRegistry.addToolMaterial(16, "Steel", IguanaMaterialConfig.steelharvestLevel, Math.round(IguanaMaterialConfig.steeldurability * durMod), Math.round(IguanaMaterialConfig.steelminingspeed * speedMod), IguanaMaterialConfig.steelattack, IguanaMaterialConfig.steelhandleModifier, IguanaMaterialConfig.steelreinforced, IguanaMaterialConfig.steelstonebound, "\u00A7f", "");
 
 		TConstructRegistry.toolMaterials.remove(18);
-		TConstructRegistry.addToolMaterial(18, "PigIron", "Pig Iron ", 4, Math.round(250F * durMod), Math.round(600F * speedMod), 3, 1.3F, 1, 0f, "\u00A7c", "Tasty");
+		TConstructRegistry.addToolMaterial(18, "PigIron", "Pig Iron ", IguanaMaterialConfig.pigironharvestLevel, Math.round(IguanaMaterialConfig.pigirondurability * durMod), Math.round(IguanaMaterialConfig.pigironminingspeed * speedMod), IguanaMaterialConfig.pigironattack, IguanaMaterialConfig.pigironhandleModifier, IguanaMaterialConfig.pigironreinforced, IguanaMaterialConfig.pigironstonebound, "\u00A7c", "Tasty");
 
 		TConstructRegistry.toolMaterials.remove(6);
-		TConstructRegistry.addToolMaterial(6, "Obsidian", 5, Math.round(89f * durMod), Math.round(700f * speedMod), 3, 0.8F, 3, 0f, "\u00A78", "");
+		TConstructRegistry.addToolMaterial(6, "Obsidian", IguanaMaterialConfig.obsidianharvestLevel, Math.round(IguanaMaterialConfig.obsidiandurability * durMod), Math.round(IguanaMaterialConfig.obsidianminingspeed * speedMod), IguanaMaterialConfig.obsidianattack, IguanaMaterialConfig.obsidianhandleModifier, IguanaMaterialConfig.obsidianreinforced, IguanaMaterialConfig.obsidianstonebound, "\u00A78", "");
 
 		TConstructRegistry.toolMaterials.remove(15);
-		TConstructRegistry.addToolMaterial(15, "Alumite", 5, Math.round(550f * durMod), Math.round(800f * speedMod), 4, 1.3F, 2, 0f, "\u00A7d", "");
+		TConstructRegistry.addToolMaterial(15, "Alumite", IguanaMaterialConfig.alumiteharvestLevel, Math.round(IguanaMaterialConfig.alumitedurability * durMod), Math.round(IguanaMaterialConfig.alumiteminingspeed * speedMod), IguanaMaterialConfig.alumiteattack, IguanaMaterialConfig.alumitehandleModifier, IguanaMaterialConfig.alumitereinforced, IguanaMaterialConfig.alumitestonebound, "\u00A7d", "");
 
 		TConstructRegistry.toolMaterials.remove(11);
-		TConstructRegistry.addToolMaterial(11, "Ardite", 6, Math.round(600f * durMod), Math.round(800f * speedMod), 4, 2.0F, 0, 2f, "\u00A74", "Stonebound");
+		TConstructRegistry.addToolMaterial(11, "Ardite", IguanaMaterialConfig.arditeharvestLevel, Math.round(IguanaMaterialConfig.arditedurability * durMod), Math.round(IguanaMaterialConfig.arditeminingspeed * speedMod), IguanaMaterialConfig.arditeattack, IguanaMaterialConfig.arditehandleModifier, IguanaMaterialConfig.arditereinforced, IguanaMaterialConfig.arditestonebound, "\u00A74", "Stonebound");
 
 		TConstructRegistry.toolMaterials.remove(10);
-		TConstructRegistry.addToolMaterial(10, "Cobalt", 7, Math.round(800f * durMod), Math.round(1100f * speedMod), 4, 1.75F, 2, 0f, "\u00A73", "");
+		TConstructRegistry.addToolMaterial(10, "Cobalt", IguanaMaterialConfig.cobaltharvestLevel, Math.round(IguanaMaterialConfig.cobaltdurability * durMod), Math.round(IguanaMaterialConfig.cobaltminingspeed * speedMod), IguanaMaterialConfig.cobaltattack, IguanaMaterialConfig.cobalthandleModifier, IguanaMaterialConfig.cobaltreinforced, IguanaMaterialConfig.cobaltstonebound, "\u00A73", "");
 
 		TConstructRegistry.toolMaterials.remove(12);
-		TConstructRegistry.addToolMaterial(12, "Manyullyn", 8, Math.round(1200f * durMod), Math.round(900f * speedMod), 5, 2.5F, 0, 0f, "\u00A75", "");
+		TConstructRegistry.addToolMaterial(12, "Manyullyn", IguanaMaterialConfig.manyullynharvestLevel, Math.round(IguanaMaterialConfig.manyullyndurability * durMod), Math.round(IguanaMaterialConfig.manyullynminingspeed * speedMod), IguanaMaterialConfig.manyullynattack, IguanaMaterialConfig.manyullynhandleModifier, IguanaMaterialConfig.manyullynreinforced, IguanaMaterialConfig.manyullynstonebound, "\u00A75", "");
 
 
 		//Extra TiC / Metallurgy materials
-		if (Loader.isModLoaded("ExtraTiC") && Loader.isModLoaded("Metallurgy3Base"))
+		if (Loader.isModLoaded("ExtraTiC"))
+		{		if (Loader.isModLoaded("Metallurgy3Base"))
 		{
+
 			// Stone level
 			TConstructRegistry.toolMaterials.remove(103);
-			TConstructRegistry.addToolMaterial(103, "Brass", 0, Math.round(15F * durMod), Math.round(1200F * speedMod), 2, 0.2F, 0, 0.0F, "", "");
+			TConstructRegistry.addToolMaterial(103, "Brass", IguanaMaterialConfig.brassharvestLevel, Math.round(IguanaMaterialConfig.brassdurability * durMod), Math.round(IguanaMaterialConfig.brassminingspeed * speedMod), IguanaMaterialConfig.brassattack, IguanaMaterialConfig.brasshandleModifier, IguanaMaterialConfig.brassreinforced, IguanaMaterialConfig.brassstonebound, "", "");
 
 			TConstructRegistry.toolMaterials.remove(104);
-			TConstructRegistry.addToolMaterial(104, "Electrum", 0, Math.round(100F * durMod), Math.round(2000F * speedMod), 2, 0.75F, 0, 0.0F, "", "");
+			TConstructRegistry.addToolMaterial(104, "Electrum", IguanaMaterialConfig.electrumharvestLevel, Math.round(IguanaMaterialConfig.electrumdurability * durMod), Math.round(IguanaMaterialConfig.electrumminingspeed * speedMod), IguanaMaterialConfig.electrumattack, IguanaMaterialConfig.electrumhandleModifier, IguanaMaterialConfig.electrumreinforced, IguanaMaterialConfig.electrumstonebound, "", "");
 
 			TConstructRegistry.toolMaterials.remove(106);
 			TConstructRegistry.addToolMaterial(106, "Silver", 0, Math.round(25F * durMod), Math.round(1600F * speedMod), 2, 0.2F, 0, 0.0F, "", "");
@@ -194,75 +195,51 @@ public class MaterialTweaks {
 			TConstructRegistry.addToolMaterial(131, "Tartarite", 8, Math.round(3000F * durMod), Math.round(1400F * speedMod), 6, 3.0F, 0, 0.0F, "", "");
 
 		}
-		} else {
-			// TINKERS
-		IguanaLog.log("Modifying TConstruct materials");
-
-		float durMod = IguanaConfig.durabilityPercentage / 100F;
-		float speedMod = IguanaConfig.miningSpeedPercentage / 100F;
-
-		TConstructRegistry.toolMaterials.remove(0);
-        TConstructRegistry.addToolMaterial(0, "Wood", "Wooden ", 0, Math.round(59F * durMod), Math.round(200F * speedMod), 0, 1.0F, 0, 0f, "\u00A7e", "");
-
-		TConstructRegistry.toolMaterials.remove(1);
-        TConstructRegistry.addToolMaterial(1, "Stone", 1, Math.round(131F * durMod), Math.round(400F * speedMod), 1, 0.5F, 0, 1f, "", "Stonebound");
-
-		TConstructRegistry.toolMaterials.remove(2);
-        TConstructRegistry.addToolMaterial(2, "Iron", 2, Math.round(250F * durMod), Math.round(600F * speedMod), 2, 1.3F, 1, 0f, "\u00A7f", "");
-
-		TConstructRegistry.toolMaterials.remove(3);
-        TConstructRegistry.addToolMaterial(3, "Flint", 1, Math.round(171F * durMod), Math.round(525F * speedMod), 2, 0.7F, 0, 0f, "\u00A78", "");
-
-		TConstructRegistry.toolMaterials.remove(4);
-        TConstructRegistry.addToolMaterial(4, "Cactus", 1, Math.round(150F * durMod), Math.round(500F * speedMod), 2, 1.0F, 0, -1f, "\u00A72", "Jagged");
-
-		TConstructRegistry.toolMaterials.remove(5);
-        TConstructRegistry.addToolMaterial(5, "Bone", 1, Math.round(200F * durMod), Math.round(400F * speedMod), 1, 1.0F, 0, 0f, "\u00A7e", "");
-
-		TConstructRegistry.toolMaterials.remove(6);
-        TConstructRegistry.addToolMaterial(6, "Obsidian", 3, Math.round(89F * durMod), Math.round(700F * speedMod), 2, 0.8F, 3, 0f, "\u00A7d", "");
-
-		TConstructRegistry.toolMaterials.remove(7);
-        TConstructRegistry.addToolMaterial(7, "Netherrack", 2, Math.round(131F * durMod), Math.round(400F * speedMod), 1, 1.2F, 0, 1f, "\u00A74", "Stonebound");
-
-		TConstructRegistry.toolMaterials.remove(8);
-        TConstructRegistry.addToolMaterial(8, "Slime", 0, Math.round(500F * durMod), Math.round(150F * speedMod), 0, 1.5F, 0, 0f, "\u00A7a", "");
-
-		TConstructRegistry.toolMaterials.remove(9);
-        TConstructRegistry.addToolMaterial(9, "Paper", 0, Math.round(30F * durMod), Math.round(200F * speedMod), 0, 0.3F, 0, 0f, "\u00A7f", "Writable");
-
-		TConstructRegistry.toolMaterials.remove(10);
-        TConstructRegistry.addToolMaterial(10, "Cobalt", 4, Math.round(800F * durMod), Math.round(1100F * speedMod), 3, 1.75F, 2, 0f, "\u00A73", "");
-
-		TConstructRegistry.toolMaterials.remove(11);
-        TConstructRegistry.addToolMaterial(11, "Ardite", 4, Math.round(600F * durMod), Math.round(800F * speedMod), 3, 2.0F, 0, 2f, "\u00A74", "Stonebound");
-
-		TConstructRegistry.toolMaterials.remove(12);
-        TConstructRegistry.addToolMaterial(12, "Manyullyn", 5, Math.round(1200F * durMod), Math.round(900F * speedMod), 4, 2.5F, 0, 0f, "\u00A75", "");
-
-		TConstructRegistry.toolMaterials.remove(13);
-        TConstructRegistry.addToolMaterial(13, "Copper", 1, Math.round(180F * durMod), Math.round(500F * speedMod), 2, 1.15F, 0, 0f, "\u00A7c", "");
-
-		TConstructRegistry.toolMaterials.remove(14);
-        TConstructRegistry.addToolMaterial(14, "Bronze", 2, Math.round(350F * durMod), Math.round(700F * speedMod), 2, 1.3F, 1, 0f, "\u00A76", "");
-
-		TConstructRegistry.toolMaterials.remove(15);
-        TConstructRegistry.addToolMaterial(15, "Alumite", 4, Math.round(550F * durMod), Math.round(800F * speedMod), 3, 1.3F, 2, 0f, "\u00A7d", "");
-
-		TConstructRegistry.toolMaterials.remove(16);
-        TConstructRegistry.addToolMaterial(16, "Steel", 4, Math.round(750F * durMod), Math.round(800F * speedMod), 3, 1.3F, 2, 0f, "", "");
-
-		TConstructRegistry.toolMaterials.remove(17);
-        TConstructRegistry.addToolMaterial(17, "BlueSlime", "Slime ", 0, Math.round(1200F * durMod), Math.round(150F * speedMod), 0, 2.0F, 0, 0f, "\u00A7b", "");
-
-		TConstructRegistry.toolMaterials.remove(18);
-        TConstructRegistry.addToolMaterial(18, "PigIron", "Pig Iron ", 3, Math.round(250F * durMod), Math.round(600F * speedMod), 2, 1.3F, 1, 0f, "\u00A7c", "Tasty");
-
-		if (TContent.thaumcraftAvailable)
+		
+		if (Loader.isModLoaded("Natura"))
 		{
-			TConstructRegistry.toolMaterials.remove(31);
-			TConstructRegistry.addToolMaterial(31, "Thaumium", 3, Math.round(400f * durMod), Math.round(700f * speedMod), 2, 1.3F, 0, 0f, "\u00A75", "Thaumic");
+			TConstructRegistry.toolMaterials.remove(134);
+			TConstructRegistry.addToolMaterial(134, "Bloodwood", IguanaMaterialConfig.bloodwoodharvestLevel, Math.round(IguanaMaterialConfig.bloodwooddurability * durMod), Math.round(IguanaMaterialConfig.bloodwoodminingspeed * speedMod), IguanaMaterialConfig.bloodwoodattack, IguanaMaterialConfig.bloodwoodhandleModifier, IguanaMaterialConfig.bloodwoodreinforced, IguanaMaterialConfig.bloodwoodstonebound, "", "");
+
+			TConstructRegistry.toolMaterials.remove(135);
+			TConstructRegistry.addToolMaterial(135, "Darkwood", IguanaMaterialConfig.darkwoodharvestLevel, Math.round(IguanaMaterialConfig.darkwooddurability * durMod), Math.round(IguanaMaterialConfig.darkwoodminingspeed * speedMod), IguanaMaterialConfig.darkwoodattack, IguanaMaterialConfig.darkwoodhandleModifier, IguanaMaterialConfig.darkwoodreinforced, IguanaMaterialConfig.darkwoodstonebound, "", "");
+
+			TConstructRegistry.toolMaterials.remove(136);
+			TConstructRegistry.addToolMaterial(136, "Fusewood", IguanaMaterialConfig.fusewoodharvestLevel, Math.round(IguanaMaterialConfig.fusewooddurability * durMod), Math.round(IguanaMaterialConfig.fusewoodminingspeed * speedMod), IguanaMaterialConfig.fusewoodattack, IguanaMaterialConfig.fusewoodhandleModifier, IguanaMaterialConfig.fusewoodreinforced, IguanaMaterialConfig.fusewoodstonebound, "", "");
+
+			TConstructRegistry.toolMaterials.remove(137);
+			TConstructRegistry.addToolMaterial(137, "Ghostwood", IguanaMaterialConfig.ghostwoodharvestLevel, Math.round(IguanaMaterialConfig.ghostwooddurability * durMod), Math.round(IguanaMaterialConfig.ghostwoodminingspeed * speedMod), IguanaMaterialConfig.ghostwoodattack, IguanaMaterialConfig.ghostwoodhandleModifier, IguanaMaterialConfig.ghostwoodreinforced, IguanaMaterialConfig.ghostwoodstonebound, "", "");
+
+			TConstructRegistry.toolMaterials.remove(138);
+			TConstructRegistry.addToolMaterial(138, "Nether Quartz", IguanaMaterialConfig.netherQuartzharvestLevel, Math.round(IguanaMaterialConfig.netherQuartzdurability * durMod), Math.round(IguanaMaterialConfig.netherQuartzminingspeed * speedMod), IguanaMaterialConfig.netherQuartzattack, IguanaMaterialConfig.netherQuartzhandleModifier, IguanaMaterialConfig.netherQuartzreinforced, IguanaMaterialConfig.netherQuartzstonebound, "", "");
 		}
+		
+		if (Loader.isModLoaded("Mekanism"))
+		{
+			TConstructRegistry.toolMaterials.remove(139);
+			TConstructRegistry.addToolMaterial(139, "Refined Glowstone", IguanaMaterialConfig.refinedGlowstoneharvestLevel, Math.round(IguanaMaterialConfig.refinedGlowstonedurability * durMod), Math.round(IguanaMaterialConfig.refinedGlowstoneminingspeed * speedMod), IguanaMaterialConfig.refinedGlowstoneattack, IguanaMaterialConfig.refinedGlowstonehandleModifier, IguanaMaterialConfig.refinedGlowstonereinforced, IguanaMaterialConfig.refinedGlowstonestonebound, "", "");
+
+			TConstructRegistry.toolMaterials.remove(140);
+			TConstructRegistry.addToolMaterial(140, "Osmium", IguanaMaterialConfig.osmiumharvestLevel, Math.round(IguanaMaterialConfig.osmiumdurability * durMod), Math.round(IguanaMaterialConfig.osmiumminingspeed * speedMod), IguanaMaterialConfig.osmiumattack, IguanaMaterialConfig.osmiumhandleModifier, IguanaMaterialConfig.osmiumreinforced, IguanaMaterialConfig.osmiumstonebound, "", "");
 		}
+		
+		TConstructRegistry.toolMaterials.remove(141);
+		TConstructRegistry.addToolMaterial(141, "Pokefennium", IguanaMaterialConfig.pokefenniumharvestLevel, Math.round(IguanaMaterialConfig.pokefenniumdurability * durMod), Math.round(IguanaMaterialConfig.pokefenniumminingspeed * speedMod), IguanaMaterialConfig.pokefenniumattack, IguanaMaterialConfig.pokefenniumhandleModifier, IguanaMaterialConfig.pokefenniumreinforced, IguanaMaterialConfig.pokefenniumstonebound, "", "");
+
+		TConstructRegistry.toolMaterials.remove(142);
+		TConstructRegistry.addToolMaterial(142, "Fairy",  IguanaMaterialConfig.fairyharvestLevel, Math.round(IguanaMaterialConfig.fairydurability * durMod), Math.round(IguanaMaterialConfig.fairyminingspeed * speedMod), IguanaMaterialConfig.fairyattack, IguanaMaterialConfig.fairyhandleModifier, IguanaMaterialConfig.fairyreinforced, IguanaMaterialConfig.fairystonebound, "", "");
+
+		if (Loader.isModLoaded("AppliedEnergistics"))
+		{
+			TConstructRegistry.toolMaterials.remove(143);
+			TConstructRegistry.addToolMaterial(143, "Certus Quartz", IguanaMaterialConfig.certusQuartzharvestLevel, Math.round(IguanaMaterialConfig.certusQuartzdurability * durMod), Math.round(IguanaMaterialConfig.certusQuartzminingspeed * speedMod), IguanaMaterialConfig.certusQuartzattack, IguanaMaterialConfig.certusQuartzhandleModifier, IguanaMaterialConfig.certusQuartzreinforced, IguanaMaterialConfig.certusQuartzstonebound, "", "");
+		}
+
+		if (Loader.isModLoaded("BiomesOPlenty"))
+		{
+			TConstructRegistry.toolMaterials.remove(144);
+			TConstructRegistry.addToolMaterial(144, "Amethyst", IguanaMaterialConfig.amethystharvestLevel, Math.round(IguanaMaterialConfig.amethystdurability * durMod), Math.round(IguanaMaterialConfig.amethystminingspeed * speedMod), IguanaMaterialConfig.amethystattack, IguanaMaterialConfig.amethysthandleModifier, IguanaMaterialConfig.amethystreinforced, IguanaMaterialConfig.amethyststonebound, "", "");
+		}
+}
 }
 }

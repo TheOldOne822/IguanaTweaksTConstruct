@@ -4,6 +4,7 @@ import iguanaman.iguanatweakstconstruct.commands.IguanaCommandLevelUpTool;
 import iguanaman.iguanatweakstconstruct.commands.IguanaCommandToolXP;
 import iguanaman.iguanatweakstconstruct.util.IguanaEventHandler;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,7 +12,6 @@ import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
-
 import tconstruct.common.TContent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -47,7 +47,12 @@ public class IguanaTweaksTConstruct {
 		proxy.registerSounds();
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 
-		IguanaConfig.init(event.getSuggestedConfigurationFile());
+		File installDir = event.getModConfigurationDirectory();
+		File configDir = new File(installDir, "TConstruct Tweaks");
+		IguanaConfig.init(new File(configDir, "Iguana Tweaks.cfg"));
+		IguanaMaterialConfig.init();
+		IguanaHarvestLevelConfig.init();
+		IguanaLevelsConfig.init();
 
 		toolParts = Arrays.asList (
 				TContent.toolRod, TContent.pickaxeHead, TContent.shovelHead, TContent.hatchetHead,
@@ -65,7 +70,6 @@ public class IguanaTweaksTConstruct {
 
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		IguanaLog.log("Registering with modstats");
 	}
 
 	@EventHandler
@@ -97,31 +101,27 @@ public class IguanaTweaksTConstruct {
 
 	public static String getHarvestLevelName (int num)
 	{
-		if (IguanaConfig.pickaxeBoostRequired && IguanaConfig.changeMininglevels && num > 1) --num;
-		if (IguanaConfig.changeMininglevels){
+		if (IguanaConfig.pickaxeBoostRequired && num > 1) --num;
 		switch (num)
 		{
-		case 0: return "\u00a77Stone";
-		case 1: return "\u00a76Copper";
-		case 2: return "\u00a74Iron";
-		case 3: return "\u00a7fTin";
-		case 4: return "\u00a7bDiamond";
-		case 5: return "\u00a7cArdite";
-		case 6: return "\u00a79Cobalt";
-		case 7: return "\u00a75Manyullyn";
+		case 0: return "\u00a77" + IguanaHarvestLevelConfig.level0name;
+		case 1: return "\u00a76" + IguanaHarvestLevelConfig.level1name;
+		case 2: return "\u00a74" + IguanaHarvestLevelConfig.level2name;
+		case 3: return "\u00a7f" + IguanaHarvestLevelConfig.level3name;
+		case 4: return "\u00a7b" + IguanaHarvestLevelConfig.level4name;
+		case 5: return "\u00a7c" + IguanaHarvestLevelConfig.level5name;
+		case 6: return "\u00a79" + IguanaHarvestLevelConfig.level6name;
+		case 7: return "\u00a75" + IguanaHarvestLevelConfig.level7name;
+		case 8: return "\u00a75" + IguanaHarvestLevelConfig.level8name;
+		case 9: return "\u00a75" + IguanaHarvestLevelConfig.level9name;
+		case 10: return "\u00a75" + IguanaHarvestLevelConfig.level10name;
+		case 11: return "\u00a75" + IguanaHarvestLevelConfig.level11name;
+		case 12: return "\u00a75" + IguanaHarvestLevelConfig.level12name;
+		case 13: return "\u00a75" + IguanaHarvestLevelConfig.level13name;
+		case 14: return "\u00a75" + IguanaHarvestLevelConfig.level14name;
+		case 15: return "\u00a75" + IguanaHarvestLevelConfig.level15name;
 		default: return "\u00a7k\u00a7k\u00a7k\u00a7k\u00a7k\u00a7k";
 		}
-		} else {
-		switch (num)
-		{
-		case 0: return "\u00a77Stone";
-		case 1: return "\u00a76Iron";
-		case 2: return "\u00a74Redstone";
-		case 3: return "\u00a7fObsidian";
-		case 4: return "\u00a7bCobalt";
-		case 5: return "\u00a7cManyullyn";
-		default: return "\u00a7k\u00a7k\u00a7k\u00a7k\u00a7k\u00a7k";
-		}}
 	}
 
 }

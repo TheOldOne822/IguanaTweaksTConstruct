@@ -31,7 +31,6 @@ public class IguanaConfig {
 	public static double xpPerLevelMultiplier;
 
 	// pick boost
-	public static boolean changeMininglevels;
 	public static boolean pickaxeBoostRequired;
 	public static boolean mobHeadPickaxeBoost;
 	public static boolean levelingPickaxeBoost;
@@ -107,7 +106,7 @@ public class IguanaConfig {
 	public static int durabilityPercentage;
 	public static int miningSpeedPercentage;
 
-	// Harvest Levels
+/*	// Harvest Levels
 	public static List<String> harvestLevel0Ids = new ArrayList<String>();
 	public static List<String> harvestLevel1Ids = new ArrayList<String>();
 	public static List<String> harvestLevel2Ids = new ArrayList<String>();
@@ -116,7 +115,15 @@ public class IguanaConfig {
 	public static List<String> harvestLevel5Ids = new ArrayList<String>();
 	public static List<String> harvestLevel6Ids = new ArrayList<String>();
 	public static List<String> harvestLevel7Ids = new ArrayList<String>();
-
+	public static List<String> harvestLevel8Ids = new ArrayList<String>();
+	public static List<String> harvestLevel9Ids = new ArrayList<String>();
+	public static List<String> harvestLevel10Ids = new ArrayList<String>();
+	public static List<String> harvestLevel11Ids = new ArrayList<String>();
+	public static List<String> harvestLevel12Ids = new ArrayList<String>();
+	public static List<String> harvestLevel13Ids = new ArrayList<String>();
+	public static List<String> harvestLevel14Ids = new ArrayList<String>();
+	public static List<String> harvestLevel15Ids = new ArrayList<String>();
+*/
 	// Pickaxe mining level overrides
 	public static HashMap<Integer, Integer> pickaxeOverrides = new HashMap<Integer, Integer>();
 
@@ -209,10 +216,6 @@ public class IguanaConfig {
 		// pick leveling
 		ConfigCategory pickboostingCategory = config.getCategory("pickboosting");
 		pickboostingCategory.setComment("Options to configure to pickaxe mining level boost and mechanics");
-
-		Property changeMininglevelsProperty = config.get("pickboosting", "changeMininglevels", true);
-		changeMininglevelsProperty.comment = "Changes material and block mining levels. Boost options only work when this is enabled";
-		changeMininglevels = changeMininglevelsProperty.getBoolean(true);
 
 		Property diamondPickaxeBoostProperty = config.get("pickboosting", "diamondPickaxeBoost", true);
 		diamondPickaxeBoostProperty.comment = "Diamond mod allows mining obsidian";
@@ -555,7 +558,7 @@ public class IguanaConfig {
 		restrictedCactusPartsProperty.comment = "Pattern ids to restrict for cactus parts";
 		for (int i : restrictedCactusPartsProperty.getIntList()) restrictedCactusParts.add(i);
 
-
+/*
 		// harvest ids
 		ConfigCategory harvestidsCategory = config.getCategory("harvestids");
 		harvestidsCategory.setComment("Set harvest levels of blocks here (most should be modified by default, so check if needed first)");
@@ -592,7 +595,38 @@ public class IguanaConfig {
 		harvestLevel7IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 7 (cobalt pick+)";
 		for (String i : harvestLevel7IdsProperty.getStringList()) harvestLevel7Ids.add(i);
 
+		Property harvestLevel8IdsProperty = config.get("harvestids", "harvestLevel8Ids", new String[] {});
+		harvestLevel8IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 8";
+		for (String i : harvestLevel8IdsProperty.getStringList()) harvestLevel8Ids.add(i);
 
+		Property harvestLevel9IdsProperty = config.get("harvestids", "harvestLevel9Ids", new String[] {});
+		harvestLevel9IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 9";
+		for (String i : harvestLevel9IdsProperty.getStringList()) harvestLevel9Ids.add(i);
+
+		Property harvestLevel10IdsProperty = config.get("harvestids", "harvestLevel10Ids", new String[] {});
+		harvestLevel10IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 10";
+		for (String i : harvestLevel10IdsProperty.getStringList()) harvestLevel10Ids.add(i);
+
+		Property harvestLevel11IdsProperty = config.get("harvestids", "harvestLevel11Ids", new String[] {});
+		harvestLevel11IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 11";
+		for (String i : harvestLevel11IdsProperty.getStringList()) harvestLevel11Ids.add(i);
+
+		Property harvestLevel12IdsProperty = config.get("harvestids", "harvestLevel12Ids", new String[] {});
+		harvestLevel12IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 12";
+		for (String i : harvestLevel12IdsProperty.getStringList()) harvestLevel12Ids.add(i);
+
+		Property harvestLevel13IdsProperty = config.get("harvestids", "harvestLevel13Ids", new String[] {});
+		harvestLevel13IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 13";
+		for (String i : harvestLevel13IdsProperty.getStringList()) harvestLevel13Ids.add(i);
+
+		Property harvestLevel14IdsProperty = config.get("harvestids", "harvestLevel14Ids", new String[] {});
+		harvestLevel14IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 14";
+		for (String i : harvestLevel14IdsProperty.getStringList()) harvestLevel14Ids.add(i);
+
+		Property harvestLevel15IdsProperty = config.get("harvestids", "harvestLevel15Ids", new String[] {});
+		harvestLevel15IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 15";
+		for (String i : harvestLevel15IdsProperty.getStringList()) harvestLevel15Ids.add(i);
+*/
 		// pickaxe mining level overrides
 		ConfigCategory pickaxeoverridesCategory = config.getCategory("pickaxeoverrides");
 		pickaxeoverridesCategory.setComment("Normally the mod changes the mining levels of all pickaxes to be in line with the new system, override that for specific picks here");
@@ -608,11 +642,6 @@ public class IguanaConfig {
 
 		config.save();
 		
-		if (!changeMininglevels){
-			pickaxeBoostRequired = false;
-			levelingPickaxeBoost = false;
-			mobHeadPickaxeBoost = false;
-		}
 	}
 
 }

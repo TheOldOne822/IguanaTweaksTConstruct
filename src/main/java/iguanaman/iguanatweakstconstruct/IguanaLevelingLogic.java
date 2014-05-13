@@ -302,16 +302,16 @@ public class IguanaLevelingLogic {
 		{
 			switch (level)
 			{
-			case 2: player.addChatMessage("\u00a73You begin to feel comfortable handling the " + stack.getDisplayName()); break;
-			case 3: player.addChatMessage("\u00a73You are now accustomed to the weight of the " + stack.getDisplayName()); break;
-			case 4: player.addChatMessage("\u00a73You have become adept at handling the " + stack.getDisplayName()); break;
-			case 5: player.addChatMessage("\u00a73You are now an expert at using the " + stack.getDisplayName() + "\u00a73!"); break;
-			case 6: player.addChatMessage("\u00a73You have mastered the " + stack.getDisplayName() + "\u00a73!"); break;
-			case 7: player.addChatMessage("\u00a73You have mastered the " + stack.getDisplayName() + "\u00a73!"); break;
-			case 8: player.addChatMessage("\u00a73You have mastered the " + stack.getDisplayName() + "\u00a73!"); break;
-			case 9: player.addChatMessage("\u00a73You have mastered the " + stack.getDisplayName() + "\u00a73!"); break;
-			case 10: player.addChatMessage("\u00a73You have mastered the " + stack.getDisplayName() + "\u00a73!"); break;
-			default: player.addChatMessage("\u00a73Youre mastery of the " + stack.getDisplayName() + "\u00a73 grows!"); break;
+			case 2: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level1finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level1finisha); break;
+			case 3: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level2finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level2finisha); break;
+			case 4: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level3finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level3finisha); break;
+			case 5: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level4finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level4finisha); break;
+			case 6: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level5finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level5finisha); break;
+			case 7: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level6finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level6finisha); break;
+			case 8: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level7finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level7finisha); break;
+			case 9: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level8finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level8finisha); break;
+			case 10: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level9finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level9finisha); break;
+			default: player.addChatMessage("\u00a73" + IguanaLevelsConfig.levelxfinish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.levelxfinisha); break;
 			}
 
 			if (!IguanaConfig.toolLevelingRandomBonuses || level % 2 == 0 && IguanaConfig.toolLevelingExtraModifiers)

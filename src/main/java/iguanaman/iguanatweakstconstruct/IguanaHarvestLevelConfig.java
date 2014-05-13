@@ -227,71 +227,87 @@ public class IguanaHarvestLevelConfig {
 		
 		// harvest oreDict
 		ConfigCategory harvestoredictCategory = harvestconfig.getCategory("harvestoredict");
-		harvestoredictCategory.setComment("Set harvest levels of blocks by Ore Dictionary name. Must be 16 or more in each list. Will only read the first 16 in each list.");
+		harvestoredictCategory.setComment("Set harvest levels of blocks by Ore Dictionary name. Will only read the first 16 in each list.");
 
-		Property harvestLevel0oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel00oreDict", new String[] {"junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1"});
+		Property harvestLevel0oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel00oreDict", new String[] {});
 		harvestLevel0oreDictProperty.comment = "Ore Dictionary name (each on seperate line) to be set to harvest level 0 (stone pick+)";
 		for (String i : harvestLevel0oreDictProperty.getStringList()) harvestLevel00oreDict.add(i);
+		while (harvestLevel00oreDict.size() < 33){harvestLevel00oreDict.add("junkfiller");}
 
-		Property harvestLevel1oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel01oreDict", new String[] {"Copper", "Coal", "Tetrahedrite", "Aluminum", "Aluminium", "NaturalAluminum", "AluminumBrass", "Shard", "Bauxite", "Zinc", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1"});
+		Property harvestLevel1oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel01oreDict", new String[] {"Copper", "Coal", "Tetrahedrite", "Aluminum", "Aluminium", "NaturalAluminum", "AluminumBrass", "Shard", "Bauxite", "Zinc"});
 		harvestLevel1oreDictProperty.comment = "Ore Dictionary name (each on seperate line) to be set to harvest level 1 (flint pick+)";
 		for (String i : harvestLevel1oreDictProperty.getStringList()) harvestLevel01oreDict.add(i);
+		while (harvestLevel01oreDict.size() < 33){harvestLevel01oreDict.add("junkfiller");}
 
-		Property harvestLevel2oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel02oreDict", new String[] {"Iron", "Pyrite", "Lead", "Silver", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1"});
+		Property harvestLevel2oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel02oreDict", new String[] {"Iron", "Pyrite", "Lead", "Silver"});
 		harvestLevel2oreDictProperty.comment = "Ore Dictionary name (each on seperate line) to be set to harvest level 2 (copper pick+)";
 		for (String i : harvestLevel2oreDictProperty.getStringList()) harvestLevel02oreDict.add(i);
+		while (harvestLevel02oreDict.size() < 33){harvestLevel02oreDict.add("junkfiller");}
 
-		Property harvestLevel3oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel03oreDict", new String[] {"Tin", "Cassiterite", "Gold", "Lapis", "Steel", "Galena", "Nickel", "Invar", "Electrum", "Sphalerite", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1"});
+		Property harvestLevel3oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel03oreDict", new String[] {"Tin", "Cassiterite", "Gold", "Lapis", "Steel", "Galena", "Nickel", "Invar", "Electrum", "Sphalerite"});
 		harvestLevel3oreDictProperty.comment = "Ore Dictionary name (each on seperate line) to be set to harvest level 3 (iron pick+)";
 		for (String i : harvestLevel3oreDictProperty.getStringList()) harvestLevel03oreDict.add(i);
+		while (harvestLevel03oreDict.size() < 33){harvestLevel03oreDict.add("junkfiller");}
 
-		Property harvestLevel4oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel04oreDict", new String[] {"Diamond", "Emerald", "Redstone", "Ruby", "Sapphire", "Cinnabar", "Quartz", "Obsidian", "CertusQuartz", "Tungstate", "Sodalite", "GreenSapphire", "BlackGranite", "RedGranite", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1"});
+		Property harvestLevel4oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel04oreDict", new String[] {"Diamond", "Emerald", "Redstone", "Ruby", "Sapphire", "Cinnabar", "Quartz", "Obsidian", "CertusQuartz", "Tungstate", "Sodalite", "GreenSapphire", "BlackGranite", "RedGranite"});
 		harvestLevel4oreDictProperty.comment = "Ore Dictionary name (each on seperate line) to be set to harvest level 4 (bronze pick+)";
 		for (String i : harvestLevel4oreDictProperty.getStringList()) harvestLevel04oreDict.add(i);
+		while (harvestLevel04oreDict.size() < 33){harvestLevel04oreDict.add("junkfiller");}
 
-		Property harvestLevel5oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel05oreDict", new String[] {"Ardite", "Uranium", "Olivine", "Sheldonite", "Osmium", "Platinum", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1"});
+		Property harvestLevel5oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel05oreDict", new String[] {"Ardite", "Uranium", "Olivine", "Sheldonite", "Osmium", "Platinum"});
 		harvestLevel5oreDictProperty.comment = "Ore Dictionary name (each on seperate line) to be set to harvest level 5 (alumite pick+)";
 		for (String i : harvestLevel5oreDictProperty.getStringList()) harvestLevel05oreDict.add(i);
+		while (harvestLevel05oreDict.size() < 33){harvestLevel05oreDict.add("junkfiller");}
 
-		Property harvestLevel6oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel06oreDict", new String[] {"Cobalt", "Iridium", "Cooperite", "Titanium", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1"});
+		Property harvestLevel6oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel06oreDict", new String[] {"Cobalt", "Iridium", "Cooperite", "Titanium"});
 		harvestLevel6oreDictProperty.comment = "Ore Dictionary name (each on seperate line) to be set to harvest level 6 (ardite pick+)";
 		for (String i : harvestLevel6oreDictProperty.getStringList()) harvestLevel06oreDict.add(i);
+		while (harvestLevel06oreDict.size() < 33){harvestLevel06oreDict.add("junkfiller");}
 
-		Property harvestLevel7oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel07oreDict", new String[] {"Manyullyn", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1"});
+		Property harvestLevel7oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel07oreDict", new String[] {"Manyullyn"});
 		harvestLevel7oreDictProperty.comment = "Ore Dictionary name (each on seperate line) to be set to harvest level 7 (cobalt pick+)";
 		for (String i : harvestLevel7oreDictProperty.getStringList()) harvestLevel07oreDict.add(i);
+		while (harvestLevel07oreDict.size() < 33){harvestLevel07oreDict.add("junkfiller");}
 
-		Property harvestLevel8oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel08oreDict", new String[] {"junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1"});
+		Property harvestLevel8oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel08oreDict", new String[] {});
 		harvestLevel8oreDictProperty.comment = "Ore Dictionary name (each on seperate line) to be set to harvest level 8";
 		for (String i : harvestLevel8oreDictProperty.getStringList()) harvestLevel08oreDict.add(i);
+		while (harvestLevel08oreDict.size() < 33){harvestLevel08oreDict.add("junkfiller");}
 
-		Property harvestLevel9oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel09oreDict", new String[] {"junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1"});
+		Property harvestLevel9oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel09oreDict", new String[] {});
 		harvestLevel9oreDictProperty.comment = "Ore Dictionary name (each on seperate line) to be set to harvest level 9";
 		for (String i : harvestLevel9oreDictProperty.getStringList()) harvestLevel09oreDict.add(i);
+		while (harvestLevel09oreDict.size() < 33){harvestLevel09oreDict.add("junkfiller");}
 
-		Property harvestLevel10oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel10oreDict", new String[] {"junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1"});
+		Property harvestLevel10oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel10oreDict", new String[] {});
 		harvestLevel10oreDictProperty.comment = "Ore Dictionary name (each on seperate line) to be set to harvest level 10";
 		for (String i : harvestLevel10oreDictProperty.getStringList()) harvestLevel10oreDict.add(i);
+		while (harvestLevel10oreDict.size() < 33){harvestLevel10oreDict.add("junkfiller");}
 
-		Property harvestLevel11oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel11oreDict", new String[] {"junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1"});
+		Property harvestLevel11oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel11oreDict", new String[] {});
 		harvestLevel11oreDictProperty.comment = "Ore Dictionary name (each on seperate line) to be set to harvest level 11";
 		for (String i : harvestLevel11oreDictProperty.getStringList()) harvestLevel11oreDict.add(i);
+		while (harvestLevel11oreDict.size() < 33){harvestLevel11oreDict.add("junkfiller");}
 
-		Property harvestLevel12oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel12oreDict", new String[] {"junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1"});
+		Property harvestLevel12oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel12oreDict", new String[] {});
 		harvestLevel12oreDictProperty.comment = "Ore Dictionary name (each on seperate line) to be set to harvest level 12";
 		for (String i : harvestLevel12oreDictProperty.getStringList()) harvestLevel12oreDict.add(i);
+		while (harvestLevel12oreDict.size() < 33){harvestLevel12oreDict.add("junkfiller");}
 
-		Property harvestLevel13oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel13oreDict", new String[] {"junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1"});
+		Property harvestLevel13oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel13oreDict", new String[] {});
 		harvestLevel13oreDictProperty.comment = "Ore Dictionary name (each on seperate line) to be set to harvest level 13";
 		for (String i : harvestLevel13oreDictProperty.getStringList()) harvestLevel13oreDict.add(i);
+		while (harvestLevel13oreDict.size() < 33){harvestLevel13oreDict.add("junkfiller");}
 
-		Property harvestLevel14oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel14oreDict", new String[] {"junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1"});
+		Property harvestLevel14oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel14oreDict", new String[] {});
 		harvestLevel14oreDictProperty.comment = "Ore Dictionary name (each on seperate line) to be set to harvest level 14";
 		for (String i : harvestLevel14oreDictProperty.getStringList()) harvestLevel14oreDict.add(i);
+		while (harvestLevel14oreDict.size() < 33){harvestLevel14oreDict.add("junkfiller");}
 
-		Property harvestLevel15oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel15oreDict", new String[] {"junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1", "junk1"});
+		Property harvestLevel15oreDictProperty = harvestconfig.get("harvestoredict", "harvestLevel15oreDict", new String[] {});
 		harvestLevel15oreDictProperty.comment = "Ore Dictionary name (each on seperate line) to be set to harvest level 15";
 		for (String i : harvestLevel15oreDictProperty.getStringList()) harvestLevel15oreDict.add(i);
+		while (harvestLevel15oreDict.size() < 33){harvestLevel15oreDict.add("junkfiller");}
 		
 
 		// harvest ids

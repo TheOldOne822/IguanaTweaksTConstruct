@@ -2,6 +2,7 @@ package iguanaman.iguanatweakstconstruct.modifiers;
 
 import iguanaman.iguanatweakstconstruct.IguanaConfig;
 import iguanaman.iguanatweakstconstruct.IguanaLevelingLogic;
+import iguanaman.iguanatweakstconstruct.IguanaLevelsConfig;
 import iguanaman.iguanatweakstconstruct.IguanaTweaksTConstruct;
 
 import java.util.ArrayList;
@@ -399,7 +400,7 @@ public class IguanaModUpgrade extends ToolMod {
 
 		if (IguanaConfig.showTooltipXP)
 		{
-			if (level <= 5)
+			if (level < IguanaLevelsConfig.maxlevel)
 			{
 				tips.add(IguanaLevelingLogic.getXpString(tool, false, false));
 				modifierTips.add("");

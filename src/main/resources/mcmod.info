@@ -7,7 +7,7 @@
   "mcversion": "${mcversion}",
   "url": "http://www.minecraftforum.net/topic/1953828",
   "updateUrl": "",
-  "authors": ["Iguana_man"],
+  "authors": ["Iguana_man", "TheOldOne"],
   "credits": "The Forge and FML guys, for making this example",
   "logoFile": "",
   "screenshots": [],

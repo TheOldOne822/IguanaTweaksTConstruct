@@ -1,4 +1,4 @@
-package iguanaman.iguanatweakstconstruct;
+package iguanaman.iguanatweakstconstruct.configs;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,9 +11,19 @@ import net.minecraftforge.common.ConfigCategory;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 
-public class IguanaLevelsConfig {
+public class LevelsConfig {
 
-
+	public static boolean moss;
+	public static boolean luck;
+	public static boolean haste;
+	public static boolean attack;
+	public static boolean beheading;
+	public static boolean fireaspect;
+	public static boolean lifesteal;
+	public static boolean smite;
+	public static boolean baneofarthropods;
+	public static boolean knockback;
+	
 	public static int maxlevel;
 
 	public static String level1name;
@@ -51,9 +61,24 @@ public class IguanaLevelsConfig {
 	public static void init()
 	{
 		File installDir = new File("config");
-		File configDir = new File(installDir, "TConstruct Tweaks");
+		File configDir = new File(installDir, "TiC Tweaks");
 		Configuration levelconfig = new Configuration(new File(configDir, "Level Config.cfg"));
 		levelconfig.load();
+
+		ConfigCategory bonusCategory = levelconfig.getCategory("levelbonus");
+		bonusCategory.setComment("Disable specific random modifiers.");
+		
+		moss = levelconfig.get("levelbonus", "moss-Auto Repair", true).getBoolean(true);
+		luck = levelconfig.get("levelbonus", "Lapis-luck", true).getBoolean(true);
+		haste = levelconfig.get("levelbonus", "Redstone-haste", true).getBoolean(true);
+		attack = levelconfig.get("levelbonus", "Quartz-attack", true).getBoolean(true);
+		beheading = levelconfig.get("levelbonus", "beheading", true).getBoolean(true);
+		fireaspect = levelconfig.get("levelbonus", "Blaze-fire aspect", true).getBoolean(true);
+		lifesteal = levelconfig.get("levelbonus", "Necrotic-life steal", true).getBoolean(true);
+		smite = levelconfig.get("levelbonus", "smite", true).getBoolean(true);
+		baneofarthropods = levelconfig.get("levelbonus", "Anti Spider-bane of arthropods", true).getBoolean(true);
+		knockback = levelconfig.get("levelbonus", "Piston-knockback", true).getBoolean(true);
+		
 
 		ConfigCategory countCategory = levelconfig.getCategory("levelcount");
 		countCategory.setComment("Setup level changes.");

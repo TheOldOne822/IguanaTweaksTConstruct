@@ -1,5 +1,7 @@
 package iguanaman.iguanatweakstconstruct;
 
+import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
+import iguanaman.iguanatweakstconstruct.configs.LevelsConfig;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaModAttack;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaModBlaze;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaModLapis;
@@ -70,17 +72,17 @@ public class IguanaLevelingLogic {
 	{
 		switch (level)
 		{
-		case 1: return "Skill Level: \u00a74" + IguanaLevelsConfig.level1name;
-		case 2: return "Skill Level: \u00a76" + IguanaLevelsConfig.level2name;
-		case 3: return "Skill Level: \u00a7e" + IguanaLevelsConfig.level3name;
-		case 4: return "Skill Level: \u00a72" + IguanaLevelsConfig.level4name;
-		case 5: return "Skill Level: \u00a73" + IguanaLevelsConfig.level5name;
-		case 6: return "Skill Level: \u00a7d" + IguanaLevelsConfig.level6name;
-		case 7: return "Skill Level: \u00a7d" + IguanaLevelsConfig.level7name;
-		case 8: return "Skill Level: \u00a7d" + IguanaLevelsConfig.level8name;
-		case 9: return "Skill Level: \u00a7d" + IguanaLevelsConfig.level9name;
-		case 10: return "Skill Level: \u00a7d" + IguanaLevelsConfig.level10name;
-		default: return "Skill Level: \u00a7d" + IguanaLevelsConfig.level10name;
+		case 1: return "Skill Level: \u00a74" + LevelsConfig.level1name;
+		case 2: return "Skill Level: \u00a76" + LevelsConfig.level2name;
+		case 3: return "Skill Level: \u00a7e" + LevelsConfig.level3name;
+		case 4: return "Skill Level: \u00a72" + LevelsConfig.level4name;
+		case 5: return "Skill Level: \u00a73" + LevelsConfig.level5name;
+		case 6: return "Skill Level: \u00a7d" + LevelsConfig.level6name;
+		case 7: return "Skill Level: \u00a7d" + LevelsConfig.level7name;
+		case 8: return "Skill Level: \u00a7d" + LevelsConfig.level8name;
+		case 9: return "Skill Level: \u00a7d" + LevelsConfig.level9name;
+		case 10: return "Skill Level: \u00a7d" + LevelsConfig.level10name;
+		default: return "Skill Level: \u00a7d" + LevelsConfig.level10name;
 		}
 	}
 
@@ -97,7 +99,7 @@ public class IguanaLevelingLogic {
 		boolean leveled = false;
 		boolean pickLeveled = false;
 
-		if (tags.hasKey("ToolEXP") && level >= 1 && level < IguanaLevelsConfig.maxlevel && toolXP >= 0)
+		if (tags.hasKey("ToolEXP") && level >= 1 && level < LevelsConfig.maxlevel && toolXP >= 0)
 		{
 			tags.setLong("ToolEXP", toolXP);
 
@@ -145,7 +147,7 @@ public class IguanaLevelingLogic {
 
 		if (IguanaConfig.showTooltipXP)
 		{
-			if (level < IguanaLevelsConfig.maxlevel)
+			if (level < LevelsConfig.maxlevel)
 			{
 				tips.add(getXpString(tool, false, false));
 				modifierTips.add("");
@@ -302,16 +304,16 @@ public class IguanaLevelingLogic {
 		{
 			switch (level)
 			{
-			case 2: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level1finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level1finisha); break;
-			case 3: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level2finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level2finisha); break;
-			case 4: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level3finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level3finisha); break;
-			case 5: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level4finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level4finisha); break;
-			case 6: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level5finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level5finisha); break;
-			case 7: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level6finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level6finisha); break;
-			case 8: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level7finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level7finisha); break;
-			case 9: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level8finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level8finisha); break;
-			case 10: player.addChatMessage("\u00a73" + IguanaLevelsConfig.level9finish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.level9finisha); break;
-			default: player.addChatMessage("\u00a73" + IguanaLevelsConfig.levelxfinish + stack.getDisplayName() + "\u00a73" + IguanaLevelsConfig.levelxfinisha); break;
+			case 2: player.addChatMessage("\u00a73" + LevelsConfig.level1finish + stack.getDisplayName() + "\u00a73" + LevelsConfig.level1finisha); break;
+			case 3: player.addChatMessage("\u00a73" + LevelsConfig.level2finish + stack.getDisplayName() + "\u00a73" + LevelsConfig.level2finisha); break;
+			case 4: player.addChatMessage("\u00a73" + LevelsConfig.level3finish + stack.getDisplayName() + "\u00a73" + LevelsConfig.level3finisha); break;
+			case 5: player.addChatMessage("\u00a73" + LevelsConfig.level4finish + stack.getDisplayName() + "\u00a73" + LevelsConfig.level4finisha); break;
+			case 6: player.addChatMessage("\u00a73" + LevelsConfig.level5finish + stack.getDisplayName() + "\u00a73" + LevelsConfig.level5finisha); break;
+			case 7: player.addChatMessage("\u00a73" + LevelsConfig.level6finish + stack.getDisplayName() + "\u00a73" + LevelsConfig.level6finisha); break;
+			case 8: player.addChatMessage("\u00a73" + LevelsConfig.level7finish + stack.getDisplayName() + "\u00a73" + LevelsConfig.level7finisha); break;
+			case 9: player.addChatMessage("\u00a73" + LevelsConfig.level8finish + stack.getDisplayName() + "\u00a73" + LevelsConfig.level8finisha); break;
+			case 10: player.addChatMessage("\u00a73" + LevelsConfig.level9finish + stack.getDisplayName() + "\u00a73" + LevelsConfig.level9finisha); break;
+			default: player.addChatMessage("\u00a73" + LevelsConfig.levelxfinish + stack.getDisplayName() + "\u00a73" + LevelsConfig.levelxfinisha); break;
 			}
 
 			if (!IguanaConfig.toolLevelingRandomBonuses || level % 2 == 0 && IguanaConfig.toolLevelingExtraModifiers)
@@ -356,13 +358,13 @@ public class IguanaLevelingLogic {
 		Item item = stack.getItem();
 
 		ItemStack[] nullItemStack = new ItemStack[] {};
-		if (rnd < 1)
+		if (rnd < 1 && LevelsConfig.moss)
 		{
 			mod = new ModInteger(nullItemStack, 4, "Moss", IguanaConfig.mossRepairSpeed, "\u00a72", "Auto-Repair");
 			if (!player.worldObj.isRemote)
 				player.addChatMessage("\u00a79It seems to have accumulated a patch of moss (+1 repair)");
 		}
-		else if (rnd < 2 && (!isTool && !(item instanceof Shortbow) || isTool && (item instanceof Pickaxe || item instanceof Hammer)))
+		else if (rnd < 2 && LevelsConfig.luck && (!isTool && !(item instanceof Shortbow) || isTool && (item instanceof Pickaxe || item instanceof Hammer)))
 		{
 			mod = new IguanaModLapis(nullItemStack, 10, new int[] {100});
 			if (((IguanaModLapis)mod).canModify(stack, nullItemStack)) {
@@ -370,7 +372,7 @@ public class IguanaLevelingLogic {
 					player.addChatMessage("\u00a79Perhaps holding on to it will bring you luck? (+100 luck)");
 			} else return false;
 		}
-		else if (rnd < 6 && (isTool || item instanceof Shortbow))
+		else if (rnd < 6 && LevelsConfig.haste && (isTool || item instanceof Shortbow))
 		{
 			mod = new IguanaModRedstone(nullItemStack, 2, 50);
 			if (((IguanaModRedstone)mod).canModify(stack, nullItemStack, true)) {
@@ -378,7 +380,7 @@ public class IguanaLevelingLogic {
 					player.addChatMessage("\u00a79You spin it around with a flourish (+1 haste)");
 			} else return false;
 		}
-		else if (rnd < 3 && !isTool && !(item instanceof Shortbow))
+		else if (rnd < 3 && LevelsConfig.attack && !isTool && !(item instanceof Shortbow))
 		{
 			mod = new IguanaModAttack("Quartz", nullItemStack, 11, 30);
 			if (((IguanaModAttack)mod).canModify(stack, nullItemStack, true)) {
@@ -386,13 +388,13 @@ public class IguanaLevelingLogic {
 					player.addChatMessage("\u00a79You take the time to sharpen the dull edges of the blade (+1 attack)");
 			} else return false;
 		}
-		else if (rnd < 4 && !isTool && !(item instanceof Shortbow))
+		else if (rnd < 4 && LevelsConfig.beheading && !isTool && !(item instanceof Shortbow))
 		{
 			mod = new ModInteger(nullItemStack, 13, "Beheading", 1, "\u00a7d", "Beheading");
 			if (!player.worldObj.isRemote)
 				player.addChatMessage("\u00a79You could take someones head off with that! (+1 beheading)");
 		}
-		else if (rnd < 5 && !isTool && !(item instanceof Shortbow))
+		else if (rnd < 5 && LevelsConfig.fireaspect && !isTool && !(item instanceof Shortbow))
 		{
 			mod = new IguanaModBlaze(nullItemStack, 7, new int[] {25});
 			if (((IguanaModBlaze)mod).canModify(stack, nullItemStack)) {
@@ -400,25 +402,25 @@ public class IguanaLevelingLogic {
 					player.addChatMessage("\u00a79It starts to feels more hot to the touch (+1 fire aspect)");
 			} else return false;
 		}
-		else if (rnd < 6 && !isTool && !(item instanceof Shortbow))
+		else if (rnd < 6 && LevelsConfig.lifesteal && !isTool && !(item instanceof Shortbow))
 		{
 			mod = new ModInteger(nullItemStack, 8, "Necrotic", 1, "\u00a78", "Life Steal");
 			if (!player.worldObj.isRemote)
 				player.addChatMessage("\u00a79It shudders with a strange energy (+1 life steal)");
 		}
-		else if (rnd < 7 && !isTool && !(item instanceof Shortbow))
+		else if (rnd < 7 && LevelsConfig.smite && !isTool && !(item instanceof Shortbow))
 		{
 			mod = new ModSmite("Smite", 14, nullItemStack, new int[] {36});
 			if (!player.worldObj.isRemote)
 				player.addChatMessage("\u00a79It begins to radiate a slight glow (+1 smite)");
 		}
-		else if (rnd < 8 && !isTool && !(item instanceof Shortbow))
+		else if (rnd < 8 && LevelsConfig.baneofarthropods && !isTool && !(item instanceof Shortbow))
 		{
 			mod = new ModAntiSpider("Anti-Spider", 15, nullItemStack, new int[] {4});
 			if (!player.worldObj.isRemote)
 				player.addChatMessage("\u00a79A strange odor emanates from the weapon (+1 bane of arthropods)");
 		}
-		else if (rnd < 9 && !isTool)
+		else if (rnd < 9 && LevelsConfig.knockback && !isTool)
 		{
 			mod = new IguanaModPiston(nullItemStack, 3, new int[] {10});
 			if (((IguanaModPiston)mod).canModify(stack, nullItemStack)) {

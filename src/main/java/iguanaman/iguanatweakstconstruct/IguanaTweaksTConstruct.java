@@ -2,6 +2,10 @@ package iguanaman.iguanatweakstconstruct;
 
 import iguanaman.iguanatweakstconstruct.commands.IguanaCommandLevelUpTool;
 import iguanaman.iguanatweakstconstruct.commands.IguanaCommandToolXP;
+import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
+import iguanaman.iguanatweakstconstruct.configs.HarvestLevelConfig;
+import iguanaman.iguanatweakstconstruct.configs.LevelsConfig;
+import iguanaman.iguanatweakstconstruct.configs.MaterialConfig;
 import iguanaman.iguanatweakstconstruct.util.IguanaEventHandler;
 
 import java.io.File;
@@ -25,7 +29,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
-@Mod(modid="IguanaTweaksTConstruct", name="Iguana Tweaks for Tinker's Construct", version="1.6.X-2(beta)",
+@Mod(modid="IguanaTweaksTConstruct", name="TiC Tweaks", version="1.6.X-1.0.0)",
 dependencies = "required-after:TConstruct;after:*")
 @NetworkMod(clientSideRequired=true, serverSideRequired=true)
 public class IguanaTweaksTConstruct {
@@ -48,11 +52,11 @@ public class IguanaTweaksTConstruct {
 		NetworkRegistry.instance().registerGuiHandler(instance, proxy);
 
 		File installDir = event.getModConfigurationDirectory();
-		File configDir = new File(installDir, "TConstruct Tweaks");
+		File configDir = new File(installDir, "TiC Tweaks");
 		IguanaConfig.init(new File(configDir, "Iguana Tweaks.cfg"));
-		IguanaMaterialConfig.init();
-		IguanaHarvestLevelConfig.init();
-		IguanaLevelsConfig.init();
+		MaterialConfig.init();
+		HarvestLevelConfig.init();
+		LevelsConfig.init();
 
 		toolParts = Arrays.asList (
 				TContent.toolRod, TContent.pickaxeHead, TContent.shovelHead, TContent.hatchetHead,
@@ -104,22 +108,22 @@ public class IguanaTweaksTConstruct {
 		if (IguanaConfig.pickaxeBoostRequired && num > 1) --num;
 		switch (num)
 		{
-		case 0: return "\u00a77" + IguanaHarvestLevelConfig.level0name;
-		case 1: return "\u00a76" + IguanaHarvestLevelConfig.level1name;
-		case 2: return "\u00a74" + IguanaHarvestLevelConfig.level2name;
-		case 3: return "\u00a7f" + IguanaHarvestLevelConfig.level3name;
-		case 4: return "\u00a7b" + IguanaHarvestLevelConfig.level4name;
-		case 5: return "\u00a7c" + IguanaHarvestLevelConfig.level5name;
-		case 6: return "\u00a79" + IguanaHarvestLevelConfig.level6name;
-		case 7: return "\u00a75" + IguanaHarvestLevelConfig.level7name;
-		case 8: return "\u00a75" + IguanaHarvestLevelConfig.level8name;
-		case 9: return "\u00a75" + IguanaHarvestLevelConfig.level9name;
-		case 10: return "\u00a75" + IguanaHarvestLevelConfig.level10name;
-		case 11: return "\u00a75" + IguanaHarvestLevelConfig.level11name;
-		case 12: return "\u00a75" + IguanaHarvestLevelConfig.level12name;
-		case 13: return "\u00a75" + IguanaHarvestLevelConfig.level13name;
-		case 14: return "\u00a75" + IguanaHarvestLevelConfig.level14name;
-		case 15: return "\u00a75" + IguanaHarvestLevelConfig.level15name;
+		case 0: return "\u00a77" + HarvestLevelConfig.level0name;
+		case 1: return "\u00a76" + HarvestLevelConfig.level1name;
+		case 2: return "\u00a74" + HarvestLevelConfig.level2name;
+		case 3: return "\u00a7f" + HarvestLevelConfig.level3name;
+		case 4: return "\u00a7b" + HarvestLevelConfig.level4name;
+		case 5: return "\u00a7c" + HarvestLevelConfig.level5name;
+		case 6: return "\u00a79" + HarvestLevelConfig.level6name;
+		case 7: return "\u00a75" + HarvestLevelConfig.level7name;
+		case 8: return "\u00a75" + HarvestLevelConfig.level8name;
+		case 9: return "\u00a75" + HarvestLevelConfig.level9name;
+		case 10: return "\u00a75" + HarvestLevelConfig.level10name;
+		case 11: return "\u00a75" + HarvestLevelConfig.level11name;
+		case 12: return "\u00a75" + HarvestLevelConfig.level12name;
+		case 13: return "\u00a75" + HarvestLevelConfig.level13name;
+		case 14: return "\u00a75" + HarvestLevelConfig.level14name;
+		case 15: return "\u00a75" + HarvestLevelConfig.level15name;
 		default: return "\u00a7k\u00a7k\u00a7k\u00a7k\u00a7k\u00a7k";
 		}
 	}

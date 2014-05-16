@@ -1,5 +1,6 @@
 package iguanaman.iguanatweakstconstruct;
 
+import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaActiveToolMod;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaModAttack;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaModClean;
@@ -79,12 +80,13 @@ public class ModifierTweaks {
 
 		ItemStack lapisItem = new ItemStack(Item.dyePowder, 1, 4);
 		ItemStack lapisBlock = new ItemStack(Block.blockLapis);
-		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisItem }, 10, new int[] {1}));
-		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisItem, lapisItem }, 10, new int[] {2}));
-		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisBlock }, 10, new int[] {9}));
-		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisItem, lapisBlock }, 10, new int[] {10}));
-		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisBlock, lapisBlock }, 10, new int[] {18}));
-		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisBlock, lapisBlock, lapisBlock }, 10, new int[] {27}));
+	    ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisBlock, lapisItem }, 10, new int[] { 9, 1 }));
+//		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisItem }, 10, new int[] {1}));
+//		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisItem, lapisItem }, 10, new int[] {2}));
+//		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisBlock }, 10, new int[] {9}));
+//		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisItem, lapisBlock }, 10, new int[] {10}));
+//		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisBlock, lapisBlock }, 10, new int[] {18}));
+//		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisBlock, lapisBlock, lapisBlock }, 10, new int[] {27}));
 
 		ItemStack quartzItem = new ItemStack(Item.netherQuartz);
 		ItemStack quartzBlock = new ItemStack(Block.blockNetherQuartz, 1, Short.MAX_VALUE);

@@ -1,7 +1,7 @@
 package iguanaman.iguanatweakstconstruct.items;
 
-import iguanaman.iguanatweakstconstruct.IguanaConfig;
 import iguanaman.iguanatweakstconstruct.IguanaTweaksTConstruct;
+import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
 
 import java.util.List;
 

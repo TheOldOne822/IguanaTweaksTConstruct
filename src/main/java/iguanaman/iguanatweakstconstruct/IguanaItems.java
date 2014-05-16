@@ -1,5 +1,6 @@
 package iguanaman.iguanatweakstconstruct;
 
+import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
 import iguanaman.iguanatweakstconstruct.items.ClayBucket;
 import iguanaman.iguanatweakstconstruct.items.ClayBucketFilled;
 import iguanaman.iguanatweakstconstruct.items.ClayBucketMilk;

@@ -1,9 +1,9 @@
 package iguanaman.iguanatweakstconstruct.modifiers;
 
-import iguanaman.iguanatweakstconstruct.IguanaConfig;
 import iguanaman.iguanatweakstconstruct.IguanaLevelingLogic;
-import iguanaman.iguanatweakstconstruct.IguanaLevelsConfig;
 import iguanaman.iguanatweakstconstruct.IguanaTweaksTConstruct;
+import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
+import iguanaman.iguanatweakstconstruct.configs.LevelsConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -400,7 +400,7 @@ public class IguanaModUpgrade extends ToolMod {
 
 		if (IguanaConfig.showTooltipXP)
 		{
-			if (level < IguanaLevelsConfig.maxlevel)
+			if (level < LevelsConfig.maxlevel)
 			{
 				tips.add(IguanaLevelingLogic.getXpString(tool, false, false));
 				modifierTips.add("");

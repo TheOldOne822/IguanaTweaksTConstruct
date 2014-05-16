@@ -1,5 +1,6 @@
 package iguanaman.iguanatweakstconstruct;
 
+import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ChestGenHooks;

@@ -1,4 +1,4 @@
-package iguanaman.iguanatweakstconstruct;
+package iguanaman.iguanatweakstconstruct.configs;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import net.minecraftforge.common.ConfigCategory;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 
-public class IguanaHarvestLevelConfig {
+public class HarvestLevelConfig {
 
 	// harvest relevel
 	public static String level0name;
@@ -82,7 +82,7 @@ public class IguanaHarvestLevelConfig {
 	public static void init()
 	{
 		File installDir = new File("config");
-		File configDir = new File(installDir, "TConstruct Tweaks");
+		File configDir = new File(installDir, "TiC Tweaks");
 		Configuration harvestconfig = new Configuration(new File(configDir, "Harvest Level Config.cfg"));
 		harvestconfig.load();
 

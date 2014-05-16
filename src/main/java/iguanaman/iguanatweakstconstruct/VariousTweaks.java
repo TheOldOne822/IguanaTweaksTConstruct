@@ -1,5 +1,6 @@
 package iguanaman.iguanatweakstconstruct;
 
+import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
 import iguanaman.iguanatweakstconstruct.util.IguanaPartBuildRecipe;
 import iguanaman.iguanatweakstconstruct.util.IguanaPartCraftingHandler;
 import iguanaman.iguanatweakstconstruct.util.IguanaPatternCraftingHandler;

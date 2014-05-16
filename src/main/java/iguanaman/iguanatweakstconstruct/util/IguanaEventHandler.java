@@ -1,9 +1,9 @@
 package iguanaman.iguanatweakstconstruct.util;
 
-import iguanaman.iguanatweakstconstruct.IguanaConfig;
 import iguanaman.iguanatweakstconstruct.IguanaItems;
 import iguanaman.iguanatweakstconstruct.IguanaLevelingLogic;
 import iguanaman.iguanatweakstconstruct.IguanaTweaksTConstruct;
+import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;

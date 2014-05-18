@@ -108,13 +108,21 @@ public class VariousTweaks {
 				TContent.tinkerHouseChest.removeItem(new ItemStack(part, 1, 8));
 				TContent.tinkerHouseChest.removeItem(new ItemStack(part, 1, 17));
 			}
+			if (IguanaConfig.removeIronParts)
 			TContent.tinkerHouseChest.removeItem(new ItemStack(part, 1, 2)); //iron
+			if (IguanaConfig.removeObsidianParts)
 			TContent.tinkerHouseChest.removeItem(new ItemStack(part, 1, 6)); //obsidian
+			if (IguanaConfig.removeCobaltParts)
 			TContent.tinkerHouseChest.removeItem(new ItemStack(part, 1, 10)); //cobalt
+			if (IguanaConfig.removeArditeParts)
 			TContent.tinkerHouseChest.removeItem(new ItemStack(part, 1, 11)); //ardite
+			if (IguanaConfig.removeManyullumParts)
 			TContent.tinkerHouseChest.removeItem(new ItemStack(part, 1, 12)); //manyullum
+			if (IguanaConfig.removeBronzeParts)
 			TContent.tinkerHouseChest.removeItem(new ItemStack(part, 1, 14)); //bronze
+			if (IguanaConfig.removeAlumiteParts)
 			TContent.tinkerHouseChest.removeItem(new ItemStack(part, 1, 15)); //alumite
+			if (IguanaConfig.removeSteelParts)
 			TContent.tinkerHouseChest.removeItem(new ItemStack(part, 1, 16)); //steel
 		}
 

@@ -45,6 +45,7 @@ public class HarvestLevelTweaks {
 
 	public static void init()
 	{
+		
 		// TOOLS
 		IguanaLog.log("Modifying harvest levels of tools");
 		ForgeHooks hooks = new ForgeHooks();
@@ -204,13 +205,13 @@ public class HarvestLevelTweaks {
 		IguanaLog.log("Modifying required harvest levels of vanilla blocks not in the Ore Dictionary");
 		MinecraftForge.setBlockHarvestLevel(Block.obsidian,     "pickaxe", (MinecraftForge.getBlockHarvestLevel(Block.oreDiamond, 0, "pickaxe") + 1));
 //		MinecraftForge.setBlockHarvestLevel(Block.oreDiamond, "pickaxe", harvestLevelBronze);
-//		MinecraftForge.setBlockHarvestLevel(Block.blockDiamond, "pickaxe", harvestLevelBronze);
-//		MinecraftForge.setBlockHarvestLevel(Block.blockGold,    "pickaxe", harvestLevelIron);
-//		MinecraftForge.setBlockHarvestLevel(Block.blockIron,   "pickaxe", harvestLevelCopper);
+		MinecraftForge.setBlockHarvestLevel(Block.blockDiamond, "pickaxe", MinecraftForge.getBlockHarvestLevel(Block.oreDiamond, 0, "pickaxe"));
+		MinecraftForge.setBlockHarvestLevel(Block.blockGold,    "pickaxe", MinecraftForge.getBlockHarvestLevel(Block.oreGold, 0, "pickaxe"));
+		MinecraftForge.setBlockHarvestLevel(Block.blockIron,   "pickaxe", MinecraftForge.getBlockHarvestLevel(Block.oreIron, 0, "pickaxe"));
 		MinecraftForge.setBlockHarvestLevel(Block.fenceIron,   "pickaxe", MinecraftForge.getBlockHarvestLevel(Block.oreIron, 0, "pickaxe"));
-		MinecraftForge.setBlockHarvestLevel(Block.blockLapis,   "pickaxe",  MinecraftForge.getBlockHarvestLevel(Block.oreGold, 0, "pickaxe"));
+		MinecraftForge.setBlockHarvestLevel(Block.blockLapis,   "pickaxe",  MinecraftForge.getBlockHarvestLevel(Block.oreLapis, 0, "pickaxe"));
 //		MinecraftForge.setBlockHarvestLevel(Block.oreRedstone, "pickaxe", harvestLevelBronze);
-//		MinecraftForge.setBlockHarvestLevel(Block.oreRedstoneGlowing, "pickaxe", harvestLevelBronze);
+		MinecraftForge.setBlockHarvestLevel(Block.oreRedstoneGlowing, "pickaxe", MinecraftForge.getBlockHarvestLevel(Block.oreRedstone, 0, "pickaxe"));
 
 		MinecraftForge.setBlockHarvestLevel(TContent.oreGravel, 0, "shovel", MinecraftForge.getBlockHarvestLevel(Block.oreIron, 0, "pickaxe"));
 		MinecraftForge.setBlockHarvestLevel(TContent.oreGravel, 1, "shovel", MinecraftForge.getBlockHarvestLevel(Block.oreGold, 0, "pickaxe"));

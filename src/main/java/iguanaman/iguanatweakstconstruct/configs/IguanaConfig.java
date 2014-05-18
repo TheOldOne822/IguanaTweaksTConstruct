@@ -29,6 +29,7 @@ public class IguanaConfig {
 	public static int xpRequiredToolsPercentage;
 	public static int xpRequiredWeaponsPercentage;
 	public static double xpPerLevelMultiplier;
+	public static boolean ticExtraModifier;
 
 	// pick boost
 	public static boolean pickaxeBoostRequired;
@@ -129,6 +130,7 @@ public class IguanaConfig {
 
 	//Restrictions
 	public static boolean allowStoneTools;
+	public static boolean keepRestrictedTools;
 	public static List<Integer> restrictedWoodParts = new ArrayList<Integer>();
 	public static List<Integer> restrictedStoneParts = new ArrayList<Integer>();
 	public static List<Integer> restrictedFlintParts = new ArrayList<Integer>();
@@ -137,6 +139,16 @@ public class IguanaConfig {
 	public static List<Integer> restrictedSlimeParts = new ArrayList<Integer>();
 	public static List<Integer> restrictedCactusParts = new ArrayList<Integer>();
 
+	//Remove parts from chest 
+	public static boolean removeIronParts;
+	public static boolean removeObsidianParts;
+	public static boolean removeCobaltParts;
+	public static boolean removeArditeParts;
+	public static boolean removeManyullumParts;
+	public static boolean removeBronzeParts;
+	public static boolean removeAlumiteParts;
+	public static boolean removeSteelParts;
+	
 	public static void init(File file)
 	{
 		Configuration config = new Configuration(file);
@@ -212,7 +224,12 @@ public class IguanaConfig {
 		xpPerLevelMultiplier = Math.max(xpPerLevelMultiplierProperty.getDouble(1.35d), 1d);
 		xpPerLevelMultiplierProperty.set(xpPerLevelMultiplier);
 
+		Property ticExtraModifierProperty = config.get("leveling", "ticExtraModifier", false);
+		ticExtraModifierProperty.comment = "Allow base TiC Extra Modifier Mods";
+		ticExtraModifier = ticExtraModifierProperty.getBoolean(false);
+		ticExtraModifierProperty.set(ticExtraModifier);
 
+		
 		// pick leveling
 		ConfigCategory pickboostingCategory = config.getCategory("pickboosting");
 		pickboostingCategory.setComment("Options to configure to pickaxe mining level boost and mechanics");
@@ -524,18 +541,22 @@ public class IguanaConfig {
 
 		//restrictions
 		ConfigCategory restrictionsCategory = config.getCategory("restrictions");
-		restrictionsCategory.setComment("See config section of mod thread for list of pattern ids");
+		restrictionsCategory.setComment("See config section of mod thread for list of pattern ids. Restrictions on wood tool rods (1) blocks all vanilla wood and stone tools");
 
 		Property allowStoneToolsProperty = config.get("restrictions", "allowStoneTools", false);
 		allowStoneToolsProperty.comment = "Allow certain stone tools to be built (if equivalent flint tool can also be made, the stone version is allowed)";
 		allowStoneTools = allowStoneToolsProperty.getBoolean(false);
 
+		Property keepRestrictedToolsProperty = config.get("restrictions", "allowAllTools", false);
+		keepRestrictedToolsProperty.comment = "Allow all vanilla tools to be built";
+		keepRestrictedTools = keepRestrictedToolsProperty.getBoolean(false);
+
 		Property restrictedWoodPartsProperty = config.get("restrictions", "restrictedWoodParts", new int[] {2,4,5,6,7,10,13,14,15,16,17,18,19,20,21,22,23,24});
-		restrictedWoodPartsProperty.comment = "Pattern ids to restrict for wood parts";
+		restrictedWoodPartsProperty.comment = "Pattern ids to restrict for wood parts. Restrictions on wood tool rods (1) will block vanilla wood and stone tools.";
 		for (int i : restrictedWoodPartsProperty.getIntList()) restrictedWoodParts.add(i);
 
 		Property restrictedStonePartsProperty = config.get("restrictions", "restrictedStoneParts", new int[] {});
-		restrictedStonePartsProperty.comment = "Pattern ids to restrict for stone parts";
+		restrictedStonePartsProperty.comment = "Pattern ids to restrict for stone parts.";
 		for (int i : restrictedStonePartsProperty.getIntList()) restrictedStoneParts.add(i);
 
 		Property restrictedFlintPartsProperty = config.get("restrictions", "restrictedFlintParts", new int[] {1,5,6,7,8,9,10,11,14,15,16,17,18,19,20,21,22,23,24});
@@ -558,6 +579,18 @@ public class IguanaConfig {
 		restrictedCactusPartsProperty.comment = "Pattern ids to restrict for cactus parts";
 		for (int i : restrictedCactusPartsProperty.getIntList()) restrictedCactusParts.add(i);
 
+		//Remove parts from chest 
+		ConfigCategory removeCategory = config.getCategory("chestremove");
+		removeCategory.setComment("Removes all parts of type from a chest");
+
+		removeIronParts = config.get("chestremove", "removeIronParts", true, "Remove iron parts from tinker house chest").getBoolean(true);
+		removeObsidianParts = config.get("chestremove", "removeObsidianParts", true, "Remove obsidian parts from tinker house chest").getBoolean(true);
+		removeCobaltParts = config.get("chestremove", "removeCobaltParts", true, "Remove cobalt parts from tinker house chest").getBoolean(true);
+		removeArditeParts = config.get("chestremove", "removeArditeParts", true, "Remove ardite parts from tinker house chest").getBoolean(true);
+		removeManyullumParts = config.get("chestremove", "removeManyullumParts", true, "Remove manyullum parts from tinker house chest").getBoolean(true);
+		removeBronzeParts = config.get("chestremove", "removeBronzeParts", true, "Remove bronze parts from tinker house chest").getBoolean(true);
+		removeAlumiteParts = config.get("chestremove", "removeAlumiteParts", true, "Remove alumite parts from tinker house chest").getBoolean(true);
+		removeSteelParts = config.get("chestremove", "removeSteelParts", true, "Remove steel parts from tinker house chest").getBoolean(true);
 /*
 		// harvest ids
 		ConfigCategory harvestidsCategory = config.getCategory("harvestids");

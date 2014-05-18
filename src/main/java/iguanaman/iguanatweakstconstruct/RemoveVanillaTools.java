@@ -12,6 +12,7 @@ public class RemoveVanillaTools {
 		//Remove vanilla tools
 		IguanaLog.log("Removing vanilla tool recipes");
 
+		if (!IguanaConfig.keepRestrictedTools){
 		//Wood
 		if (IguanaConfig.restrictedWoodParts.contains(1) || IguanaConfig.restrictedWoodParts.contains(2) || IguanaConfig.restrictedWoodParts.contains(9))
 			RemoveVanillaTool(Item.pickaxeWood);
@@ -27,18 +28,19 @@ public class RemoveVanillaTools {
 
 		//Stone
 		if (!IguanaConfig.allowStoneTools || IguanaConfig.restrictedWoodParts.contains(1)
-				|| IguanaConfig.restrictedFlintParts.contains(2) || IguanaConfig.restrictedWoodParts.contains(9))
+				|| (IguanaConfig.restrictedFlintParts.contains(2) && IguanaConfig.restrictedStoneParts.contains(2)) || (IguanaConfig.restrictedWoodParts.contains(9) && IguanaConfig.restrictedStoneParts.contains(9) && IguanaConfig.restrictedFlintParts.contains(9)))
 			RemoveVanillaTool(Item.pickaxeStone);
 
-		if (!IguanaConfig.allowStoneTools || IguanaConfig.restrictedWoodParts.contains(1) || IguanaConfig.restrictedFlintParts.contains(3))
+		if (!IguanaConfig.allowStoneTools || IguanaConfig.restrictedWoodParts.contains(1) || (IguanaConfig.restrictedFlintParts.contains(3) && IguanaConfig.restrictedStoneParts.contains(3)))
 			RemoveVanillaTool(Item.shovelStone);
 
-		if (!IguanaConfig.allowStoneTools || IguanaConfig.restrictedWoodParts.contains(1) || IguanaConfig.restrictedFlintParts.contains(4))
+		if (!IguanaConfig.allowStoneTools || IguanaConfig.restrictedWoodParts.contains(1) || (IguanaConfig.restrictedFlintParts.contains(4) && IguanaConfig.restrictedStoneParts.contains(4)))
 			RemoveVanillaTool(Item.axeStone);
 
-		if (!IguanaConfig.allowStoneTools || IguanaConfig.restrictedWoodParts.contains(1) || IguanaConfig.restrictedFlintParts.contains(5) || IguanaConfig.restrictedWoodParts.contains(6))
+		if (!IguanaConfig.allowStoneTools || IguanaConfig.restrictedWoodParts.contains(1) || (IguanaConfig.restrictedFlintParts.contains(5) && IguanaConfig.restrictedStoneParts.contains(5)) || (IguanaConfig.restrictedWoodParts.contains(6) && IguanaConfig.restrictedFlintParts.contains(6) && IguanaConfig.restrictedStoneParts.contains(6)))
 			RemoveVanillaTool(Item.swordStone);
-	}
+		}
+		}
 
 	public static void RemoveVanillaTool(Item item)
 	{

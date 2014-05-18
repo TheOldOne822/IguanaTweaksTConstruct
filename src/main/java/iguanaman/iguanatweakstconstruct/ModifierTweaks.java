@@ -38,8 +38,8 @@ public class ModifierTweaks {
 		while (i.hasNext()) {
 			ToolMod mod = i.next();
 			if (mod.key == "Emerald" || mod.key == "Diamond" ||
-					mod.key == "Tier1Free" && IguanaConfig.toolLeveling ||
-					mod.key == "Tier2Free" ||
+					mod.key == "Tier1Free" && IguanaConfig.toolLeveling && !IguanaConfig.ticExtraModifier ||
+					mod.key == "Tier2Free" && !IguanaConfig.ticExtraModifier ||
 					mod.key == "Moss" || mod.key == "Lapis" || mod.key == "ModAttack" || mod.key == "Redstone"
 					|| mod.key == "")
 				//IguanaLog.log("Removing old " + mod.key + " modifier");
@@ -73,9 +73,9 @@ public class ModifierTweaks {
 		ToolBuilder.registerToolMod(new ModDurability(new ItemStack[] { new ItemStack(Item.emerald) }, 1, 0, 0.5f, TConstructRegistry.getMaterial("Bronze").harvestLevel(), "Emerald", "\u00a72Durability +50%", "\u00a72"));
 		if (IguanaConfig.diamondPickaxeBoost)
 		{
-		ToolBuilder.registerToolMod(new ModDurability(new ItemStack[] { new ItemStack(Item.diamond) }, 0, 500, 0f, MinecraftForge.getBlockHarvestLevel(Block.obsidian, 0, "pickaxe"), "Diamond", "\u00a7bDurability +500", "\u00a7b"));
+			ToolBuilder.registerToolMod(new ModDurability(new ItemStack[] { new ItemStack(Item.diamond) }, 0, 500, 0f, MinecraftForge.getBlockHarvestLevel(Block.obsidian, 0, "pickaxe"), "Diamond", "\u00a7bDurability +500", "\u00a7b"));
 		} else {
-		ToolBuilder.registerToolMod(new ModDurability(new ItemStack[] { new ItemStack(Item.diamond) }, 0, 500, 0f, 0, "Diamond", "\u00a7bDurability +500", "\u00a7b"));
+			ToolBuilder.registerToolMod(new ModDurability(new ItemStack[] { new ItemStack(Item.diamond) }, 0, 500, 0f, 0, "Diamond", "\u00a7bDurability +500", "\u00a7b"));
 		}
 
 		ItemStack lapisItem = new ItemStack(Item.dyePowder, 1, 4);

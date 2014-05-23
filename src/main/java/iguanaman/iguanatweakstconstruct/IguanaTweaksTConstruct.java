@@ -29,7 +29,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
-@Mod(modid="IguanaTweaksTConstruct", name="TiC Tweaks", version="1.6.X-1.0.0beta3)",
+@Mod(modid="IguanaTweaksTConstruct", name="TiC Tweaks", version="1.6.X-1.0.0beta4)",
 dependencies = "required-after:TConstruct;after:*")
 @NetworkMod(clientSideRequired=true, serverSideRequired=true)
 public class IguanaTweaksTConstruct {

@@ -16,12 +16,21 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import tconstruct.items.tools.BattleSign;
+import tconstruct.items.tools.Battleaxe;
+import tconstruct.items.tools.Broadsword;
+import tconstruct.items.tools.Cleaver;
+import tconstruct.items.tools.Cutlass;
+import tconstruct.items.tools.Dagger;
 import tconstruct.items.tools.Excavator;
+import tconstruct.items.tools.FryingPan;
 import tconstruct.items.tools.Hammer;
 import tconstruct.items.tools.Hatchet;
+import tconstruct.items.tools.Longsword;
 import tconstruct.items.tools.LumberAxe;
 import tconstruct.items.tools.Mattock;
 import tconstruct.items.tools.Pickaxe;
+import tconstruct.items.tools.Rapier;
 import tconstruct.items.tools.Scythe;
 import tconstruct.items.tools.Shortbow;
 import tconstruct.items.tools.Shovel;
@@ -237,7 +246,16 @@ public class IguanaLevelingLogic {
 
 		if (tool.getItem() instanceof Weapon || tool.getItem() instanceof Shortbow)
 		{
-			if (tool.getItem() instanceof Scythe) base *= 1.5f;
+			if (tool.getItem() instanceof Scythe) base *= LevelsConfig.Scythe;
+			else if (tool.getItem() instanceof BattleSign) base *= LevelsConfig.BattleSign;
+			else if (tool.getItem() instanceof Shortbow) base *= LevelsConfig.Shortbow;
+			else if (tool.getItem() instanceof Broadsword) base *= LevelsConfig.Broadsword;
+			else if (tool.getItem() instanceof Cleaver) base *= LevelsConfig.Cleaver;
+			else if (tool.getItem() instanceof Cutlass) base *= LevelsConfig.Cutlass;
+			else if (tool.getItem() instanceof Dagger) base *= LevelsConfig.Dagger;
+			else if (tool.getItem() instanceof FryingPan) base *= LevelsConfig.FryingPan;
+			else if (tool.getItem() instanceof Longsword) base *= LevelsConfig.Longsword;
+			else if (tool.getItem() instanceof Rapier) base *= LevelsConfig.Rapier;
 			base *= IguanaConfig.xpRequiredWeaponsPercentage / 100f;
 		}
 		else
@@ -263,12 +281,14 @@ public class IguanaLevelingLogic {
 			base = 100f;
 			base += (float)miningSpeed / (float)divider / 2f;
 
-			if (tool.getItem() instanceof Hatchet) base /= 2f;
-			else if (tool.getItem() instanceof Shovel) base *= 2f;
-			else if (tool.getItem() instanceof Mattock) base *= 2.5f;
-			else if (tool.getItem() instanceof LumberAxe) base *= 3f;
-			else if (tool.getItem() instanceof Hammer) base *= 6f;
-			else if (tool.getItem() instanceof Excavator) base *= 9f;
+			if (tool.getItem() instanceof Hatchet) base *= LevelsConfig.Hatchet;
+			else if (tool.getItem() instanceof Shovel) base *= LevelsConfig.Shovel;
+			else if (tool.getItem() instanceof Mattock) base *= LevelsConfig.Mattock;
+			else if (tool.getItem() instanceof LumberAxe) base *= LevelsConfig.LumberAxe;
+			else if (tool.getItem() instanceof Battleaxe) base *= LevelsConfig.Battleaxe;
+			else if (tool.getItem() instanceof Pickaxe) base *= LevelsConfig.Pickaxe;
+			else if (tool.getItem() instanceof Hammer) base *= LevelsConfig.Hammer;
+			else if (tool.getItem() instanceof Excavator) base *= LevelsConfig.Excavator;
 
 			base *= IguanaConfig.xpRequiredToolsPercentage / 100f;
 		}

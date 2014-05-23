@@ -27,6 +27,26 @@ public class LevelsConfig {
 	public static int maxlevel;
 	public static int startingModifiers;
 
+	public static float BattleSign = 1f;
+	public static float Shortbow = 1f;
+	public static float Broadsword = 1f;
+	public static float Cleaver = 1f;
+	public static float Cutlass = 1f;
+	public static float Dagger = 1f;
+	public static float FryingPan = 1f;
+	public static float Longsword = 1f;
+	public static float Rapier = 1f;
+	public static float Scythe = 1.5f;
+
+	public static float Battleaxe = 1f;
+	public static float Excavator = 9f;
+	public static float Hammer = 6f;
+	public static float Hatchet = 0.5f;
+	public static float LumberAxe = 3f;
+	public static float Pickaxe = 1f;
+	public static float Mattock = 2.5f;
+	public static float Shovel = 2f;
+	
 	public static String level1name;
 	public static String level2name;
 	public static String level3name;
@@ -256,7 +276,104 @@ public class LevelsConfig {
 		levelxfinisha = levelxtextbProperty.getString();
 		levelxtextbProperty.set(levelxfinisha);
 
+		//Weapon XP Balance
+		ConfigCategory WeaponBalCategory = levelconfig.getCategory("WeaponXPBalance");
+		WeaponBalCategory.setComment("Reltive XP needed for each weapon type.");
+		
+		Property BattleSignProperty = levelconfig.get("WeaponXPBalance", "BattleSign", 1.0);
+		BattleSignProperty.comment = "XP requirement multiplyer for BattleSign";
+		BattleSign = (float) BattleSignProperty.getDouble(1);
+		BattleSignProperty.set(BattleSign);
 
+		Property ShortbowProperty = levelconfig.get("WeaponXPBalance", "Shortbow", 1.0);
+		ShortbowProperty.comment = "XP requirement multiplyer for Shortbow";
+		Shortbow = (float) ShortbowProperty.getDouble(1);
+		ShortbowProperty.set(Shortbow);
+
+		Property BroadswordProperty = levelconfig.get("WeaponXPBalance", "Broadsword", 1.0);
+		BroadswordProperty.comment = "XP requirement multiplyer for Broadsword";
+		Broadsword = (float) BroadswordProperty.getDouble(1);
+		BroadswordProperty.set(Broadsword);
+
+		Property CleaverProperty = levelconfig.get("WeaponXPBalance", "Cleaver", 1.0);
+		CleaverProperty.comment = "XP requirement multiplyer for Cleaver";
+		Cleaver = (float) CleaverProperty.getDouble(1);
+		CleaverProperty.set(Cleaver);
+
+		Property CutlassProperty = levelconfig.get("WeaponXPBalance", "Cutlass", 1.0);
+		CutlassProperty.comment = "XP requirement multiplyer for Cutlass";
+		Cutlass = (float) CutlassProperty.getDouble(1);
+		CutlassProperty.set(Cutlass);
+
+		Property FryingPanProperty = levelconfig.get("WeaponXPBalance", "FryingPan", 1.0);
+		FryingPanProperty.comment = "XP requirement multiplyer for FryingPan";
+		FryingPan = (float) FryingPanProperty.getDouble(1);
+		FryingPanProperty.set(FryingPan);
+
+		Property DaggerProperty = levelconfig.get("WeaponXPBalance", "Dagger", 1.0);
+		DaggerProperty.comment = "XP requirement multiplyer for Dagger";
+		Dagger = (float) DaggerProperty.getDouble(1);
+		DaggerProperty.set(Dagger);
+
+		Property LongswordProperty = levelconfig.get("WeaponXPBalance", "Longsword", 1.0);
+		LongswordProperty.comment = "XP requirement multiplyer for Longsword";
+		Longsword = (float) LongswordProperty.getDouble(1);
+		LongswordProperty.set(Longsword);
+
+		Property RapierProperty = levelconfig.get("WeaponXPBalance", "Rapier", 1.0);
+		RapierProperty.comment = "XP requirement multiplyer for Rapier";
+		Rapier = (float) RapierProperty.getDouble(1);
+		RapierProperty.set(Rapier);
+
+		Property ScytheProperty = levelconfig.get("WeaponXPBalance", "Scythe", 1.5);
+		ScytheProperty.comment = "XP requirement multiplyer for Scythe";
+		Scythe = (float) ScytheProperty.getDouble(1.5);
+		BattleSignProperty.set(Scythe);
+		
+		//Tool XP Balance
+		ConfigCategory ToolBalCategory = levelconfig.getCategory("ToolXPBalance");
+		ToolBalCategory.setComment("Reltive XP needed for each tool type.");
+		
+		Property BattleaxeProperty = levelconfig.get("ToolXPBalance", "Battleaxe", 1.0);
+		BattleaxeProperty.comment = "XP requirement multiplyer for Battleaxe (yes it is listed as a tool)";
+		Battleaxe = (float) BattleaxeProperty.getDouble(1);
+		BattleaxeProperty.set(Battleaxe);
+
+		Property ExcavatorProperty = levelconfig.get("ToolXPBalance", "Excavator", 9.0);
+		ExcavatorProperty.comment = "XP requirement multiplyer for Excavator";
+		Excavator = (float) ExcavatorProperty.getDouble(9);
+		ExcavatorProperty.set(Excavator);
+
+		Property HammerProperty = levelconfig.get("ToolXPBalance", "Hammer", 6.0);
+		HammerProperty.comment = "XP requirement multiplyer for Hammer";
+		Hammer = (float) HammerProperty.getDouble(6);
+		HammerProperty.set(Hammer);
+
+		Property HatchetProperty = levelconfig.get("ToolXPBalance", "Hatchet", 0.5);
+		HatchetProperty.comment = "XP requirement multiplyer for Hatchet";
+		Hatchet = (float) HatchetProperty.getDouble(0.5);
+		HatchetProperty.set(Hatchet);
+
+		Property LumberAxeProperty = levelconfig.get("ToolXPBalance", "LumberAxe", 3.0);
+		LumberAxeProperty.comment = "XP requirement multiplyer for LumberAxe";
+		LumberAxe = (float) LumberAxeProperty.getDouble(3);
+		LumberAxeProperty.set(LumberAxe);
+
+		Property PickaxeProperty = levelconfig.get("ToolXPBalance", "Pickaxe", 1.0);
+		PickaxeProperty.comment = "XP requirement multiplyer for Pickaxe";
+		Pickaxe = (float) PickaxeProperty.getDouble(1);
+		PickaxeProperty.set(Pickaxe);
+
+		Property MattockProperty = levelconfig.get("ToolXPBalance", "Mattock", 2.5);
+		MattockProperty.comment = "XP requirement multiplyer for Mattock";
+		Mattock = (float) MattockProperty.getDouble(2.5);
+		MattockProperty.set(Mattock);
+
+		Property ShovelProperty = levelconfig.get("ToolXPBalance", "Shovel", 2.0);
+		ShovelProperty.comment = "XP requirement multiplyer for Shovel";
+		Shovel = (float) ShovelProperty.getDouble(2);
+		ShovelProperty.set(Shovel);
+		
 		levelconfig.save();
 		
 	}

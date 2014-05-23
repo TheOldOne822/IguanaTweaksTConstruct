@@ -13,8 +13,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import tconstruct.common.BowRecipe;
 import tconstruct.common.TContent;
+import tconstruct.items.tools.Battleaxe;
+import tconstruct.items.tools.Cleaver;
 import tconstruct.items.tools.Hammer;
 import tconstruct.items.tools.Pickaxe;
+import tconstruct.items.tools.Scythe;
 import tconstruct.items.tools.Shortbow;
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.crafting.ToolBuilder;
@@ -105,39 +108,75 @@ public class IguanaModUpgrade extends ToolMod {
 				// Check for duplicates, same parts and count modifiers needed
 				if (toolRecipe.validHead(inputStack.getItem()))
 				{
-					if (replacing.contains("Head") || inputStack.getItemDamage() == oldHead) return false;
+					if (replacing.contains("Head") && (tool.getItem() instanceof Shortbow || tool.getItem() instanceof Battleaxe)){
+						if (replacing.contains("Accessory") || inputStack.getItemDamage() == oldAccessory) return false;
+						
+						String ability = TConstructRegistry.getMaterial(inputStack.getItemDamage()).ability;
+						boolean newAccessoryWritable = ability.equals("Writable") || ability.equals("Thaumic") ? true : false;
+						if (accessoryWritable && !newAccessoryWritable) modifiersNeeded += 1;
 
-					String ability = TConstructRegistry.getMaterial(inputStack.getItemDamage()).ability;
-					boolean newHeadWritable = ability.equals("Writable") || ability.equals("Thaumic") ? true : false;
-					if (headWritable && !newHeadWritable) modifiersNeeded += 1;
+						partIndex = IguanaTweaksTConstruct.toolParts.indexOf(toolItem.getAccessoryItem());
 
-					partIndex = IguanaTweaksTConstruct.toolParts.indexOf(toolItem.getHeadItem());
+						replacing.add("Accessory");
+					} else {
+						if (replacing.contains("Head") || (inputStack.getItemDamage() == oldHead  && !(tool.getItem() instanceof Shortbow || tool.getItem() instanceof Battleaxe))) return false;
 
-					replacing.add("Head");
+						String ability = TConstructRegistry.getMaterial(inputStack.getItemDamage()).ability;
+						boolean newHeadWritable = ability.equals("Writable") || ability.equals("Thaumic") ? true : false;
+						if (headWritable && !newHeadWritable) modifiersNeeded += 1;
+
+						partIndex = IguanaTweaksTConstruct.toolParts.indexOf(toolItem.getHeadItem());
+
+						replacing.add("Head");
+					}
 				}
 				else if (toolRecipe.validHandle(inputStack.getItem()))
 				{
-					if (replacing.contains("Handle") || inputStack.getItemDamage() == oldHandle) return false;
+					if (replacing.contains("Handle") && (tool.getItem() instanceof Scythe || tool.getItem() instanceof Cleaver)){
+						if (replacing.contains("Extra") || inputStack.getItemDamage() == oldExtra) return false;
 
-					String ability = TConstructRegistry.getMaterial(inputStack.getItemDamage()).ability;
-					boolean newHandleWritable = ability.equals("Writable") || ability.equals("Thaumic") ? true : false;
-					if (handleWritable && !newHandleWritable) modifiersNeeded += 1;
+						String ability = TConstructRegistry.getMaterial(inputStack.getItemDamage()).ability;
+						boolean newExtraWritable = ability.equals("Writable") || ability.equals("Thaumic") ? true : false;
+						if (extraWritable && !newExtraWritable) modifiersNeeded += 1;
 
-					partIndex = IguanaTweaksTConstruct.toolParts.indexOf(toolItem.getHandleItem());
+						partIndex = IguanaTweaksTConstruct.toolParts.indexOf(toolItem.getExtraItem());
 
-					replacing.add("Handle");
+						replacing.add("Extra");
+					} else {
+						if (replacing.contains("Handle") || (inputStack.getItemDamage() == oldHandle && !(tool.getItem() instanceof Scythe || tool.getItem() instanceof Cleaver))) return false;
+
+						String ability = TConstructRegistry.getMaterial(inputStack.getItemDamage()).ability;
+						boolean newHandleWritable = ability.equals("Writable") || ability.equals("Thaumic") ? true : false;
+						if (handleWritable && !newHandleWritable) modifiersNeeded += 1;
+
+						partIndex = IguanaTweaksTConstruct.toolParts.indexOf(toolItem.getHandleItem());
+
+						replacing.add("Handle");
+					}
 				}
 				else if (toolRecipe.validAccessory(inputStack.getItem()))
 				{
-					if (replacing.contains("Accessory") || inputStack.getItemDamage() == oldAccessory) return false;
+					if (replacing.contains("Accessory") && tool.getItem() instanceof Hammer){
+						if (replacing.contains("Extra") || inputStack.getItemDamage() == oldExtra) return false;
 
-					String ability = TConstructRegistry.getMaterial(inputStack.getItemDamage()).ability;
-					boolean newAccessoryWritable = ability.equals("Writable") || ability.equals("Thaumic") ? true : false;
-					if (accessoryWritable && !newAccessoryWritable) modifiersNeeded += 1;
+						String ability = TConstructRegistry.getMaterial(inputStack.getItemDamage()).ability;
+						boolean newExtraWritable = ability.equals("Writable") || ability.equals("Thaumic") ? true : false;
+						if (extraWritable && !newExtraWritable) modifiersNeeded += 1;
 
-					partIndex = IguanaTweaksTConstruct.toolParts.indexOf(toolItem.getAccessoryItem());
+						partIndex = IguanaTweaksTConstruct.toolParts.indexOf(toolItem.getExtraItem());
 
-					replacing.add("Accessory");
+						replacing.add("Extra");
+					} else {
+						if (replacing.contains("Accessory") || (inputStack.getItemDamage() == oldAccessory && !(tool.getItem() instanceof Hammer))) return false;
+
+						String ability = TConstructRegistry.getMaterial(inputStack.getItemDamage()).ability;
+						boolean newAccessoryWritable = ability.equals("Writable") || ability.equals("Thaumic") ? true : false;
+						if (accessoryWritable && !newAccessoryWritable) modifiersNeeded += 1;
+
+						partIndex = IguanaTweaksTConstruct.toolParts.indexOf(toolItem.getAccessoryItem());
+
+						replacing.add("Accessory");
+					}
 				}
 				else if (toolRecipe.validExtra(inputStack.getItem()))
 				{

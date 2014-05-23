@@ -4,6 +4,7 @@ import iguanaman.iguanatweakstconstruct.IguanaItems;
 import iguanaman.iguanatweakstconstruct.IguanaLevelingLogic;
 import iguanaman.iguanatweakstconstruct.IguanaTweaksTConstruct;
 import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
+import iguanaman.iguanatweakstconstruct.configs.LevelsConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -319,7 +320,7 @@ public class IguanaEventHandler {
 					toolTag.setLong("HeadEXP", 0);
 
 					int hLevel = toolTag.hasKey("HarvestLevel") ? hLevel = toolTag.getInteger("HarvestLevel") : -1;
-					if (hLevel >= TConstructRegistry.getMaterial("Copper").harvestLevel() && hLevel < TConstructRegistry.getMaterial("Manyullyn").harvestLevel())
+					if (hLevel > 1 && hLevel < 16)
 					{
 						if (IguanaConfig.showTooltipXP)
 						{
@@ -360,7 +361,7 @@ public class IguanaEventHandler {
 				}
 
 			if (IguanaConfig.toolLeveling && IguanaConfig.toolLevelingExtraModifiers)
-				toolTag.setInteger("Modifiers", Math.max(toolTag.getInteger("Modifiers") - 3, 0));
+				toolTag.setInteger("Modifiers", Math.max(toolTag.getInteger("Modifiers") - 3 + LevelsConfig.startingModifiers, LevelsConfig.startingModifiers));
 
 			if (event.tool == TContent.hammer || event.tool == TContent.excavator || event.tool == TContent.lumberaxe)
 			{
@@ -445,11 +446,11 @@ public class IguanaEventHandler {
 
 					if (IguanaConfig.showTooltipXP)
 					{
-						if (level <= 5)
+						if (level < LevelsConfig.maxlevel)
 							event.left.add(IguanaLevelingLogic.getXpString(equipped, true));
 
 						if (IguanaConfig.levelingPickaxeBoost)
-							if (hLevel >= TConstructRegistry.getMaterial("Copper").harvestLevel() && hLevel < TConstructRegistry.getMaterial("Manyullyn").harvestLevel()
+							if (hLevel > 1 && hLevel < 16
 							&& !tags.hasKey("HarvestLevelModified")
 							&& (equipped.getItem() instanceof Pickaxe || equipped.getItem() instanceof Hammer))
 								event.left.add(IguanaLevelingLogic.getXpString(equipped, true, true));

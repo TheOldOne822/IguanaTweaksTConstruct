@@ -961,7 +961,7 @@ public class MaterialConfig {
 		ConfigCategory copperCategory = minconfig.getCategory("copper");
 		copperCategory.setComment("Setup base stats of copper");
 
-		Property copperharvestLevelProperty = minconfig.get("copper", "copperHarvestLevel", 1);
+		Property copperharvestLevelProperty = minconfig.get("copper", "copperHarvestLevel", 2);
 		copperharvestLevelProperty.comment = "sets the harvest level of copper (Tic default 1)";
 		copperharvestLevel = copperharvestLevelProperty.getInt();
 		copperharvestLevelProperty.set(copperharvestLevel);

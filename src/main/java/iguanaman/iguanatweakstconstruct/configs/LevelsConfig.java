@@ -25,6 +25,7 @@ public class LevelsConfig {
 	public static boolean knockback;
 	
 	public static int maxlevel;
+	public static int startingModifiers;
 
 	public static String level1name;
 	public static String level2name;
@@ -80,16 +81,22 @@ public class LevelsConfig {
 		knockback = levelconfig.get("levelbonus", "Piston-knockback", true).getBoolean(true);
 		
 
-		ConfigCategory countCategory = levelconfig.getCategory("levelcount");
-		countCategory.setComment("Setup level changes.");
+		ConfigCategory countCategory = levelconfig.getCategory("levelchanges");
+		countCategory.setComment("Setup basic level changes.");
 
-		Property maxLevelProperty = levelconfig.get("levelcount", "MaxLevel", 6);
+		Property maxLevelProperty = levelconfig.get("levelchanges", "MaxLevel", 6);
 		maxLevelProperty.comment = "sets the MAX number of levels a tool can reach. must be 1 or higher.";
 		maxlevel = maxLevelProperty.getInt(6);
 		if (maxlevel < 1)
 			maxlevel = 1;
 		maxLevelProperty.set(maxlevel);
 
+		Property startingModifiersProperty = levelconfig.get("levelchanges", "startingModifiers", 0);
+		startingModifiersProperty.comment = "sets the number of modifiers slots a tool starts with.";
+		startingModifiers = startingModifiersProperty.getInt(0);
+		if (startingModifiers < 0)
+			startingModifiers = 0;
+		startingModifiersProperty.set(startingModifiers);
 
 		//level names
 		ConfigCategory nameCategory = levelconfig.getCategory("levelnames");

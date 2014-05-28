@@ -1,6 +1,7 @@
 package iguanaman.iguanatweakstconstruct;
 
 import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
+import iguanaman.iguanatweakstconstruct.configs.LevelsConfig;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaActiveToolMod;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaModAttack;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaModClean;
@@ -38,7 +39,7 @@ public class ModifierTweaks {
 		while (i.hasNext()) {
 			ToolMod mod = i.next();
 			if (mod.key == "Emerald" || mod.key == "Diamond" ||
-					mod.key == "Tier1Free" && IguanaConfig.toolLeveling && !IguanaConfig.ticExtraModifier ||
+					mod.key == "Tier1Free" && LevelsConfig.toolLeveling && !IguanaConfig.ticExtraModifier ||
 					mod.key == "Tier2Free" && !IguanaConfig.ticExtraModifier ||
 					mod.key == "Moss" || mod.key == "Lapis" || mod.key == "ModAttack" || mod.key == "Redstone"
 					|| mod.key == "")
@@ -67,8 +68,6 @@ public class ModifierTweaks {
 
 		if (IguanaConfig.partReplacement) ToolBuilder.registerToolMod(new IguanaModUpgrade());
 		ToolBuilder.registerToolMod(new IguanaModRepair());
-		if (!IguanaConfig.toolLevelingRandomBonuses)
-			ToolBuilder.registerToolMod(new ModExtraModifier(new ItemStack[] { new ItemStack(Item.skull, 1, 6), new ItemStack(Item.skull, 1, 7) }, "Tier2Free"));
 		ToolBuilder.registerToolMod(new ModInteger(new ItemStack[] { new ItemStack(TContent.materials, 1, 6) }, 4, "Moss", IguanaConfig.mossRepairSpeed, "\u00a72", "Auto-Repair"));
 		ToolBuilder.registerToolMod(new ModDurability(new ItemStack[] { new ItemStack(Item.emerald) }, 1, 0, 0.5f, TConstructRegistry.getMaterial("Bronze").harvestLevel(), "Emerald", "\u00a72Durability +50%", "\u00a72"));
 		if (IguanaConfig.diamondPickaxeBoost)
@@ -81,12 +80,6 @@ public class ModifierTweaks {
 		ItemStack lapisItem = new ItemStack(Item.dyePowder, 1, 4);
 		ItemStack lapisBlock = new ItemStack(Block.blockLapis);
 	    ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisBlock, lapisItem }, 10, new int[] { 9, 1 }));
-//		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisItem }, 10, new int[] {1}));
-//		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisItem, lapisItem }, 10, new int[] {2}));
-//		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisBlock }, 10, new int[] {9}));
-//		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisItem, lapisBlock }, 10, new int[] {10}));
-//		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisBlock, lapisBlock }, 10, new int[] {18}));
-//		ToolBuilder.registerToolMod(new IguanaModLapis(new ItemStack[] { lapisBlock, lapisBlock, lapisBlock }, 10, new int[] {27}));
 
 		ItemStack quartzItem = new ItemStack(Item.netherQuartz);
 		ItemStack quartzBlock = new ItemStack(Block.blockNetherQuartz, 1, Short.MAX_VALUE);
@@ -113,17 +106,19 @@ public class ModifierTweaks {
 			IguanaLog.log("Adding mob head modifiers");
 
 			// add modifers
-			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 0) }, 20, TConstructRegistry.getMaterial("Iron").harvestLevel(), "Skeleton Skull", "\u00a7fBoosted", "\u00a7f"));
-			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 2) }, 21, TConstructRegistry.getMaterial("Iron").harvestLevel(), "Zombie Head", "\u00a72Boosted", "\u00a72"));
-			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 4) }, 22, TConstructRegistry.getMaterial("Bronze").harvestLevel(), "Creeper Head", "\u00a7aBoosted", "\u00a7a"));
-			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 5) }, 23, TConstructRegistry.getMaterial("Obsidian").harvestLevel(), "Enderman Head", "\u00a78Boosted", "\u00a78"));
-			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 1) }, 24, TConstructRegistry.getMaterial("Ardite").harvestLevel(), "Wither Skeleton Skull", "\u00a78Boosted", "\u00a78"));
-			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.netherStar) }, 25, TConstructRegistry.getMaterial("Cobalt").harvestLevel(), "Nether Star", "\u00a73Boosted", "\u00a73"));
+			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 0) }, 20, 3/*TConstructRegistry.getMaterial("Iron").harvestLevel()*/, "Skeleton Skull", "\u00a7fBoosted", "\u00a7f"));
+			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 2) }, 21, 3/*TConstructRegistry.getMaterial("Iron").harvestLevel()*/, "Zombie Head", "\u00a72Boosted", "\u00a72"));
+			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 4) }, 22, 4/*TConstructRegistry.getMaterial("Bronze").harvestLevel()*/, "Creeper Head", "\u00a7aBoosted", "\u00a7a"));
+			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 5) }, 23, 5/*TConstructRegistry.getMaterial("Obsidian").harvestLevel()*/, "Enderman Head", "\u00a78Boosted", "\u00a78"));
+			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 1) }, 24, 6/*TConstructRegistry.getMaterial("Ardite").harvestLevel()*/, "Wither Skeleton Skull", "\u00a78Boosted", "\u00a78"));
+			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 6) }, 26, 5/*TConstructRegistry.getMaterial("Obsidian").harvestLevel()*/, "Zombie Pigman Skull", "\u00a78Boosted", "\u00a78"));
+			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 7) }, 27, 5/*TConstructRegistry.getMaterial("Obsidian").harvestLevel()*/, "Blaze Skull", "\u00a78Boosted", "\u00a78"));
+			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.netherStar) }, 25, 7/*TConstructRegistry.getMaterial("Cobalt").harvestLevel()*/, "Nether Star", "\u00a73Boosted", "\u00a73"));
 
 			// rendering code
 			ToolCore[] tools = new ToolCore[] { TContent.pickaxe, TContent.hammer };
-			int[] modifierIds = new int[] { 20, 21, 22, 23, 24, 25 };
-			String[] renderNames = new String[] { "skeletonskull", "zombiehead", "creeperhead", "endermanhead", "witherskeletonskull", "netherstar" };
+			int[] modifierIds = new int[] { 20, 21, 22, 23, 24, 25, 26, 27 };
+			String[] renderNames = new String[] { "skeletonskull", "zombiehead", "creeperhead", "endermanhead", "witherskeletonskull", "netherstar", "zombiepigmanhead", "blazehead" };
 
 			for (ToolCore tool : tools)
 				for (int index = 0; index < modifierIds.length; ++index)
@@ -132,7 +127,7 @@ public class ModifierTweaks {
 
 
 		// LEVELING MODIFIER
-		if (IguanaConfig.toolLeveling)
+		if (LevelsConfig.toolLeveling)
 		{
 			IguanaLog.log("Adding leveling active modifier");
 			TConstructRegistry.activeModifiers.add(0, new IguanaActiveToolMod());

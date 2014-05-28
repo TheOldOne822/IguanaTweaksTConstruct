@@ -69,8 +69,10 @@ public class IguanaItemSkull extends ItemSkull {
 			case 2: par3List.add("Use on: Copper pick"); break;
 			case 4: par3List.add("Use on: Copper or Iron pick"); break;
 			case 5: par3List.add("Use on: Copper, Iron or Bronze pick"); break;
+			case 6: par3List.add("Use on: Copper, Iron or Bronze pick"); break;
+			case 7: par3List.add("Use on: Copper, Iron or Bronze pick"); break;
 			}
-			if (meta != 3 && meta <= 5) par3List.add("\u00a76Pickaxe booster (+1 Mining Level)");
+			if (meta != 3 && meta <= 7) par3List.add("\u00a76Pickaxe booster (+1 Mining Level)");
 		}
 	}
 

@@ -437,7 +437,7 @@ public class IguanaModUpgrade extends ToolMod {
 		tips.add(IguanaLevelingLogic.getLevelTooltip(level));
 		modifierTips.add("");
 
-		if (IguanaConfig.showTooltipXP)
+		if (LevelsConfig.showTooltipXP)
 		{
 			if (level < LevelsConfig.maxlevel)
 			{

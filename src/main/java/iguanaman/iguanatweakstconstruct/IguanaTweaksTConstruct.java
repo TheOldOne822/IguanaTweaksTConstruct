@@ -93,7 +93,7 @@ public class IguanaTweaksTConstruct {
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event)
 	{
-		if (IguanaConfig.toolLeveling)
+		if (LevelsConfig.toolLeveling)
 		{
 			ICommandManager commandManager = FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager();
 			ServerCommandManager serverCommandManager = (ServerCommandManager) commandManager;

@@ -19,18 +19,6 @@ public class IguanaConfig {
 	public static int clayBucketUnfiredId;
 	public static int clayBucketsId;
 
-	// leveling
-	public static boolean detailedXpTooltip;
-	public static boolean toolLeveling;
-	public static boolean toolLevelingExtraModifiers;
-	public static boolean toolLevelingRandomBonuses;
-	public static boolean showTooltipXP;
-	public static boolean showDebugXP;
-	public static int xpRequiredToolsPercentage;
-	public static int xpRequiredWeaponsPercentage;
-	public static double xpPerLevelMultiplier;
-	public static boolean ticExtraModifier;
-
 	// pick boost
 	public static boolean pickaxeBoostRequired;
 	public static boolean mobHeadPickaxeBoost;
@@ -91,6 +79,7 @@ public class IguanaConfig {
 	public static boolean moreExpensiveSilkyJewel;
 	public static int mossRepairSpeed;
 	public static int redstoneEffect;
+	public static boolean ticExtraModifier;
 
 	//debug
 	public static boolean logHarvestLevelChanges;
@@ -180,56 +169,6 @@ public class IguanaConfig {
 		clayBucketMilkId = clayBucketMilkIdProperty.getInt(25715);
 
 
-
-		// leveling
-		ConfigCategory levelingCategory = config.getCategory("leveling");
-		levelingCategory.setComment("Setup the leveling system how you like it");
-
-		Property detailedXpTooltipProperty = config.get("leveling", "detailedXpTooltip", false);
-		detailedXpTooltipProperty.comment = "XP tooltip shows numbers, in addition to percentage";
-		detailedXpTooltip = detailedXpTooltipProperty.getBoolean(false);
-
-		Property toolLevelingProperty = config.get("leveling", "toolLeveling", true);
-		toolLevelingProperty.comment = "Can your skill with tools 'level up' as you use them?";
-		toolLeveling = toolLevelingProperty.getBoolean(true);
-
-		Property toolLevelingExtraModifiersProperty = config.get("leveling", "toolLevelingExtraModifiers", true);
-		toolLevelingExtraModifiersProperty.comment = "Removes modifiers on new tools and gives them through leveling (requires 'toolLeveling=true')";
-		toolLevelingExtraModifiers = toolLevelingExtraModifiersProperty.getBoolean(true);
-
-		Property toolLevelingRandomBonusesProperty = config.get("leveling", "toolLevelingRandomBonuses", true);
-		toolLevelingRandomBonusesProperty.comment = "Gives a random bonus every level, if false and levelling is on modifiers are given at levels 2 and 4 (requires 'toolLeveling=true')";
-		toolLevelingRandomBonuses = toolLevelingRandomBonusesProperty.getBoolean(true);
-
-		Property showTooltipXPProperty = config.get("leveling", "showTooltipXP", true);
-		showTooltipXPProperty.comment = "Current XP is shown when hovering over a tool (requires 'toolLeveling=true')";
-		showTooltipXP = showTooltipXPProperty.getBoolean(true);
-
-		Property showDebugXPProperty = config.get("leveling", "showDebugXP", false);
-		showDebugXPProperty.comment = "Current XP is shown as debug (F3) text (requires 'toolLeveling=true')";
-		showDebugXP = showDebugXPProperty.getBoolean(false);
-
-		Property xpRequiredToolsPercentageProperty = config.get("leveling", "xpRequiredToolsPercentage", 100);
-		xpRequiredToolsPercentageProperty.comment = "Change the XP required to level up tools (higher=more) (requires 'toolLeveling' to be true)";
-		xpRequiredToolsPercentage = Math.max(xpRequiredToolsPercentageProperty.getInt(100), 1);
-		xpRequiredToolsPercentageProperty.set(xpRequiredToolsPercentage);
-
-		Property xpRequiredWeaponsPercentageProperty = config.get("leveling", "xpRequiredWeaponsPercentage", 100);
-		xpRequiredWeaponsPercentageProperty.comment = "Change the XP required to level up weapons (higher=more) (requires 'toolLeveling' to be true)";
-		xpRequiredWeaponsPercentage = Math.max(xpRequiredWeaponsPercentageProperty.getInt(100), 1);
-		xpRequiredWeaponsPercentageProperty.set(xpRequiredWeaponsPercentage);
-
-		Property xpPerLevelMultiplierProperty = config.get("leveling", "xpPerLevelMultiplier", 1.35d);
-		xpPerLevelMultiplierProperty.comment = "Exponential multiplier on required XP per level";
-		xpPerLevelMultiplier = Math.max(xpPerLevelMultiplierProperty.getDouble(1.35d), 1d);
-		xpPerLevelMultiplierProperty.set(xpPerLevelMultiplier);
-
-		Property ticExtraModifierProperty = config.get("leveling", "ticExtraModifier", false);
-		ticExtraModifierProperty.comment = "Allow base TiC Extra Modifier Mods";
-		ticExtraModifier = ticExtraModifierProperty.getBoolean(false);
-		ticExtraModifierProperty.set(ticExtraModifier);
-
-		
 		// pick leveling
 		ConfigCategory pickboostingCategory = config.getCategory("pickboosting");
 		pickboostingCategory.setComment("Options to configure to pickaxe mining level boost and mechanics");
@@ -481,6 +420,11 @@ public class IguanaConfig {
 		redstoneEffectProperty.comment = "Amount each piece of redstone increases mining speed (tinkers default is 8)";
 		redstoneEffect = Math.max(redstoneEffectProperty.getInt(4), 1);
 		redstoneEffectProperty.set(redstoneEffect);
+
+		Property ticExtraModifierProperty = config.get("modifiers", "ticExtraModifier", false);
+		ticExtraModifierProperty.comment = "Allow base TiC Extra Modifier Mods";
+		ticExtraModifier = ticExtraModifierProperty.getBoolean(false);
+		ticExtraModifierProperty.set(ticExtraModifier);
 
 
 		// debug

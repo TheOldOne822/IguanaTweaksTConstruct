@@ -31,7 +31,7 @@ public class IguanaModHeads extends ToolMod {
 		NBTTagCompound tags = tool.getTagCompound().getCompoundTag("InfiTool");
 		if (tags.hasKey("MobHead")) return false;
 
-		if (tool.getItem() instanceof Pickaxe || tool.getItem() instanceof Hammer)
+		if (tool.getItem() instanceof Pickaxe/* || tool.getItem() instanceof Hammer*/)
 		{
 			if (tags.hasKey("HarvestLevelModified")) return false;
 			int mLevel = tags.getInteger("HarvestLevel");

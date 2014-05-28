@@ -13,6 +13,17 @@ import net.minecraftforge.common.Property;
 
 public class LevelsConfig {
 
+	// leveling
+	public static boolean detailedXpTooltip;
+	public static boolean toolLeveling;
+	public static boolean toolLevelingExtraModifiers;
+	public static boolean toolLevelingRandomBonuses;
+	public static boolean showTooltipXP;
+	public static boolean showDebugXP;
+	public static int xpRequiredToolsPercentage;
+	public static int xpRequiredWeaponsPercentage;
+	public static double xpPerLevelMultiplier;
+	
 	public static boolean moss;
 	public static boolean luck;
 	public static boolean haste;
@@ -85,6 +96,49 @@ public class LevelsConfig {
 		File configDir = new File(installDir, "TiC Tweaks");
 		Configuration levelconfig = new Configuration(new File(configDir, "Level Config.cfg"));
 		levelconfig.load();
+
+		// leveling
+		ConfigCategory levelingCategory = levelconfig.getCategory("baseleveling");
+		levelingCategory.setComment("Setup the leveling system how you like it");
+
+		Property detailedXpTooltipProperty = levelconfig.get("baseleveling", "detailedXpTooltip", false);
+		detailedXpTooltipProperty.comment = "XP tooltip shows numbers, in addition to percentage";
+		detailedXpTooltip = detailedXpTooltipProperty.getBoolean(false);
+
+		Property toolLevelingProperty = levelconfig.get("baseleveling", "toolLeveling", true);
+		toolLevelingProperty.comment = "Can your skill with tools 'level up' as you use them?";
+		toolLeveling = toolLevelingProperty.getBoolean(true);
+
+		Property toolLevelingExtraModifiersProperty = levelconfig.get("baseleveling", "toolLevelingExtraModifiers", true);
+		toolLevelingExtraModifiersProperty.comment = "Removes modifiers on new tools and gives them through leveling (requires 'toolLeveling=true')";
+		toolLevelingExtraModifiers = toolLevelingExtraModifiersProperty.getBoolean(true);
+
+		Property toolLevelingRandomBonusesProperty = levelconfig.get("baseleveling", "toolLevelingRandomBonuses", true);
+		toolLevelingRandomBonusesProperty.comment = "Gives a random bonus every level, if false and levelling is on modifiers are given at levels 2 and 4 (requires 'toolLeveling=true')";
+		toolLevelingRandomBonuses = toolLevelingRandomBonusesProperty.getBoolean(true);
+
+		Property showTooltipXPProperty = levelconfig.get("baseleveling", "showTooltipXP", true);
+		showTooltipXPProperty.comment = "Current XP is shown when hovering over a tool (requires 'toolLeveling=true')";
+		showTooltipXP = showTooltipXPProperty.getBoolean(true);
+
+		Property showDebugXPProperty = levelconfig.get("baseleveling", "showDebugXP", false);
+		showDebugXPProperty.comment = "Current XP is shown as debug (F3) text (requires 'toolLeveling=true')";
+		showDebugXP = showDebugXPProperty.getBoolean(false);
+
+		Property xpRequiredToolsPercentageProperty = levelconfig.get("baseleveling", "xpRequiredToolsPercentage", 100);
+		xpRequiredToolsPercentageProperty.comment = "Change the XP required to level up tools (higher=more) (requires 'toolLeveling' to be true)";
+		xpRequiredToolsPercentage = Math.max(xpRequiredToolsPercentageProperty.getInt(100), 1);
+		xpRequiredToolsPercentageProperty.set(xpRequiredToolsPercentage);
+
+		Property xpRequiredWeaponsPercentageProperty = levelconfig.get("baseleveling", "xpRequiredWeaponsPercentage", 100);
+		xpRequiredWeaponsPercentageProperty.comment = "Change the XP required to level up weapons (higher=more) (requires 'toolLeveling' to be true)";
+		xpRequiredWeaponsPercentage = Math.max(xpRequiredWeaponsPercentageProperty.getInt(100), 1);
+		xpRequiredWeaponsPercentageProperty.set(xpRequiredWeaponsPercentage);
+
+		Property xpPerLevelMultiplierProperty = levelconfig.get("baseleveling", "xpPerLevelMultiplier", 1.35d);
+		xpPerLevelMultiplierProperty.comment = "Exponential multiplier on required XP per level";
+		xpPerLevelMultiplier = Math.max(xpPerLevelMultiplierProperty.getDouble(1.35d), 1d);
+		xpPerLevelMultiplierProperty.set(xpPerLevelMultiplier);
 
 		ConfigCategory bonusCategory = levelconfig.getCategory("levelbonus");
 		bonusCategory.setComment("Disable specific random modifiers.");
@@ -277,7 +331,7 @@ public class LevelsConfig {
 		levelxtextbProperty.set(levelxfinisha);
 
 		//Weapon XP Balance
-		ConfigCategory WeaponBalCategory = levelconfig.getCategory("WeaponXPBalance");
+		ConfigCategory WeaponBalCategory = levelconfig.getCategory("weaponxpbalance");
 		WeaponBalCategory.setComment("Reltive XP needed for each weapon type.");
 		
 		Property BattleSignProperty = levelconfig.get("WeaponXPBalance", "BattleSign", 1.0);
@@ -331,7 +385,7 @@ public class LevelsConfig {
 		BattleSignProperty.set(Scythe);
 		
 		//Tool XP Balance
-		ConfigCategory ToolBalCategory = levelconfig.getCategory("ToolXPBalance");
+		ConfigCategory ToolBalCategory = levelconfig.getCategory("toolxpbalance");
 		ToolBalCategory.setComment("Reltive XP needed for each tool type.");
 		
 		Property BattleaxeProperty = levelconfig.get("ToolXPBalance", "Battleaxe", 1.0);

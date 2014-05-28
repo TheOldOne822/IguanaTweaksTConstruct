@@ -2,6 +2,7 @@ package iguanaman.iguanatweakstconstruct.modifiers;
 
 import iguanaman.iguanatweakstconstruct.IguanaLevelingLogic;
 import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
+import iguanaman.iguanatweakstconstruct.configs.LevelsConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -152,7 +153,7 @@ public class IguanaModRedstone extends ToolMod {
 		List<String> tips = new ArrayList<String>();
 		List<String> modifierTips = new ArrayList<String>();
 
-		if (IguanaConfig.showTooltipXP)
+		if (LevelsConfig.showTooltipXP)
 		{
 			int level = tags.getInteger("ToolLevel");
 			if (level <= 5)

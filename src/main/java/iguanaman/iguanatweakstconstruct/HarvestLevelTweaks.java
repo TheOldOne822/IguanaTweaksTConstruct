@@ -153,7 +153,7 @@ public class HarvestLevelTweaks {
 			int metadata = (Integer)tmp[1];
 			String toolClass = (String)tmp[2];
 
-			if (toolClass.equals("pickaxe"))
+			if (toolClass != null && toolClass.equals("pickaxe"))
 			{
 
 				int requiredHarvestLevel = entry.getValue();

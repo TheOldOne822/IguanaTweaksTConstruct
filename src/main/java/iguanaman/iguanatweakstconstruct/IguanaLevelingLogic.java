@@ -71,7 +71,7 @@ public class IguanaLevelingLogic {
 
 		String prefix = pick ? "Boost XP: " : "XP: ";
 
-		if (IguanaConfig.detailedXpTooltip)
+		if (LevelsConfig.detailedXpTooltip)
 			return prefix + Long.toString(currentXp) + " / " + Integer.toString(requiredXp) + " (" + xpPercentageString + ")";
 		else
 			return prefix + xpPercentageString;
@@ -154,7 +154,7 @@ public class IguanaLevelingLogic {
 		tips.add(getLevelTooltip(level));
 		modifierTips.add("");
 
-		if (IguanaConfig.showTooltipXP)
+		if (LevelsConfig.showTooltipXP)
 		{
 			if (level < LevelsConfig.maxlevel)
 			{
@@ -256,7 +256,7 @@ public class IguanaLevelingLogic {
 			else if (tool.getItem() instanceof FryingPan) base *= LevelsConfig.FryingPan;
 			else if (tool.getItem() instanceof Longsword) base *= LevelsConfig.Longsword;
 			else if (tool.getItem() instanceof Rapier) base *= LevelsConfig.Rapier;
-			base *= IguanaConfig.xpRequiredWeaponsPercentage / 100f;
+			base *= LevelsConfig.xpRequiredWeaponsPercentage / 100f;
 		}
 		else
 		{
@@ -290,19 +290,19 @@ public class IguanaLevelingLogic {
 			else if (tool.getItem() instanceof Hammer) base *= LevelsConfig.Hammer;
 			else if (tool.getItem() instanceof Excavator) base *= LevelsConfig.Excavator;
 
-			base *= IguanaConfig.xpRequiredToolsPercentage / 100f;
+			base *= LevelsConfig.xpRequiredToolsPercentage / 100f;
 		}
 
 		if (pick)
 		{
 			int harvestLevel = TConstructRegistry.getMaterial(tags.getInteger("Head")).harvestLevel();
-			if (harvestLevel >= 1) base *= Math.pow(IguanaConfig.xpPerLevelMultiplier, harvestLevel - 1);
+			if (harvestLevel >= 1) base *= Math.pow(LevelsConfig.xpPerLevelMultiplier, harvestLevel - 1);
 			base *= IguanaConfig.levelingPickaxeBoostXpPercentage / 100f;
 		}
 		else
 		{
 			int level = tags.getInteger("ToolLevel");
-			if (level >= 1) base *= Math.pow(IguanaConfig.xpPerLevelMultiplier, level - 1);
+			if (level >= 1) base *= Math.pow(LevelsConfig.xpPerLevelMultiplier, level - 1);
 		}
 
 		return Math.round(base);
@@ -336,15 +336,15 @@ public class IguanaLevelingLogic {
 			default: player.addChatMessage("\u00a73" + LevelsConfig.levelxfinish + stack.getDisplayName() + "\u00a73" + LevelsConfig.levelxfinisha); break;
 			}
 
-			if (!IguanaConfig.toolLevelingRandomBonuses || level % 2 == 0 && IguanaConfig.toolLevelingExtraModifiers)
+			if (!LevelsConfig.toolLevelingRandomBonuses || level % 2 == 0 && LevelsConfig.toolLevelingExtraModifiers)
 				player.addChatMessage("\u00a79You notice room for improvement (+1 modifier).");
 		}
 
 		int currentModifiers = tags.getInteger("Modifiers");
-		if (!IguanaConfig.toolLevelingRandomBonuses || level % 2 == 0 && IguanaConfig.toolLevelingExtraModifiers)
+		if (!LevelsConfig.toolLevelingRandomBonuses || level % 2 == 0 && LevelsConfig.toolLevelingExtraModifiers)
 			tags.setInteger("Modifiers", ++currentModifiers);
 
-		if (IguanaConfig.toolLevelingRandomBonuses)
+		if (LevelsConfig.toolLevelingRandomBonuses)
 		{
 			tags.setInteger("Modifiers", currentModifiers + 1);
 			for (int i = 1; i <= 10; ++i) if (tryModify(player, stack, world.rand.nextInt(10), isTool)) break;

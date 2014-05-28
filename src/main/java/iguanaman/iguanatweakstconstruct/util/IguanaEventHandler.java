@@ -237,7 +237,7 @@ public class IguanaEventHandler {
 		int accessory = toolTag.getInteger("Accessory");
 		int extra = toolTag.hasKey("Extra") ? toolTag.getInteger("Extra") : -1;
 
-		if (!IguanaConfig.allowStoneTools && (head == 1 || handle == 1 || event.tool != TContent.arrow && accessory == 1) || extra == 1)
+		if (!IguanaConfig.allowStoneTools && ((head == 1 || handle == 1 || event.tool != TContent.arrow && accessory == 1) || extra == 1))
 		{
 			event.setResult(Result.DENY);
 			return;
@@ -301,7 +301,7 @@ public class IguanaEventHandler {
 			}
 
 			// TOOL LEVELING DATA + TOOLTIP
-			if (IguanaConfig.toolLeveling)
+			if (LevelsConfig.toolLeveling)
 			{
 				tips.add(IguanaLevelingLogic.getLevelTooltip(1));
 				modifierTips.add("");
@@ -309,7 +309,7 @@ public class IguanaEventHandler {
 				toolTag.setInteger("ToolLevel", 1);
 
 				toolTag.setLong("ToolEXP", 0);
-				if (IguanaConfig.showTooltipXP)
+				if (LevelsConfig.showTooltipXP)
 				{
 					tips.add(IguanaLevelingLogic.getXpString(new ItemStack(event.tool), false, toolTag));
 					modifierTips.add("");
@@ -322,7 +322,7 @@ public class IguanaEventHandler {
 					int hLevel = toolTag.hasKey("HarvestLevel") ? hLevel = toolTag.getInteger("HarvestLevel") : -1;
 					if (hLevel > 1 && hLevel < 16)
 					{
-						if (IguanaConfig.showTooltipXP)
+						if (LevelsConfig.showTooltipXP)
 						{
 							tips.add(IguanaLevelingLogic.getXpString(new ItemStack(event.tool), false, toolTag, true));
 							modifierTips.add("");
@@ -360,7 +360,7 @@ public class IguanaEventHandler {
 						toolTag.setString("ModifierTip" + i, "");
 				}
 
-			if (IguanaConfig.toolLeveling && IguanaConfig.toolLevelingExtraModifiers)
+			if (LevelsConfig.toolLeveling && LevelsConfig.toolLevelingExtraModifiers)
 				toolTag.setInteger("Modifiers", Math.max(toolTag.getInteger("Modifiers") - 3 + LevelsConfig.startingModifiers, LevelsConfig.startingModifiers));
 
 			if (event.tool == TContent.hammer || event.tool == TContent.excavator || event.tool == TContent.lumberaxe)
@@ -428,7 +428,7 @@ public class IguanaEventHandler {
 	@SideOnly(Side.CLIENT)
 	@ForgeSubscribe
 	public void onRenderGameOverlay(RenderGameOverlayEvent.Text event) {
-		if (IguanaConfig.toolLeveling && IguanaConfig.showDebugXP)
+		if (LevelsConfig.toolLeveling && LevelsConfig.showDebugXP)
 		{
 			Minecraft mc = Minecraft.getMinecraft();
 			EntityPlayer player = mc.thePlayer;
@@ -444,7 +444,7 @@ public class IguanaEventHandler {
 
 					event.left.add("");
 
-					if (IguanaConfig.showTooltipXP)
+					if (LevelsConfig.showTooltipXP)
 					{
 						if (level < LevelsConfig.maxlevel)
 							event.left.add(IguanaLevelingLogic.getXpString(equipped, true));

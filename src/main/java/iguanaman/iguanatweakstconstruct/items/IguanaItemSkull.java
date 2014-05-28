@@ -1,6 +1,8 @@
 package iguanaman.iguanatweakstconstruct.items;
 
+import iguanaman.iguanatweakstconstruct.IguanaTweaksTConstruct;
 import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
+import iguanaman.iguanatweakstconstruct.configs.ModifierConfig;
 
 import java.util.List;
 
@@ -59,18 +61,18 @@ public class IguanaItemSkull extends ItemSkull {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
 	{
-		if (IguanaConfig.mobHeadPickaxeBoost)
+		if (ModifierConfig.mobHeadPickaxeBoost)
 		{
 			int meta = par1ItemStack.getItemDamage();
 			switch (meta)
 			{
-			case 0: par3List.add("Use on: Copper pick"); break;
-			case 1: par3List.add("Use on: Copper, Iron, Bronze or Alumite pick"); break;
-			case 2: par3List.add("Use on: Copper pick"); break;
-			case 4: par3List.add("Use on: Copper or Iron pick"); break;
-			case 5: par3List.add("Use on: Copper, Iron or Bronze pick"); break;
-			case 6: par3List.add("Use on: Copper, Iron or Bronze pick"); break;
-			case 7: par3List.add("Use on: Copper, Iron or Bronze pick"); break;
+			case 0: par3List.add("Use on pick upto " + IguanaTweaksTConstruct.getHarvestLevelName(ModifierConfig.skeletonboost - 1) + " level"); break;
+			case 1: par3List.add("Use on pick upto " + IguanaTweaksTConstruct.getHarvestLevelName(ModifierConfig.witherskeletonboost - 1) + " level"); break;
+			case 2: par3List.add("Use on pick upto " + IguanaTweaksTConstruct.getHarvestLevelName(ModifierConfig.zombieboost - 1) + " level"); break;
+			case 4: par3List.add("Use on pick upto " + IguanaTweaksTConstruct.getHarvestLevelName(ModifierConfig.creeperboost - 1) + " level"); break;
+			case 5: par3List.add("Use on pick upto " + IguanaTweaksTConstruct.getHarvestLevelName(ModifierConfig.endermanboost - 1) + " level"); break;
+			case 6: par3List.add("Use on pick upto " + IguanaTweaksTConstruct.getHarvestLevelName(ModifierConfig.zombiepigmanboost - 1) + " level"); break;
+			case 7: par3List.add("Use on pick upto " + IguanaTweaksTConstruct.getHarvestLevelName(ModifierConfig.blazeboost - 1) + " level"); break;
 			}
 			if (meta != 3 && meta <= 7) par3List.add("\u00a76Pickaxe booster (+1 Mining Level)");
 		}

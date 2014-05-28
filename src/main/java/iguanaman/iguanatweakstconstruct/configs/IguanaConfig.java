@@ -19,13 +19,6 @@ public class IguanaConfig {
 	public static int clayBucketUnfiredId;
 	public static int clayBucketsId;
 
-	// pick boost
-	public static boolean pickaxeBoostRequired;
-	public static boolean mobHeadPickaxeBoost;
-	public static boolean levelingPickaxeBoost;
-	public static int levelingPickaxeBoostXpPercentage;
-	public static boolean diamondPickaxeBoost;
-
 	// repairs
 	public static boolean repairCostScaling;
 	public static boolean repairLimitActive;
@@ -44,42 +37,6 @@ public class IguanaConfig {
 	public static boolean easyToolModification;
 	public static boolean easyToolCreation;
 
-	//patterns
-	/*
-    public static int patternCostToolRod;
-    public static int patternCostPickaxeHead;
-    public static int patternCostShovelHead;
-    public static int patternCostHatchetHead;
-    public static int patternCostSwordBlade;
-    public static int patternCostWideGuard;
-    public static int patternCostHandGuard;
-    public static int patternCostCrossbar;
-    public static int patternCostBinding;
-    public static int patternCostFrypanHead;
-    public static int patternCostSignHead;
-    public static int patternCostKnifeBlade;
-    public static int patternCostChiselHead;
-    public static int patternCostToughRod;
-    public static int patternCostToughBinding;
-    public static int patternCostHeavyPlate;
-    public static int patternCostBroadAxeHead;
-    public static int patternCostScytheBlade;
-    public static int patternCostExcavatorHead;
-    public static int patternCostLargeSwordBlade;
-    public static int patternCostHammerHead;
-    public static int patternCostFullGuard;
-    public static int patternCostBowstring;
-    public static int patternCostFletching;
-    public static int patternCostArrowHead;
-	 */
-
-	// modifiers
-	public static boolean addCleanModifier;
-	public static boolean moreExpensiveSilkyCloth;
-	public static boolean moreExpensiveSilkyJewel;
-	public static int mossRepairSpeed;
-	public static int redstoneEffect;
-	public static boolean ticExtraModifier;
 
 	//debug
 	public static boolean logHarvestLevelChanges;
@@ -96,24 +53,6 @@ public class IguanaConfig {
 	public static int durabilityPercentage;
 	public static int miningSpeedPercentage;
 
-/*	// Harvest Levels
-	public static List<String> harvestLevel0Ids = new ArrayList<String>();
-	public static List<String> harvestLevel1Ids = new ArrayList<String>();
-	public static List<String> harvestLevel2Ids = new ArrayList<String>();
-	public static List<String> harvestLevel3Ids = new ArrayList<String>();
-	public static List<String> harvestLevel4Ids = new ArrayList<String>();
-	public static List<String> harvestLevel5Ids = new ArrayList<String>();
-	public static List<String> harvestLevel6Ids = new ArrayList<String>();
-	public static List<String> harvestLevel7Ids = new ArrayList<String>();
-	public static List<String> harvestLevel8Ids = new ArrayList<String>();
-	public static List<String> harvestLevel9Ids = new ArrayList<String>();
-	public static List<String> harvestLevel10Ids = new ArrayList<String>();
-	public static List<String> harvestLevel11Ids = new ArrayList<String>();
-	public static List<String> harvestLevel12Ids = new ArrayList<String>();
-	public static List<String> harvestLevel13Ids = new ArrayList<String>();
-	public static List<String> harvestLevel14Ids = new ArrayList<String>();
-	public static List<String> harvestLevel15Ids = new ArrayList<String>();
-*/
 	// Pickaxe mining level overrides
 	public static HashMap<Integer, Integer> pickaxeOverrides = new HashMap<Integer, Integer>();
 
@@ -167,33 +106,6 @@ public class IguanaConfig {
 		Property clayBucketMilkIdProperty = config.getItem("clayBucketMilkId", 25715);
 		clayBucketMilkIdProperty.comment = "Item ID for the milk filled clay bucket";
 		clayBucketMilkId = clayBucketMilkIdProperty.getInt(25715);
-
-
-		// pick leveling
-		ConfigCategory pickboostingCategory = config.getCategory("pickboosting");
-		pickboostingCategory.setComment("Options to configure to pickaxe mining level boost and mechanics");
-
-		Property diamondPickaxeBoostProperty = config.get("pickboosting", "diamondPickaxeBoost", true);
-		diamondPickaxeBoostProperty.comment = "Diamond mod allows mining obsidian";
-		diamondPickaxeBoost = diamondPickaxeBoostProperty.getBoolean(true);
-
-		Property pickaxeBoostRequiredProperty = config.get("pickboosting", "pickaxeBoostRequired", true);
-		pickaxeBoostRequiredProperty.comment = "Pickaxes only mine upto their head material level and need a mob head modifier OR leveling boost to advance";
-		pickaxeBoostRequired = pickaxeBoostRequiredProperty.getBoolean(true);
-
-		Property mobHeadPickaxeBoostProperty = config.get("pickboosting", "mobHeadPickaxeBoost", true);
-		mobHeadPickaxeBoostProperty.comment = "Mob heads can be used to boost a pickaxe's mining level";
-		mobHeadPickaxeBoost = mobHeadPickaxeBoostProperty.getBoolean(true);
-
-		Property levelingPickaxeBoostProperty = config.get("pickboosting", "levelingPickaxeBoost", true);
-		levelingPickaxeBoostProperty.comment = "A pickaxes mining level can be boosted through gaining XP";
-		levelingPickaxeBoost = levelingPickaxeBoostProperty.getBoolean(true);
-
-		Property levelingPickaxeBoostXpPercentageProperty = config.get("pickboosting", "levelingPickaxeBoostXpPercentage", 100);
-		levelingPickaxeBoostXpPercentageProperty.comment = "Change the percentage of XP required to boost a pick (i.e. 200 means 2x normal boost xp required)";
-		levelingPickaxeBoostXpPercentage = Math.max(levelingPickaxeBoostXpPercentageProperty.getInt(100), 1);
-		levelingPickaxeBoostXpPercentageProperty.set(levelingPickaxeBoostXpPercentage);
-
 
 		// repairs
 		ConfigCategory repairsCategory = config.getCategory("repairs");
@@ -261,170 +173,6 @@ public class IguanaConfig {
 		Property easyToolModificationProperty = config.get("crafting", "easyToolModification", true);
 		easyToolModificationProperty.comment = "Allows you add modifications to tools in a normal crafting window";
 		easyToolModification = easyToolModificationProperty.getBoolean(true);
-
-
-		// patterns
-		/*
-		ConfigCategory patternsCategory = config.getCategory("patterns");
-		patternsCategory.setComment("Set the material cost (in half ingots) required for each pattern type");
-
-        Property patternCostToolRodProperty = config.get("patterns", "patternCostToolRod", 1);
-        patternCostToolRodProperty.comment = "TCon default is 1";
-        patternCostToolRod = Math.max(patternCostToolRodProperty.getInt(1), 1);
-        patternCostToolRodProperty.set(patternCostToolRod);
-
-        Property patternCostPickaxeHeadProperty = config.get("patterns", "patternCostPickaxeHead", 6);
-        patternCostPickaxeHeadProperty.comment = "TCon default is 2";
-        patternCostPickaxeHead = Math.max(patternCostPickaxeHeadProperty.getInt(6), 1);
-        patternCostPickaxeHeadProperty.set(patternCostPickaxeHead);
-
-        Property patternCostShovelHeadProperty = config.get("patterns", "patternCostShovelHead", 2);
-        patternCostShovelHeadProperty.comment = "TCon default is 2";
-        patternCostShovelHead = Math.max(patternCostShovelHeadProperty.getInt(2), 1);
-        patternCostShovelHeadProperty.set(patternCostShovelHead);
-
-        Property patternCostHatchetHeadProperty = config.get("patterns", "patternCostHatchetHead", 4);
-        patternCostHatchetHeadProperty.comment = "TCon default is 2";
-        patternCostHatchetHead = Math.max(patternCostHatchetHeadProperty.getInt(4), 1);
-        patternCostHatchetHeadProperty.set(patternCostHatchetHead);
-
-        Property patternCostSwordBladeProperty = config.get("patterns", "patternCostSwordBlade", 4);
-        patternCostSwordBladeProperty.comment = "TCon default is 2";
-        patternCostSwordBlade = Math.max(patternCostSwordBladeProperty.getInt(4), 1);
-        patternCostSwordBladeProperty.set(patternCostSwordBlade);
-
-        Property patternCostWideGuardProperty = config.get("patterns", "patternCostWideGuard", 1);
-        patternCostWideGuardProperty.comment = "TCon default is 1";
-        patternCostWideGuard = Math.max(patternCostWideGuardProperty.getInt(1), 1);
-        patternCostWideGuardProperty.set(patternCostWideGuard);
-
-        Property patternCostHandGuardProperty = config.get("patterns", "patternCostHandGuard", 1);
-        patternCostHandGuardProperty.comment = "TCon default is 1";
-        patternCostHandGuard = Math.max(patternCostHandGuardProperty.getInt(1), 1);
-        patternCostHandGuardProperty.set(patternCostHandGuard);
-
-        Property patternCostCrossbarProperty = config.get("patterns", "patternCostCrossbar", 1);
-        patternCostCrossbarProperty.comment = "TCon default is 1";
-        patternCostCrossbar = Math.max(patternCostCrossbarProperty.getInt(1), 1);
-        patternCostCrossbarProperty.set(patternCostCrossbar);
-
-        Property patternCostBindingProperty = config.get("patterns", "patternCostBinding", 1);
-        patternCostBindingProperty.comment = "TCon default is 1";
-        patternCostBinding = Math.max(patternCostBindingProperty.getInt(1), 1);
-        patternCostBindingProperty.set(patternCostBinding);
-
-        Property patternCostFrypanHeadProperty = config.get("patterns", "patternCostFrypanHead", 6);
-        patternCostFrypanHeadProperty.comment = "TCon default is 2";
-        patternCostFrypanHead = Math.max(patternCostFrypanHeadProperty.getInt(6), 1);
-        patternCostFrypanHeadProperty.set(patternCostFrypanHead);
-
-        Property patternCostSignHeadProperty = config.get("patterns", "patternCostSignHead", 6);
-        patternCostSignHeadProperty.comment = "TCon default is 2";
-        patternCostSignHead = Math.max(patternCostSignHeadProperty.getInt(6), 1);
-        patternCostSignHeadProperty.set(patternCostSignHead);
-
-        Property patternCostKnifeBladeProperty = config.get("patterns", "patternCostKnifeBlade", 1);
-        patternCostKnifeBladeProperty.comment = "TCon default is 1";
-        patternCostKnifeBlade = Math.max(patternCostKnifeBladeProperty.getInt(1), 1);
-        patternCostKnifeBladeProperty.set(patternCostKnifeBlade);
-
-        Property patternCostChiselHeadProperty = config.get("patterns", "patternCostChiselHead", 1);
-        patternCostChiselHeadProperty.comment = "TCon default is 1";
-        patternCostChiselHead = Math.max(patternCostChiselHeadProperty.getInt(1), 1);
-        patternCostChiselHeadProperty.set(patternCostChiselHead);
-
-        Property patternCostToughRodProperty = config.get("patterns", "patternCostToughRod", 6);
-        patternCostToughRodProperty.comment = "TCon default is 6";
-        patternCostToughRod = Math.max(patternCostToughRodProperty.getInt(6), 1);
-        patternCostToughRodProperty.set(patternCostToughRod);
-
-        Property patternCostToughBindingProperty = config.get("patterns", "patternCostToughBinding", 6);
-        patternCostToughBindingProperty.comment = "TCon default is 6";
-        patternCostToughBinding = Math.max(patternCostToughBindingProperty.getInt(6), 1);
-        patternCostToughBindingProperty.set(patternCostToughBinding);
-
-        Property patternCostHeavyPlateProperty = config.get("patterns", "patternCostHeavyPlate", 16);
-        patternCostHeavyPlateProperty.comment = "TCon default is 16";
-        patternCostHeavyPlate = Math.max(patternCostHeavyPlateProperty.getInt(16), 1);
-        patternCostHeavyPlateProperty.set(patternCostHeavyPlate);
-
-        Property patternCostBroadAxeHeadProperty = config.get("patterns", "patternCostBroadAxeHead", 16);
-        patternCostBroadAxeHeadProperty.comment = "TCon default is 16";
-        patternCostBroadAxeHead = Math.max(patternCostBroadAxeHeadProperty.getInt(16), 1);
-        patternCostBroadAxeHeadProperty.set(patternCostBroadAxeHead);
-
-        Property patternCostScytheBladeProperty = config.get("patterns", "patternCostScytheBlade", 16);
-        patternCostScytheBladeProperty.comment = "TCon default is 16";
-        patternCostScytheBlade = Math.max(patternCostScytheBladeProperty.getInt(16), 1);
-        patternCostScytheBladeProperty.set(patternCostScytheBlade);
-
-        Property patternCostExcavatorHeadProperty = config.get("patterns", "patternCostExcavatorHead", 16);
-        patternCostExcavatorHeadProperty.comment = "TCon default is 16";
-        patternCostExcavatorHead = Math.max(patternCostExcavatorHeadProperty.getInt(16), 1);
-        patternCostExcavatorHeadProperty.set(patternCostExcavatorHead);
-
-        Property patternCostLargeSwordBladeProperty = config.get("patterns", "patternCostLargeSwordBlade", 16);
-        patternCostLargeSwordBladeProperty.comment = "TCon default is 16";
-        patternCostLargeSwordBlade = Math.max(patternCostLargeSwordBladeProperty.getInt(16), 1);
-        patternCostLargeSwordBladeProperty.set(patternCostLargeSwordBlade);
-
-        Property patternCostHammerHeadProperty = config.get("patterns", "patternCostHammerHead", 16);
-        patternCostHammerHeadProperty.comment = "TCon default is 16";
-        patternCostHammerHead = Math.max(patternCostHammerHeadProperty.getInt(16), 1);
-        patternCostHammerHeadProperty.set(patternCostHammerHead);
-
-        Property patternCostFullGuardProperty = config.get("patterns", "patternCostFullGuard", 6);
-        patternCostFullGuardProperty.comment = "TCon default is 6";
-        patternCostFullGuard = Math.max(patternCostFullGuardProperty.getInt(6), 1);
-        patternCostFullGuardProperty.set(patternCostFullGuard);
-
-        Property patternCostBowstringProperty = config.get("patterns", "patternCostBowstring", 6);
-        patternCostBowstringProperty.comment = "TCon default is 6";
-        patternCostBowstring = Math.max(patternCostBowstringProperty.getInt(6), 1);
-        patternCostBowstringProperty.set(patternCostBowstring);
-
-        Property patternCostFletchingProperty = config.get("patterns", "patternCostFletching", 2);
-        patternCostFletchingProperty.comment = "TCon default is 2";
-        patternCostFletching = Math.max(patternCostFletchingProperty.getInt(2), 1);
-        patternCostFletchingProperty.set(patternCostFletching);
-
-        Property patternCostArrowHeadProperty = config.get("patterns", "patternCostArrowHead", 2);
-        patternCostArrowHeadProperty.comment = "TCon default is 2";
-        patternCostArrowHead = Math.max(patternCostArrowHeadProperty.getInt(2), 1);
-        patternCostArrowHeadProperty.set(patternCostArrowHead);
-		 */
-
-
-		// modifiers
-		ConfigCategory modifiersCategory = config.getCategory("modifiers");
-		modifiersCategory.setComment("Options relating to tool modifiers");
-
-		Property addCleanModifierProperty = config.get("modifiers", "addCleanModifier", true);
-		addCleanModifierProperty.comment = "Silky Cloth can be used to remove all modifiers from a tool (currently safe but not working)";
-		addCleanModifier = addCleanModifierProperty.getBoolean(true);
-
-		Property moreExpensiveSilkyClothProperty = config.get("modifiers", "moreExpensiveSilkyCloth", true);
-		moreExpensiveSilkyClothProperty.comment = "Silky Cloth needs gold ingots, instead of nuggets";
-		moreExpensiveSilkyCloth = moreExpensiveSilkyClothProperty.getBoolean(true);
-
-		Property moreExpensiveSilkyJewelProperty = config.get("modifiers", "moreExpensiveSilkyJewel", true);
-		moreExpensiveSilkyJewelProperty.comment = "Silky Jewel needs emerald block, instead of one emerald";
-		moreExpensiveSilkyJewel = moreExpensiveSilkyJewelProperty.getBoolean(true);
-
-		Property mossRepairSpeedProperty = config.get("modifiers", "mossRepairSpeed", 3);
-		mossRepairSpeedProperty.comment = "Rate tools with moss repair (TC default 3)";
-		mossRepairSpeed = Math.max(mossRepairSpeedProperty.getInt(3), 0);
-		mossRepairSpeedProperty.set(mossRepairSpeed);
-
-		Property redstoneEffectProperty = config.get("modifiers", "redstoneEffect", 4);
-		redstoneEffectProperty.comment = "Amount each piece of redstone increases mining speed (tinkers default is 8)";
-		redstoneEffect = Math.max(redstoneEffectProperty.getInt(4), 1);
-		redstoneEffectProperty.set(redstoneEffect);
-
-		Property ticExtraModifierProperty = config.get("modifiers", "ticExtraModifier", false);
-		ticExtraModifierProperty.comment = "Allow base TiC Extra Modifier Mods";
-		ticExtraModifier = ticExtraModifierProperty.getBoolean(false);
-		ticExtraModifierProperty.set(ticExtraModifier);
 
 
 		// debug
@@ -535,75 +283,7 @@ public class IguanaConfig {
 		removeBronzeParts = config.get("chestremove", "removeBronzeParts", true, "Remove bronze parts from tinker house chest").getBoolean(true);
 		removeAlumiteParts = config.get("chestremove", "removeAlumiteParts", true, "Remove alumite parts from tinker house chest").getBoolean(true);
 		removeSteelParts = config.get("chestremove", "removeSteelParts", true, "Remove steel parts from tinker house chest").getBoolean(true);
-/*
-		// harvest ids
-		ConfigCategory harvestidsCategory = config.getCategory("harvestids");
-		harvestidsCategory.setComment("Set harvest levels of blocks here (most should be modified by default, so check if needed first)");
 
-		Property harvestLevel0IdsProperty = config.get("harvestids", "harvestLevel0Ids", new String[] {});
-		harvestLevel0IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 0 (stone pick+)";
-		for (String i : harvestLevel0IdsProperty.getStringList()) harvestLevel0Ids.add(i);
-
-		Property harvestLevel1IdsProperty = config.get("harvestids", "harvestLevel1Ids", new String[] {});
-		harvestLevel1IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 1 (flint pick+)";
-		for (String i : harvestLevel1IdsProperty.getStringList()) harvestLevel1Ids.add(i);
-
-		Property harvestLevel2IdsProperty = config.get("harvestids", "harvestLevel2Ids", new String[] {});
-		harvestLevel2IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 2 (copper pick+)";
-		for (String i : harvestLevel2IdsProperty.getStringList()) harvestLevel2Ids.add(i);
-
-		Property harvestLevel3IdsProperty = config.get("harvestids", "harvestLevel3Ids", new String[] {});
-		harvestLevel3IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 3 (iron pick+)";
-		for (String i : harvestLevel3IdsProperty.getStringList()) harvestLevel3Ids.add(i);
-
-		Property harvestLevel4IdsProperty = config.get("harvestids", "harvestLevel4Ids", new String[] {});
-		harvestLevel4IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 4 (bronze pick+)";
-		for (String i : harvestLevel4IdsProperty.getStringList()) harvestLevel4Ids.add(i);
-
-		Property harvestLevel5IdsProperty = config.get("harvestids", "harvestLevel5Ids", new String[] {});
-		harvestLevel5IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 5 (alumite pick+)";
-		for (String i : harvestLevel5IdsProperty.getStringList()) harvestLevel5Ids.add(i);
-
-		Property harvestLevel6IdsProperty = config.get("harvestids", "harvestLevel6Ids", new String[] {});
-		harvestLevel6IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 6 (ardite pick+)";
-		for (String i : harvestLevel6IdsProperty.getStringList()) harvestLevel6Ids.add(i);
-
-		Property harvestLevel7IdsProperty = config.get("harvestids", "harvestLevel7Ids", new String[] {});
-		harvestLevel7IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 7 (cobalt pick+)";
-		for (String i : harvestLevel7IdsProperty.getStringList()) harvestLevel7Ids.add(i);
-
-		Property harvestLevel8IdsProperty = config.get("harvestids", "harvestLevel8Ids", new String[] {});
-		harvestLevel8IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 8";
-		for (String i : harvestLevel8IdsProperty.getStringList()) harvestLevel8Ids.add(i);
-
-		Property harvestLevel9IdsProperty = config.get("harvestids", "harvestLevel9Ids", new String[] {});
-		harvestLevel9IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 9";
-		for (String i : harvestLevel9IdsProperty.getStringList()) harvestLevel9Ids.add(i);
-
-		Property harvestLevel10IdsProperty = config.get("harvestids", "harvestLevel10Ids", new String[] {});
-		harvestLevel10IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 10";
-		for (String i : harvestLevel10IdsProperty.getStringList()) harvestLevel10Ids.add(i);
-
-		Property harvestLevel11IdsProperty = config.get("harvestids", "harvestLevel11Ids", new String[] {});
-		harvestLevel11IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 11";
-		for (String i : harvestLevel11IdsProperty.getStringList()) harvestLevel11Ids.add(i);
-
-		Property harvestLevel12IdsProperty = config.get("harvestids", "harvestLevel12Ids", new String[] {});
-		harvestLevel12IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 12";
-		for (String i : harvestLevel12IdsProperty.getStringList()) harvestLevel12Ids.add(i);
-
-		Property harvestLevel13IdsProperty = config.get("harvestids", "harvestLevel13Ids", new String[] {});
-		harvestLevel13IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 13";
-		for (String i : harvestLevel13IdsProperty.getStringList()) harvestLevel13Ids.add(i);
-
-		Property harvestLevel14IdsProperty = config.get("harvestids", "harvestLevel14Ids", new String[] {});
-		harvestLevel14IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 14";
-		for (String i : harvestLevel14IdsProperty.getStringList()) harvestLevel14Ids.add(i);
-
-		Property harvestLevel15IdsProperty = config.get("harvestids", "harvestLevel15Ids", new String[] {});
-		harvestLevel15IdsProperty.comment = "Block ids (each on seperate line) for blocks to be set to harvest level 15";
-		for (String i : harvestLevel15IdsProperty.getStringList()) harvestLevel15Ids.add(i);
-*/
 		// pickaxe mining level overrides
 		ConfigCategory pickaxeoverridesCategory = config.getCategory("pickaxeoverrides");
 		pickaxeoverridesCategory.setComment("Normally the mod changes the mining levels of all pickaxes to be in line with the new system, override that for specific picks here");

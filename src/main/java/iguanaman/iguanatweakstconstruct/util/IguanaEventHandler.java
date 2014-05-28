@@ -5,6 +5,7 @@ import iguanaman.iguanatweakstconstruct.IguanaLevelingLogic;
 import iguanaman.iguanatweakstconstruct.IguanaTweaksTConstruct;
 import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
 import iguanaman.iguanatweakstconstruct.configs.LevelsConfig;
+import iguanaman.iguanatweakstconstruct.configs.ModifierConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -315,7 +316,7 @@ public class IguanaEventHandler {
 					modifierTips.add("");
 				}
 
-				if (IguanaConfig.levelingPickaxeBoost && (event.tool instanceof Pickaxe || event.tool instanceof Hammer))
+				if (ModifierConfig.levelingPickaxeBoost && (event.tool instanceof Pickaxe || event.tool instanceof Hammer))
 				{
 					toolTag.setLong("HeadEXP", 0);
 
@@ -449,7 +450,7 @@ public class IguanaEventHandler {
 						if (level < LevelsConfig.maxlevel)
 							event.left.add(IguanaLevelingLogic.getXpString(equipped, true));
 
-						if (IguanaConfig.levelingPickaxeBoost)
+						if (ModifierConfig.levelingPickaxeBoost)
 							if (hLevel > 1 && hLevel < 16
 							&& !tags.hasKey("HarvestLevelModified")
 							&& (equipped.getItem() instanceof Pickaxe || equipped.getItem() instanceof Hammer))

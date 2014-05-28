@@ -2,6 +2,7 @@ package iguanaman.iguanatweakstconstruct;
 
 import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
 import iguanaman.iguanatweakstconstruct.configs.LevelsConfig;
+import iguanaman.iguanatweakstconstruct.configs.ModifierConfig;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaActiveToolMod;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaModAttack;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaModClean;
@@ -39,8 +40,8 @@ public class ModifierTweaks {
 		while (i.hasNext()) {
 			ToolMod mod = i.next();
 			if (mod.key == "Emerald" || mod.key == "Diamond" ||
-					mod.key == "Tier1Free" && LevelsConfig.toolLeveling && !IguanaConfig.ticExtraModifier ||
-					mod.key == "Tier2Free" && !IguanaConfig.ticExtraModifier ||
+					mod.key == "Tier1Free" && LevelsConfig.toolLeveling && !ModifierConfig.ticExtraModifier ||
+					mod.key == "Tier2Free" && !ModifierConfig.ticExtraModifier ||
 					mod.key == "Moss" || mod.key == "Lapis" || mod.key == "ModAttack" || mod.key == "Redstone"
 					|| mod.key == "")
 				//IguanaLog.log("Removing old " + mod.key + " modifier");
@@ -49,14 +50,14 @@ public class ModifierTweaks {
 
 
 		// Change recipes
-		if (IguanaConfig.moreExpensiveSilkyCloth)
+		if (ModifierConfig.moreExpensiveSilkyCloth)
 		{
 			RecipeRemover.removeAnyRecipe(new ItemStack(TContent.materials, 1, 25));
 			GameRegistry.addRecipe(new ItemStack(TContent.materials, 1, 25), "sss", "sns", "sss", 'n', new ItemStack(TContent.materials, 1, 14), 's', new ItemStack(Item.silk)); //Silky Cloth
 			GameRegistry.addRecipe(new ItemStack(TContent.materials, 1, 25), "sss", "sns", "sss", 'n', new ItemStack(Item.ingotGold), 's', new ItemStack(Item.silk)); //Silky Cloth
 		}
 
-		if (IguanaConfig.moreExpensiveSilkyJewel)
+		if (ModifierConfig.moreExpensiveSilkyJewel)
 		{
 			RecipeRemover.removeAnyRecipe(new ItemStack(TContent.materials, 1, 26));
 			GameRegistry.addRecipe(new ItemStack(TContent.materials, 1, 26), " c ", "cec", " c ", 'c', new ItemStack(TContent.materials, 1, 25), 'e', new ItemStack(Block.blockEmerald)); //Silky Jewel
@@ -68,9 +69,9 @@ public class ModifierTweaks {
 
 		if (IguanaConfig.partReplacement) ToolBuilder.registerToolMod(new IguanaModUpgrade());
 		ToolBuilder.registerToolMod(new IguanaModRepair());
-		ToolBuilder.registerToolMod(new ModInteger(new ItemStack[] { new ItemStack(TContent.materials, 1, 6) }, 4, "Moss", IguanaConfig.mossRepairSpeed, "\u00a72", "Auto-Repair"));
-		ToolBuilder.registerToolMod(new ModDurability(new ItemStack[] { new ItemStack(Item.emerald) }, 1, 0, 0.5f, TConstructRegistry.getMaterial("Bronze").harvestLevel(), "Emerald", "\u00a72Durability +50%", "\u00a72"));
-		if (IguanaConfig.diamondPickaxeBoost)
+		ToolBuilder.registerToolMod(new ModInteger(new ItemStack[] { new ItemStack(TContent.materials, 1, 6) }, 4, "Moss", ModifierConfig.mossRepairSpeed, "\u00a72", "Auto-Repair"));
+		ToolBuilder.registerToolMod(new ModDurability(new ItemStack[] { new ItemStack(Item.emerald) }, 1, 0, 0.5f, ModifierConfig.emeraldboost, "Emerald", "\u00a72Durability +50%", "\u00a72"));
+		if (ModifierConfig.diamondPickaxeBoost)
 		{
 			ToolBuilder.registerToolMod(new ModDurability(new ItemStack[] { new ItemStack(Item.diamond) }, 0, 500, 0f, MinecraftForge.getBlockHarvestLevel(Block.obsidian, 0, "pickaxe"), "Diamond", "\u00a7bDurability +500", "\u00a7b"));
 		} else {
@@ -98,22 +99,22 @@ public class ModifierTweaks {
 		ToolBuilder.registerToolMod(new IguanaModRedstone(new ItemStack[] { redstoneBlock, redstoneBlock }, 2, 18));
 
 		// CLEAN MODIFIER
-		if (IguanaConfig.addCleanModifier) ToolBuilder.registerToolMod(new IguanaModClean());
+		if (ModifierConfig.addCleanModifier) ToolBuilder.registerToolMod(new IguanaModClean());
 
 		// MINING BOOST MODIFIERS
-		if (IguanaConfig.mobHeadPickaxeBoost)
+		if (ModifierConfig.mobHeadPickaxeBoost)
 		{
 			IguanaLog.log("Adding mob head modifiers");
 
 			// add modifers
-			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 0) }, 20, 3/*TConstructRegistry.getMaterial("Iron").harvestLevel()*/, "Skeleton Skull", "\u00a7fBoosted", "\u00a7f"));
-			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 2) }, 21, 3/*TConstructRegistry.getMaterial("Iron").harvestLevel()*/, "Zombie Head", "\u00a72Boosted", "\u00a72"));
-			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 4) }, 22, 4/*TConstructRegistry.getMaterial("Bronze").harvestLevel()*/, "Creeper Head", "\u00a7aBoosted", "\u00a7a"));
-			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 5) }, 23, 5/*TConstructRegistry.getMaterial("Obsidian").harvestLevel()*/, "Enderman Head", "\u00a78Boosted", "\u00a78"));
-			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 1) }, 24, 6/*TConstructRegistry.getMaterial("Ardite").harvestLevel()*/, "Wither Skeleton Skull", "\u00a78Boosted", "\u00a78"));
-			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 6) }, 26, 5/*TConstructRegistry.getMaterial("Obsidian").harvestLevel()*/, "Zombie Pigman Skull", "\u00a78Boosted", "\u00a78"));
-			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 7) }, 27, 5/*TConstructRegistry.getMaterial("Obsidian").harvestLevel()*/, "Blaze Skull", "\u00a78Boosted", "\u00a78"));
-			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.netherStar) }, 25, 7/*TConstructRegistry.getMaterial("Cobalt").harvestLevel()*/, "Nether Star", "\u00a73Boosted", "\u00a73"));
+			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 0) }, 20, ModifierConfig.skeletonboost, "Skeleton Skull", "\u00a7fBoosted", "\u00a7f"));
+			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 2) }, 21, ModifierConfig.zombieboost, "Zombie Head", "\u00a72Boosted", "\u00a72"));
+			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 4) }, 22, ModifierConfig.creeperboost, "Creeper Head", "\u00a7aBoosted", "\u00a7a"));
+			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 5) }, 23, ModifierConfig.endermanboost, "Enderman Head", "\u00a78Boosted", "\u00a78"));
+			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 1) }, 24, ModifierConfig.witherskeletonboost, "Wither Skeleton Skull", "\u00a78Boosted", "\u00a78"));
+			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 6) }, 26, ModifierConfig.zombiepigmanboost, "Zombie Pigman Skull", "\u00a78Boosted", "\u00a78"));
+			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.skull, 1, 7) }, 27, ModifierConfig.blazeboost, "Blaze Skull", "\u00a78Boosted", "\u00a78"));
+			ToolBuilder.registerToolMod(new IguanaModHeads(new ItemStack[] { new ItemStack(Item.netherStar) }, 25, ModifierConfig.netherstarboost, "Nether Star", "\u00a73Boosted", "\u00a73"));
 
 			// rendering code
 			ToolCore[] tools = new ToolCore[] { TContent.pickaxe, TContent.hammer };

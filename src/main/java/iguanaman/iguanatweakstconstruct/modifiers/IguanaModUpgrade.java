@@ -4,13 +4,16 @@ import iguanaman.iguanatweakstconstruct.IguanaLevelingLogic;
 import iguanaman.iguanatweakstconstruct.IguanaTweaksTConstruct;
 import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
 import iguanaman.iguanatweakstconstruct.configs.LevelsConfig;
+import iguanaman.iguanatweakstconstruct.configs.ModifierConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.MinecraftForge;
 import tconstruct.common.BowRecipe;
 import tconstruct.common.TContent;
 import tconstruct.items.tools.Battleaxe;
@@ -330,7 +333,6 @@ public class IguanaModUpgrade extends ToolMod {
 			tags.setLong("HeadEXP", newXp);
 		}
 
-
 		boolean requiresBoost = false;
 		if (tags.hasKey("HarvestLevelModified"))
 		{
@@ -343,9 +345,9 @@ public class IguanaModUpgrade extends ToolMod {
 				tags.removeTag("MobHead");
 
 				//Get and remove effects
-				List<Integer> badEffects = Arrays.asList(0, 20, 21, 22, 23, 24, 25);
+				List<Integer> badEffects = Arrays.asList(0, 20, 21, 22, 23, 24, 25, 26, 27);
 				List<Integer> effects = new ArrayList<Integer>();
-				for (int i = 1; i <= 6; ++i)
+				for (int i = 1; i <= 8; ++i)
 					if (tags.hasKey("Effect" + i))
 					{
 						int effectInt = tags.getInteger("Effect" + i);
@@ -416,7 +418,7 @@ public class IguanaModUpgrade extends ToolMod {
 		//Remove unwanted modifiers
 		tags.setInteger("Modifiers", tags.getInteger("Modifiers") + modifiersDifference);
 
-		List<String> unwantedModifiers = Arrays.asList("Skeleton Skull", "Zombie Head", "Creeper Head", "Enderman Head", "Wither Skeleton Skull", "Nether Star");
+		List<String> unwantedModifiers = Arrays.asList("Skeleton Skull", "Zombie Head", "Creeper Head", "Enderman Head", "Wither Skeleton Skull", "Zombie Pigman Skull", "Blaze Skull", "Nether Star");
 		for (String unwanted : unwantedModifiers)
 			if (tags.hasKey(unwanted)) tags.removeTag(unwanted);
 
@@ -427,6 +429,11 @@ public class IguanaModUpgrade extends ToolMod {
 		//add mining level tooltip
 		if (tool.getItem() instanceof Pickaxe || tool.getItem() instanceof Hammer)
 		{
+			if (tags.hasKey("Emerald") && tags.getInteger("HarvestLevel") < TConstructRegistry.getMaterial("Bronze").harvestLevel())
+				tags.setInteger("HarvestLevel", TConstructRegistry.getMaterial("Bronze").harvestLevel());
+			if (tags.hasKey("Diamond") && ModifierConfig.diamondPickaxeBoost && tags.getInteger("HarvestLevel") < MinecraftForge.getBlockHarvestLevel(Block.obsidian, 0, "pickaxe"))
+				tags.setInteger("HarvestLevel", MinecraftForge.getBlockHarvestLevel(Block.obsidian, 0, "pickaxe"));
+					
 			String mLevel = IguanaTweaksTConstruct.getHarvestLevelName(tags.getInteger("HarvestLevel"));
 			tips.add("Mining Level: " + mLevel);
 			modifierTips.add("");
@@ -445,9 +452,9 @@ public class IguanaModUpgrade extends ToolMod {
 				modifierTips.add("");
 			}
 
-			if (IguanaConfig.levelingPickaxeBoost)
+			if (ModifierConfig.levelingPickaxeBoost)
 			{
-				if (hLevel >= TConstructRegistry.getMaterial("Copper").harvestLevel() && hLevel < TConstructRegistry.getMaterial("Manyullyn").harvestLevel()
+				if (hLevel >= TConstructRegistry.getMaterial("Copper").harvestLevel() && hLevel < 16
 						&& !tags.hasKey("HarvestLevelModified")
 						&& (tool.getItem() instanceof Pickaxe || tool.getItem() instanceof Hammer))
 				{

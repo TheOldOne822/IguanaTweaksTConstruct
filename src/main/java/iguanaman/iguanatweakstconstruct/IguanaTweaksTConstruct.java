@@ -6,6 +6,7 @@ import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
 import iguanaman.iguanatweakstconstruct.configs.HarvestLevelConfig;
 import iguanaman.iguanatweakstconstruct.configs.LevelsConfig;
 import iguanaman.iguanatweakstconstruct.configs.MaterialConfig;
+import iguanaman.iguanatweakstconstruct.configs.ModifierConfig;
 import iguanaman.iguanatweakstconstruct.util.IguanaEventHandler;
 
 import java.io.File;
@@ -29,7 +30,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
-@Mod(modid="IguanaTweaksTConstruct", name="TiC Tweaks", version="1.6.X-1.0.0beta5)",
+@Mod(modid="IguanaTweaksTConstruct", name="TiC Tweaks", version="1.6.X-1.0.0beta7)",
 dependencies = "required-after:TConstruct;after:*")
 @NetworkMod(clientSideRequired=true, serverSideRequired=true)
 public class IguanaTweaksTConstruct {
@@ -57,6 +58,7 @@ public class IguanaTweaksTConstruct {
 		MaterialConfig.init();
 		HarvestLevelConfig.init();
 		LevelsConfig.init();
+		ModifierConfig.init();
 
 		toolParts = Arrays.asList (
 				TContent.toolRod, TContent.pickaxeHead, TContent.shovelHead, TContent.hatchetHead,
@@ -105,7 +107,7 @@ public class IguanaTweaksTConstruct {
 
 	public static String getHarvestLevelName (int num)
 	{
-		if (IguanaConfig.pickaxeBoostRequired && num > 1) --num;
+		if (ModifierConfig.pickaxeBoostRequired && num > 1) --num;
 		switch (num)
 		{
 		case 0: return "\u00a77" + HarvestLevelConfig.level0name;

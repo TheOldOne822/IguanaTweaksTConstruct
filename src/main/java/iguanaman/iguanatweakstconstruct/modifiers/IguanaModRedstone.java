@@ -3,6 +3,7 @@ package iguanaman.iguanatweakstconstruct.modifiers;
 import iguanaman.iguanatweakstconstruct.IguanaLevelingLogic;
 import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
 import iguanaman.iguanatweakstconstruct.configs.LevelsConfig;
+import iguanaman.iguanatweakstconstruct.configs.ModifierConfig;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -156,16 +157,16 @@ public class IguanaModRedstone extends ToolMod {
 		if (LevelsConfig.showTooltipXP)
 		{
 			int level = tags.getInteger("ToolLevel");
-			if (level <= 5)
+			if (level < LevelsConfig.maxlevel)
 			{
 				tips.add(IguanaLevelingLogic.getXpString(tool, false, false));
 				modifierTips.add("");
 			}
 
-			if (IguanaConfig.levelingPickaxeBoost)
+			if (ModifierConfig.levelingPickaxeBoost)
 			{
 				int hLevel = tags.hasKey("HarvestLevel") ? hLevel = tags.getInteger("HarvestLevel") : -1;
-				if (hLevel >= TConstructRegistry.getMaterial("Copper").harvestLevel() && hLevel < TConstructRegistry.getMaterial("Manyullyn").harvestLevel()
+				if (hLevel >= TConstructRegistry.getMaterial("Copper").harvestLevel() && hLevel < 16
 						&& !tags.hasKey("HarvestLevelModified")
 						&& (tool.getItem() instanceof Pickaxe || tool.getItem() instanceof Hammer))
 				{

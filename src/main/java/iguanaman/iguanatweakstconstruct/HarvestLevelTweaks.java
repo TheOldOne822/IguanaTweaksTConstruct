@@ -2,6 +2,7 @@ package iguanaman.iguanatweakstconstruct;
 
 import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
 import iguanaman.iguanatweakstconstruct.configs.HarvestLevelConfig;
+import iguanaman.iguanatweakstconstruct.configs.ModifierConfig;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -108,7 +109,7 @@ public class HarvestLevelTweaks {
 
 
 		//BLOCKS
-		if (IguanaConfig.pickaxeBoostRequired) boostMod = 1;
+		if (ModifierConfig.pickaxeBoostRequired) boostMod = 1;
 
 		int harvestLevel1 = 1 + boostMod;
 		int harvestLevel2 = 2 + boostMod;

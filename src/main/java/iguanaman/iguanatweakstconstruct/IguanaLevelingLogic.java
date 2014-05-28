@@ -2,6 +2,7 @@ package iguanaman.iguanatweakstconstruct;
 
 import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
 import iguanaman.iguanatweakstconstruct.configs.LevelsConfig;
+import iguanaman.iguanatweakstconstruct.configs.ModifierConfig;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaModAttack;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaModBlaze;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaModLapis;
@@ -120,8 +121,8 @@ public class IguanaLevelingLogic {
 			}
 		}
 
-		if (IguanaConfig.levelingPickaxeBoost && tags.hasKey("HeadEXP") && !tags.hasKey("HarvestLevelModified"))
-			if (hLevel >= 1 && (!IguanaConfig.pickaxeBoostRequired && hLevel < 15 || IguanaConfig.pickaxeBoostRequired && hLevel < 16))
+		if (ModifierConfig.levelingPickaxeBoost && tags.hasKey("HeadEXP") && !tags.hasKey("HarvestLevelModified"))
+			if (hLevel >= 1 && (!ModifierConfig.pickaxeBoostRequired && hLevel < 15 || ModifierConfig.pickaxeBoostRequired && hLevel < 16))
 			{
 				tags.setLong("HeadEXP", headXP);
 
@@ -162,7 +163,7 @@ public class IguanaLevelingLogic {
 				modifierTips.add("");
 			}
 
-			if (IguanaConfig.levelingPickaxeBoost)
+			if (ModifierConfig.levelingPickaxeBoost)
 				if (hLevel >= 1 && hLevel < 16
 				&& !tags.hasKey("HarvestLevelModified")
 				&& (tool.getItem() instanceof Pickaxe || tool.getItem() instanceof Hammer))
@@ -297,7 +298,7 @@ public class IguanaLevelingLogic {
 		{
 			int harvestLevel = TConstructRegistry.getMaterial(tags.getInteger("Head")).harvestLevel();
 			if (harvestLevel >= 1) base *= Math.pow(LevelsConfig.xpPerLevelMultiplier, harvestLevel - 1);
-			base *= IguanaConfig.levelingPickaxeBoostXpPercentage / 100f;
+			base *= ModifierConfig.levelingPickaxeBoostXpPercentage / 100f;
 		}
 		else
 		{
@@ -380,7 +381,7 @@ public class IguanaLevelingLogic {
 		ItemStack[] nullItemStack = new ItemStack[] {};
 		if (rnd < 1 && LevelsConfig.moss)
 		{
-			mod = new ModInteger(nullItemStack, 4, "Moss", IguanaConfig.mossRepairSpeed, "\u00a72", "Auto-Repair");
+			mod = new ModInteger(nullItemStack, 4, "Moss", ModifierConfig.mossRepairSpeed, "\u00a72", "Auto-Repair");
 			if (!player.worldObj.isRemote)
 				player.addChatMessage("\u00a79It seems to have accumulated a patch of moss (+1 repair)");
 		}

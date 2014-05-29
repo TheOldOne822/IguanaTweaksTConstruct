@@ -387,7 +387,7 @@ public class IguanaLevelingLogic {
 		}
 		else if (rnd < 2 && LevelsConfig.luck && (!isTool && !(item instanceof Shortbow) || isTool && (item instanceof Pickaxe || item instanceof Hammer)))
 		{
-			mod = new IguanaModLapis(nullItemStack, 10, new int[] {100});
+			mod = new IguanaModLapis(nullItemStack, 10, 100);
 			if (((IguanaModLapis)mod).canModify(stack, nullItemStack)) {
 				if (!player.worldObj.isRemote)
 					player.addChatMessage("\u00a79Perhaps holding on to it will bring you luck? (+100 luck)");

@@ -19,6 +19,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import tconstruct.common.TContent;
 import tconstruct.library.TConstructRegistry;
+import tconstruct.library.crafting.ToolBuilder;
+import tconstruct.modifiers.tools.ModDurability;
 
 public class HarvestLevelTweaks {
 
@@ -46,7 +48,7 @@ public class HarvestLevelTweaks {
 
 	public static void init()
 	{
-		
+		OreDictionary.registerOre("blockObsidian", new ItemStack(Block.obsidian));
 		// TOOLS
 		IguanaLog.log("Modifying harvest levels of tools");
 		ForgeHooks hooks = new ForgeHooks();
@@ -204,7 +206,7 @@ public class HarvestLevelTweaks {
 		}
 
 		IguanaLog.log("Modifying required harvest levels of vanilla blocks not in the Ore Dictionary");
-		MinecraftForge.setBlockHarvestLevel(Block.obsidian,     "pickaxe", (MinecraftForge.getBlockHarvestLevel(Block.oreDiamond, 0, "pickaxe") + 1));
+//		MinecraftForge.setBlockHarvestLevel(Block.obsidian,     "pickaxe", (MinecraftForge.getBlockHarvestLevel(Block.oreDiamond, 0, "pickaxe")));
 //		MinecraftForge.setBlockHarvestLevel(Block.oreDiamond, "pickaxe", harvestLevelBronze);
 		MinecraftForge.setBlockHarvestLevel(Block.blockDiamond, "pickaxe", MinecraftForge.getBlockHarvestLevel(Block.oreDiamond, 0, "pickaxe"));
 		MinecraftForge.setBlockHarvestLevel(Block.blockGold,    "pickaxe", MinecraftForge.getBlockHarvestLevel(Block.oreGold, 0, "pickaxe"));

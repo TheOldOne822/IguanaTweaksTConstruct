@@ -39,6 +39,11 @@ public class IguanaModAttack extends ToolMod {
 				int keyPair[] = tags.getIntArray(key);
 				if (keyPair[0] + increase <= max)
 					return true;
+				else if (max - keyPair[0] > 0){
+					increase = max - keyPair[0];
+					return true;
+				}
+					
 			} else
 				return true;
 		}

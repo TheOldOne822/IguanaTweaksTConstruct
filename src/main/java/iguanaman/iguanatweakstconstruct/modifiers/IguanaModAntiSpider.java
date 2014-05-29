@@ -7,19 +7,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import tconstruct.library.tools.ToolCore;
 import tconstruct.library.tools.ToolMod;
-import tconstruct.modifiers.tools.ModBlaze;
+import tconstruct.modifiers.tools.ModPiston;
 
-public class IguanaModBlaze extends ToolMod {
+public class IguanaModAntiSpider extends ToolMod {
 
     String tooltipName;
 	int increase;
     int max;
 
-	public IguanaModBlaze(ItemStack[] items, int effect, int inc) {
-		super(items, effect, "Blaze");
-        tooltipName = "\u00a76Fiery";
+	public IguanaModAntiSpider(ItemStack[] items, int effect, int inc) {
+		super(items, effect, "ModAntiSpider");
+        tooltipName = "\u00a72Bane of Arthropods";
 		increase = inc;
-		max = 25;
+		max = 4;
 	}
 
 	public boolean canModify (ItemStack tool, ItemStack[] input, boolean auto)
@@ -45,9 +45,8 @@ public class IguanaModBlaze extends ToolMod {
             return false;
     }
 
-	
 	@Override
-	protected boolean canModify (ItemStack tool, ItemStack[] input)
+	public boolean canModify (ItemStack tool, ItemStack[] input)
 	{
 		return canModify(tool, input, false);
 	}
@@ -59,7 +58,8 @@ public class IguanaModBlaze extends ToolMod {
         if (tags.hasKey(key))
         {
             int[] keyPair = tags.getIntArray(key);
-            if (keyPair[0] == max)
+
+            if (keyPair[0] % max == 0)
             {
                 keyPair[0] += increase;
                 keyPair[1] += max;
@@ -75,36 +75,25 @@ public class IguanaModBlaze extends ToolMod {
                 tags.setIntArray(key, keyPair);
             }
             updateModTag(tool, keyPair);
+
         }
         else
         {
             int modifiers = tags.getInteger("Modifiers");
             modifiers -= 1;
             tags.setInteger("Modifiers", modifiers);
-            String modName = "\u00a76Blaze (" + increase + "/" + max + ")";
+            String modName = "\u00a72" + "Anti-Spider" + " (" + increase + "/" + max + ")";
             int tooltipIndex = addToolTip(tool, tooltipName, modName);
             int[] keyPair = new int[] { increase, max, tooltipIndex };
             tags.setIntArray(key, keyPair);
         }
-
-        int fiery = tags.getInteger("Fiery");
-        fiery += (increase);
-        tags.setInteger("Fiery", fiery);
-
     }
 
     void updateModTag (ItemStack tool, int[] keys)
     {
-        NBTTagCompound tags = tool.getTagCompound().getCompoundTag("InfiTool");
-        String tip = "ModifierTip" + keys[2];
-        String modName = "\u00a76Blaze (" + keys[0] + "/" + keys[1] + ")";
-        tags.setString(tip, modName);
+    	NBTTagCompound tags = tool.getTagCompound().getCompoundTag("InfiTool");
+    	String tip = "ModifierTip" + keys[2];
+    	String modName = "\u00a72" + "Anti-Spider" + " (" + keys[0] + "/" + keys[1] + ")";
+    	tags.setString(tip, modName);
     }
-
-    public boolean validType (ToolCore tool)
-    {
-        List list = Arrays.asList(tool.toolCategories());
-        return list.contains("melee") || list.contains("ammo");
-    }
-
 }

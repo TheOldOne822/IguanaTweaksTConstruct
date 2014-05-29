@@ -3,11 +3,13 @@ package iguanaman.iguanatweakstconstruct;
 import iguanaman.iguanatweakstconstruct.configs.IguanaConfig;
 import iguanaman.iguanatweakstconstruct.configs.LevelsConfig;
 import iguanaman.iguanatweakstconstruct.configs.ModifierConfig;
+import iguanaman.iguanatweakstconstruct.modifiers.IguanaModAntiSpider;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaModAttack;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaModBlaze;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaModLapis;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaModPiston;
 import iguanaman.iguanatweakstconstruct.modifiers.IguanaModRedstone;
+import iguanaman.iguanatweakstconstruct.modifiers.IguanaModSmite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -388,7 +390,7 @@ public class IguanaLevelingLogic {
 		else if (rnd < 2 && LevelsConfig.luck && (!isTool && !(item instanceof Shortbow) || isTool && (item instanceof Pickaxe || item instanceof Hammer)))
 		{
 			mod = new IguanaModLapis(nullItemStack, 10, 100);
-			if (((IguanaModLapis)mod).canModify(stack, nullItemStack)) {
+			if (((IguanaModLapis)mod).canModify(stack, nullItemStack, true)) {
 				if (!player.worldObj.isRemote)
 					player.addChatMessage("\u00a79Perhaps holding on to it will bring you luck? (+100 luck)");
 			} else return false;
@@ -417,8 +419,8 @@ public class IguanaLevelingLogic {
 		}
 		else if (rnd < 5 && LevelsConfig.fireaspect && !isTool && !(item instanceof Shortbow))
 		{
-			mod = new IguanaModBlaze(nullItemStack, 7, new int[] {25});
-			if (((IguanaModBlaze)mod).canModify(stack, nullItemStack)) {
+			mod = new IguanaModBlaze(nullItemStack, 7, 25);
+			if (((IguanaModBlaze)mod).canModify(stack, nullItemStack, true)) {
 				if (!player.worldObj.isRemote)
 					player.addChatMessage("\u00a79It starts to feels more hot to the touch (+1 fire aspect)");
 			} else return false;
@@ -431,20 +433,20 @@ public class IguanaLevelingLogic {
 		}
 		else if (rnd < 7 && LevelsConfig.smite && !isTool && !(item instanceof Shortbow))
 		{
-			mod = new ModSmite("Smite", 14, nullItemStack, new int[] {36});
+			mod = new IguanaModSmite(nullItemStack, 14, 36);
 			if (!player.worldObj.isRemote)
 				player.addChatMessage("\u00a79It begins to radiate a slight glow (+1 smite)");
 		}
 		else if (rnd < 8 && LevelsConfig.baneofarthropods && !isTool && !(item instanceof Shortbow))
 		{
-			mod = new ModAntiSpider("Anti-Spider", 15, nullItemStack, new int[] {4});
+			mod = new IguanaModAntiSpider(nullItemStack, 15, 4);
 			if (!player.worldObj.isRemote)
 				player.addChatMessage("\u00a79A strange odor emanates from the weapon (+1 bane of arthropods)");
 		}
 		else if (rnd < 9 && LevelsConfig.knockback && !isTool)
 		{
-			mod = new IguanaModPiston(nullItemStack, 3, new int[] {10});
-			if (((IguanaModPiston)mod).canModify(stack, nullItemStack)) {
+			mod = new IguanaModPiston(nullItemStack, 3, 10);
+			if (((IguanaModPiston)mod).canModify(stack, nullItemStack, true)) {
 				if (!player.worldObj.isRemote)
 					player.addChatMessage("\u00a79Feeling more confident, you can more easily keep your assailants at bay (+1 knockback)");
 			} else return false;

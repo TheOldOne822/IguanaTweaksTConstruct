@@ -82,9 +82,9 @@ public class ModifierConfig {
 		ConfigCategory pickboostingCategory = modconfig.getCategory("pickboosting");
 		pickboostingCategory.setComment("Options to configure to pickaxe mining level boost and mechanics");
 
-		Property diamondPickaxeBoostProperty = modconfig.get("pickboosting", "diamondPickaxeBoost", true);
+		Property diamondPickaxeBoostProperty = modconfig.get("pickboosting", "diamondPickaxeBoost", false);
 		diamondPickaxeBoostProperty.comment = "Diamond mod allows mining obsidian";
-		diamondPickaxeBoost = diamondPickaxeBoostProperty.getBoolean(true);
+		diamondPickaxeBoost = diamondPickaxeBoostProperty.getBoolean(false);
 
 		Property pickaxeBoostRequiredProperty = modconfig.get("pickboosting", "pickaxeBoostRequired", true);
 		pickaxeBoostRequiredProperty.comment = "Pickaxes only mine upto their head material level and need a mob head modifier OR leveling boost to advance";

@@ -1,6 +1,7 @@
 package iguanaman.iguanatweakstconstruct.commands;
 
 import iguanaman.iguanatweakstconstruct.IguanaLevelingLogic;
+import iguanaman.iguanatweakstconstruct.configs.LevelsConfig;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
@@ -39,12 +40,12 @@ public class IguanaCommandLevelUpTool extends CommandBase {
 				int level = tags.getInteger("ToolLevel");
 				int hLevel = tags.hasKey("HarvestLevel") ? hLevel = tags.getInteger("HarvestLevel") : -1;
 
-				if (level >= 1 && level <= 5 || hLevel >= TConstructRegistry.getMaterial("Copper").harvestLevel() || hLevel < TConstructRegistry.getMaterial("Manyullyn").harvestLevel())
+				if (level >= 1 && level < LevelsConfig.maxlevel || hLevel >= TConstructRegistry.getMaterial("Copper").harvestLevel() || hLevel < 16)
 				{
 					Long toolXP = tags.hasKey("ToolEXP") ? tags.getLong("ToolEXP") : -1;
 					Long headXP = tags.hasKey("HeadEXP") ? tags.getLong("HeadEXP") : -1;
 					long requiredToolXP = IguanaLevelingLogic.getRequiredXp(equipped, tags) - toolXP;
-					long requiredHeadXP = tags.hasKey("HeadEXP") && hLevel >= TConstructRegistry.getMaterial("Copper").harvestLevel() && hLevel < TConstructRegistry.getMaterial("Manyullyn").harvestLevel() ? IguanaLevelingLogic.getRequiredXp(equipped, tags) - headXP : -1;
+					long requiredHeadXP = tags.hasKey("HeadEXP") && hLevel >= TConstructRegistry.getMaterial("Copper").harvestLevel() && hLevel < 16 ? IguanaLevelingLogic.getRequiredXp(equipped, tags) - headXP : -1;
 
 					if (requiredHeadXP < requiredToolXP && requiredHeadXP > 0)
 						IguanaLevelingLogic.updateXP(equipped, entityplayermp, toolXP + requiredHeadXP, headXP + requiredHeadXP);

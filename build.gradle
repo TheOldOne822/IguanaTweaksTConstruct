@@ -13,7 +13,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.6.4-1.0.0(beta)9"
+version = "1.6.4-1.0.0RC1"
 group= "" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "tictweaks"
 

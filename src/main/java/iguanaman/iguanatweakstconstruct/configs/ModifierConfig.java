@@ -111,7 +111,7 @@ public class ModifierConfig {
 		Property skeletonboostProperty = modconfig.get("headlevel", "skeletonboost", 3);
 		skeletonboostProperty.comment = "Max harvest boostable with Skeleton Skull";
 		skeletonboost = skeletonboostProperty.getInt(3);
-		skeletonboostProperty.set(netherstarboost);
+		skeletonboostProperty.set(skeletonboost);
 		
 		Property zombieboostProperty = modconfig.get("headlevel", "zombieboost", 3);
 		zombieboostProperty.comment = "Max harvest boostable with Zombie Head";

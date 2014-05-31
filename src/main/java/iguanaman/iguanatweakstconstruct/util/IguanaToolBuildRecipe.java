@@ -9,6 +9,7 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+import tconstruct.items.tools.Chisel;
 import tconstruct.library.crafting.ToolBuilder;
 import tconstruct.library.tools.ToolCore;
 
@@ -37,6 +38,8 @@ public class IguanaToolBuildRecipe implements IRecipe {
 
 				// if a tool is found, make sure easy modifications are allowed first
 				if (!IguanaConfig.easyToolModification && slot.getItem() instanceof ToolCore) return false;
+
+				if (slot.getItem() instanceof Chisel) return false;
 
 				if (slot.getItem() instanceof ToolCore) toolFound = true;
 

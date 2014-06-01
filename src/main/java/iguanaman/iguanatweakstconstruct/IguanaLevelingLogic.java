@@ -431,6 +431,8 @@ public class IguanaLevelingLogic {
 		tags.setInteger("ToolLevel", ++level);
 
 		boolean isTool = stack.getItem() instanceof HarvestTool ? true : false;
+		
+		if(isTool)isTool = stack.getItem() instanceof Battleaxe ? false : true;
 
 		updateXP(stack, player, 0l, -1l);
 

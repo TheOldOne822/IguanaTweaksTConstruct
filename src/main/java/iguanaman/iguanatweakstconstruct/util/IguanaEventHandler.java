@@ -43,6 +43,7 @@ import net.minecraftforge.event.entity.player.UseHoeEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import tconstruct.blocks.LiquidMetalFinite;
 import tconstruct.common.TContent;
+import tconstruct.items.tools.Battleaxe;
 import tconstruct.items.tools.Hammer;
 import tconstruct.items.tools.Pickaxe;
 import tconstruct.items.tools.Shortbow;
@@ -81,7 +82,7 @@ public class IguanaEventHandler {
 				EntityPlayer player = (EntityPlayer) event.source.getEntity();
 				ItemStack stack = player.getCurrentEquippedItem();
 				if (stack != null && stack.hasTagCompound())
-					if (stack.getItem() instanceof Weapon || stack.getItem() instanceof Shortbow && event.source.damageType.equals("arrow"))
+					if (stack.getItem() instanceof Weapon || stack.getItem() instanceof Battleaxe || stack.getItem() instanceof Shortbow && event.source.damageType.equals("arrow"))
 					{
 						long xp = Math.round(event.ammount);
 						if (event.entityLiving instanceof EntityAnimal) xp = Math.round(event.ammount / 4f);

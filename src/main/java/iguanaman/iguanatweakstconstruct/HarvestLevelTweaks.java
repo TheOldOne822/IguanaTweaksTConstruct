@@ -261,6 +261,9 @@ public class HarvestLevelTweaks {
 
 	public static void SetHarvestLevel(ItemStack oreStack, int level)
 	{
+		if (oreStack.itemID == TContent.oreGravel.blockID)
+			return;
+
 		if (oreStack.getItemDamage() == OreDictionary.WILDCARD_VALUE)
 			MinecraftForge.setBlockHarvestLevel(Block.blocksList[oreStack.itemID], "pickaxe", level);
 		//FMLLog.warning("IguanaTweaksTConstruct: Setting required harvest level of " + oreStack.getUnlocalizedName() + " to " + level);

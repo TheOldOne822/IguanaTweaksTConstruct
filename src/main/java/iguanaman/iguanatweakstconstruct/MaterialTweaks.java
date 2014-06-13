@@ -170,14 +170,20 @@ public class MaterialTweaks {
 			TConstructRegistry.addToolMaterial(130, "Quicksilver", MaterialConfig.quicksilverharvestLevel, Math.round(MaterialConfig.quicksilverdurability * durMod), Math.round(MaterialConfig.quicksilverminingspeed * speedMod), MaterialConfig.quicksilverattack, MaterialConfig.quicksilverhandleModifier, MaterialConfig.quicksilverreinforced, MaterialConfig.quicksilverstonebound, "", "");
 
 			TConstructRegistry.toolMaterials.remove(132);
-			TConstructRegistry.addToolMaterial(132, "Desichalkosr", MaterialConfig.desichalkosrharvestLevel, Math.round(MaterialConfig.desichalkosrdurability * durMod), Math.round(MaterialConfig.desichalkosrminingspeed * speedMod), MaterialConfig.desichalkosrattack, MaterialConfig.desichalkosrhandleModifier, MaterialConfig.desichalkosrreinforced, MaterialConfig.desichalkosrstonebound, "", "");
+			if (Loader.isModLoaded("ExtraTicTrick"))
+				TConstructRegistry.addToolMaterial(132, "Desichalkosr", "Sinisite ", MaterialConfig.desichalkosrharvestLevel, Math.round(MaterialConfig.desichalkosrdurability * durMod), Math.round(MaterialConfig.desichalkosrminingspeed * speedMod), MaterialConfig.desichalkosrattack, MaterialConfig.desichalkosrhandleModifier, MaterialConfig.desichalkosrreinforced, MaterialConfig.desichalkosrstonebound, "", "");
+			else
+				TConstructRegistry.addToolMaterial(132, "Desichalkosr", MaterialConfig.desichalkosrharvestLevel, Math.round(MaterialConfig.desichalkosrdurability * durMod), Math.round(MaterialConfig.desichalkosrminingspeed * speedMod), MaterialConfig.desichalkosrattack, MaterialConfig.desichalkosrhandleModifier, MaterialConfig.desichalkosrreinforced, MaterialConfig.desichalkosrstonebound, "", "");
 
 			//Ardite Level
 			TConstructRegistry.toolMaterials.remove(116);
 			TConstructRegistry.addToolMaterial(116, "Vulcanite", MaterialConfig.vulcaniteharvestLevel, Math.round(MaterialConfig.vulcanitedurability * durMod), Math.round(MaterialConfig.vulcaniteminingspeed * speedMod), MaterialConfig.vulcaniteattack, MaterialConfig.vulcanitehandleModifier, MaterialConfig.vulcanitereinforced, MaterialConfig.vulcanitestonebound, "", "");
 
 			TConstructRegistry.toolMaterials.remove(123);
-			TConstructRegistry.addToolMaterial(123, "Celenegil", MaterialConfig.celenegilharvestLevel, Math.round(MaterialConfig.celenegildurability * durMod), Math.round(MaterialConfig.celenegilminingspeed * speedMod), MaterialConfig.celenegilattack, MaterialConfig.celenegilhandleModifier, MaterialConfig.celenegilreinforced, MaterialConfig.celenegilstonebound, "", "");
+			if (Loader.isModLoaded("ExtraTicTrick"))
+				TConstructRegistry.addToolMaterial(123, "Celenegil", "Thyrium ", MaterialConfig.celenegilharvestLevel, Math.round(MaterialConfig.celenegildurability * durMod), Math.round(MaterialConfig.celenegilminingspeed * speedMod), MaterialConfig.celenegilattack, MaterialConfig.celenegilhandleModifier, MaterialConfig.celenegilreinforced, MaterialConfig.celenegilstonebound, "", "");
+			else
+				TConstructRegistry.addToolMaterial(123, "Celenegil", MaterialConfig.celenegilharvestLevel, Math.round(MaterialConfig.celenegildurability * durMod), Math.round(MaterialConfig.celenegilminingspeed * speedMod), MaterialConfig.celenegilattack, MaterialConfig.celenegilhandleModifier, MaterialConfig.celenegilreinforced, MaterialConfig.celenegilstonebound, "", "");
 
 			TConstructRegistry.toolMaterials.remove(127);
 			TConstructRegistry.addToolMaterial(127, "Orichalcum", MaterialConfig.orichalcumharvestLevel, Math.round(MaterialConfig.orichalcumdurability * durMod), Math.round(MaterialConfig.orichalcumminingspeed * speedMod), MaterialConfig.orichalcumattack, MaterialConfig.orichalcumhandleModifier, MaterialConfig.orichalcumreinforced, MaterialConfig.orichalcumstonebound, "", "");
@@ -187,7 +193,10 @@ public class MaterialTweaks {
 			TConstructRegistry.addToolMaterial(113, "Sanguinite", MaterialConfig.sanguiniteharvestLevel, Math.round(MaterialConfig.sanguinitedurability * durMod), Math.round(MaterialConfig.sanguiniteminingspeed * speedMod), MaterialConfig.sanguiniteattack, MaterialConfig.sanguinitehandleModifier, MaterialConfig.sanguinitereinforced, MaterialConfig.sanguinitestonebound, "", "");
 
 			TConstructRegistry.toolMaterials.remove(118);
-			TConstructRegistry.addToolMaterial(118, "Adamantine", MaterialConfig.adamantineharvestLevel, Math.round(MaterialConfig.adamantinedurability * durMod), Math.round(MaterialConfig.adamantineminingspeed * speedMod), MaterialConfig.adamantineattack, MaterialConfig.adamantinehandleModifier, MaterialConfig.adamantinereinforced, MaterialConfig.adamantinestonebound, "§4", "");
+			if (Loader.isModLoaded("ExtraTicTrick"))
+				TConstructRegistry.addToolMaterial(118, "Adamantine", "Adamantium ", MaterialConfig.adamantineharvestLevel, Math.round(MaterialConfig.adamantinedurability * durMod), Math.round(MaterialConfig.adamantineminingspeed * speedMod), MaterialConfig.adamantineattack, MaterialConfig.adamantinehandleModifier, MaterialConfig.adamantinereinforced, MaterialConfig.adamantinestonebound, "§4", "");
+			else
+				TConstructRegistry.addToolMaterial(118, "Adamantine", MaterialConfig.adamantineharvestLevel, Math.round(MaterialConfig.adamantinedurability * durMod), Math.round(MaterialConfig.adamantineminingspeed * speedMod), MaterialConfig.adamantineattack, MaterialConfig.adamantinehandleModifier, MaterialConfig.adamantinereinforced, MaterialConfig.adamantinestonebound, "§4", "");
 
 			TConstructRegistry.toolMaterials.remove(120);
 			TConstructRegistry.addToolMaterial(120, "Atlarus", MaterialConfig.atlarusharvestLevel, Math.round(MaterialConfig.atlarusdurability * durMod), Math.round(MaterialConfig.atlarusminingspeed * speedMod), MaterialConfig.atlarusattack, MaterialConfig.atlarushandleModifier, MaterialConfig.atlarusreinforced, MaterialConfig.atlarusstonebound, "", "");

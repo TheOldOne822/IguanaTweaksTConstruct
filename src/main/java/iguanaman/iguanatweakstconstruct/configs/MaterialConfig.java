@@ -2406,7 +2406,7 @@ public class MaterialConfig {
 
 		// desichalkosr
 		ConfigCategory desichalkosrCategory = minconfig.getCategory("desichalkosr");
-		desichalkosrCategory.setComment("Setup base stats of desichalkosr");
+		desichalkosrCategory.setComment("Setup base stats of desichalkosr/Sinisite");
 
 		Property desichalkosrharvestLevelProperty = minconfig.get("desichalkosr", "desichalkosrHarvestLevel", 5);
 		desichalkosrharvestLevelProperty.comment = "sets the harvest level of desichalkosr";
@@ -2484,7 +2484,7 @@ public class MaterialConfig {
 
 		// celenegil
 		ConfigCategory celenegilCategory = minconfig.getCategory("celenegil");
-		celenegilCategory.setComment("Setup base stats of celenegil");
+		celenegilCategory.setComment("Setup base stats of celenegil/Thyrium");
 
 		Property celenegilharvestLevelProperty = minconfig.get("celenegil", "celenegilHarvestLevel", 6);
 		celenegilharvestLevelProperty.comment = "sets the harvest level of celenegil";

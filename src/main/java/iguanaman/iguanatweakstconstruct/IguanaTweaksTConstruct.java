@@ -15,6 +15,7 @@ import iguanaman.iguanatweakstconstruct.leveling.IguanaToolLeveling;
 import iguanaman.iguanatweakstconstruct.leveling.commands.IguanaCommandLevelUpTool;
 import iguanaman.iguanatweakstconstruct.leveling.commands.IguanaCommandToolXP;
 import iguanaman.iguanatweakstconstruct.leveling.commands.debug;
+import iguanaman.iguanatweakstconstruct.mobheads.IguanaMobHeads;
 import iguanaman.iguanatweakstconstruct.proxy.CommonProxy;
 import iguanaman.iguanatweakstconstruct.reference.Config;
 import iguanaman.iguanatweakstconstruct.reference.Reference;
@@ -38,6 +39,11 @@ import java.util.List;
 // todo: Unknown blocks get incorrect mining level. (just check if they're higher than the places where i added additional harvest levels and add the proper ammount to match up with the old mining level)
 // todo: add hardcoded ExtraTic mining levels
 
+// todo: add batman-hat (enderman-head without jaw and eyes)
+// todo: add enderman-jaw helmet as a very rare enderman drop :D
+// todo: bucket hattt
+// todo: cracked clay bucket? randomly obtainable when transporting lava? :D
+
 @Mod(modid= Reference.MOD_ID, name= Reference.MOD_NAME, version="${version}",
 dependencies = "required-after:" + Reference.TCON_MOD_ID + ";after:*")
 public class IguanaTweaksTConstruct {
@@ -52,6 +58,10 @@ public class IguanaTweaksTConstruct {
 
     public static boolean isToolLevelingActive = false;
     public static boolean isHarvestTweaksActive = false;
+    public static boolean isMobHeadsActive = false;
+    public static boolean isTweaksActive = false;
+    public static boolean isItemsActive = false;
+    public static boolean isPartReplacementActive = false;
 
 	public static List<Item> toolParts = null;
 
@@ -68,20 +78,13 @@ public class IguanaTweaksTConstruct {
         FMLCommonHandler.instance().bus().register(config);
 
         // workaround to know which modules are active.. :I
-        PulseMeta meta = new PulseMeta(Reference.PULSE_LEVELING, "", false, false);
-        isToolLevelingActive = pulseCFG.isModuleEnabled(meta);
-        meta = new PulseMeta(Reference.PULSE_HARVESTTWEAKS, "", false, false);
-        isHarvestTweaksActive = pulseCFG.isModuleEnabled(meta);
+        isToolLevelingActive = pulseCFG.isModuleEnabled(new PulseMeta(Reference.PULSE_LEVELING, "", false, false));
+        isHarvestTweaksActive = pulseCFG.isModuleEnabled(new PulseMeta(Reference.PULSE_HARVESTTWEAKS, "", false, false));
+        isMobHeadsActive = pulseCFG.isModuleEnabled(new PulseMeta(Reference.PULSE_MOBHEADS, "", false, false));
+        isTweaksActive = pulseCFG.isModuleEnabled(new PulseMeta(Reference.PULSE_TWEAKS, "", false, false));
+        isItemsActive = pulseCFG.isModuleEnabled(new PulseMeta(Reference.PULSE_ITEMS, "", false, false));
+        isPartReplacementActive = pulseCFG.isModuleEnabled(new PulseMeta(Reference.PULSE_REPLACING, "", false, false));
 
-		/*toolParts = Arrays.asList (
-				TinkerTools.toolRod, TinkerTools.pickaxeHead, TinkerTools.shovelHead, TinkerTools.hatchetHead,
-				TinkerTools.binding, TinkerTools.toughBinding, TinkerTools.toughRod, TinkerTools.largePlate,
-				TinkerTools.swordBlade, TinkerTools.wideGuard, TinkerTools.handGuard, TinkerTools.crossbar,
-				TinkerTools.knifeBlade, TinkerTools.fullGuard, TinkerTools.frypanHead, TinkerTools.signHead,
-				TinkerTools.chiselHead, TinkerTools.scytheBlade, TinkerTools.broadAxeHead, TinkerTools.excavatorHead,
-				TinkerTools.largeSwordBlade, TinkerTools.hammerHead, TinkerTools.bowstring, TinkerTools.fletching,
-				TinkerTools.arrowhead );
-*/
 
         // if we don't use our custom harvest levels, we have to adjust what we're using
         if(!isHarvestTweaksActive)
@@ -90,6 +93,7 @@ public class IguanaTweaksTConstruct {
         pulsar.registerPulse(new IguanaHarvestLevelTweaks());
         pulsar.registerPulse(new IguanaToolLeveling());
         pulsar.registerPulse(new IguanaToolPartReplacing());
+        pulsar.registerPulse(new IguanaMobHeads());
         pulsar.registerPulse(new IguanaItems());
         pulsar.registerPulse(new IguanaTweaks());
         pulsar.preInit(event);

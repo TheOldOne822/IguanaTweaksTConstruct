@@ -42,6 +42,7 @@ public class IguanaTileEntitySkullRenderer extends TileEntitySpecialRenderer {
     private final ModelHeadwear modelEnderManJaw = new ModelHeadwear(0,16,64,32);
     private final ModelBucketHelmet modelBucketHelmet = new ModelBucketHelmet();
     private final ResourceLocation textureBucketHelmet = new ResourceLocation(Reference.RESOURCE, "textures/models/bucket_helmet.png");
+    private final ResourceLocation textureClayBucketHelmet = new ResourceLocation(Reference.RESOURCE, "textures/models/clayBucket_helmet.png");
 
     public IguanaTileEntitySkullRenderer()
     {
@@ -79,7 +80,11 @@ public class IguanaTileEntitySkullRenderer extends TileEntitySpecialRenderer {
         if(meta == 0)
             renderSkull(x,y,z, r, sidePlacement, modelBucketHelmet, textureBucketHelmet);
         else if(meta == 1)
+            renderSkull(x,y,z, r, sidePlacement, modelBucketHelmet, textureClayBucketHelmet);
+        else if(meta == 2)
             renderSkull(x,y,z, r, sidePlacement, modelEnderManJaw, textures[0]);
+        else if(meta == 3)
+            renderSkull(x,y,z, r, sidePlacement, modelSkull, textures[0]);
     }
 
     public void renderSkull(float x, float y, float z, float r, int sidePlacement, ModelBase model, ResourceLocation texture)

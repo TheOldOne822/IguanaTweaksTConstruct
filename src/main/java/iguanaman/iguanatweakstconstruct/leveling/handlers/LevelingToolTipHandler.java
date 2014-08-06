@@ -47,7 +47,7 @@ public class LevelingToolTipHandler {
 
         ToolCore tool = (ToolCore)event.itemStack.getItem();
         NBTTagCompound tags = stack.getTagCompound().getCompoundTag(tool.getBaseTagName()); // tinker tags
-        boolean hasMiningLevel = tool instanceof Pickaxe || tool instanceof Hammer;
+        boolean hasMiningLevel = tool.getHarvestLevel(event.itemStack, "pickaxe") >= 0 || tool instanceof Pickaxe || tool instanceof Hammer;
 
         // add mining level if applicable
         if(hasMiningLevel)
@@ -87,7 +87,7 @@ public class LevelingToolTipHandler {
             inserter.add(LevelingTooltips.getXpToolTip(stack, tags));
 
         // since we added at least one line we'll add an empty spacing line at the end
-        inserter.add("");
+        //inserter.add("");
 
         // add info that you can hold shift for more details
         if(!advanced && Config.showTooltipXP && !Loader.isModLoaded("TiCTooltips")) // don't display if TicToolTips is installed

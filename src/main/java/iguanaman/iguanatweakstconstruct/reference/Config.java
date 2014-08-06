@@ -26,7 +26,7 @@ public class Config {
 	public static boolean toolLevelingExtraModifiers;
     public static int[] toolModifiersAtLevels;
 	public static boolean toolLevelingRandomBonuses;
-    //public static boolean randomBonusesAreUseful;
+    public static boolean randomBonusesAreUseful;
     public static boolean randomBonusesAreRandom;
 
 	// pick boost
@@ -35,8 +35,10 @@ public class Config {
     public static boolean mobHeadRequiresModifier;
 	public static boolean levelingPickaxeBoost;
 	public static int levelingPickaxeBoostXpPercentage;
+    public static float xpPerBoostLevelMultiplier;
 
     // Harvest Leveling
+    public static boolean nerfBronze;
     public static int durabilityPercentage;
     public static int miningSpeedPercentage;
 
@@ -50,12 +52,15 @@ public class Config {
 	public static int beheadingHeadDropChance;
 
     // tweaks
+    public static boolean nerfVanillaTools;
     public static boolean removeFlintDrop;
     public static boolean addFlintRecipe;
     public static int recipeGravelPerFlint;
     public static boolean disableStoneTools;
     public static boolean removeStoneTorchRecipe;
-    public static boolean toolsNeverDespawn;
+    public static boolean castsBurnMaterial;
+    public static boolean easyToolRepair;
+    //public static boolean toolsNeverDespawn;
 
     // debug
     public static boolean showDebugXP;
@@ -87,7 +92,7 @@ public class Config {
         // modifying leveling behaviour
         xpRequiredToolsPercentage   = configfile.getInt("xpRequiredToolsPercentage", CATEGORY_Leveling, 100, 1, 999, "Change the XP required to level up tools in % (higher = more xp needed)");
         xpRequiredWeaponsPercentage = configfile.getInt("xpRequiredWeaponsPercentage", CATEGORY_Leveling, 100, 1, 999, "Change the XP required to level up weapons in % (higher = more xp needed)");
-        xpPerLevelMultiplier        = configfile.getFloat("xpPerLevelMultiplier", CATEGORY_Leveling, 1.15f, 0.01f, 9.99f, "Exponential multiplier for required xp per level");
+        xpPerLevelMultiplier        = configfile.getFloat("xpPerLevelMultiplier", CATEGORY_Leveling, 1.15f, 1.0f, 9.99f, "Exponential multiplier for required xp per level");
 
         // tooltip things
         showTooltipXP        = configfile.getBoolean("showTooltipXP", CATEGORY_Leveling, true, "Current XP is shown when hovering over a tool");
@@ -99,7 +104,7 @@ public class Config {
         toolLevelingExtraModifiers = configfile.getBoolean("ExtraModifiers", CATEGORY_Leveling, true, "Removes modifiers on new tools and gives them through leveling (requires 'toolLeveling=true')");
 		toolLevelingRandomBonuses  = configfile.getBoolean("RandomBonuses", CATEGORY_Leveling, true, "Gives a random bonus every level, if false and levelling is on modifiers are given at levels 2 and 4 (requires 'toolLeveling=true')");
         toolModifiersAtLevels      = configfile.get(CATEGORY_Leveling, "ModifiersAtLevels", new int[]{2,4,6}, "Adds an extra modifier on these levleups if 'toolLevelingExtraModifiers' is enabled").getIntList();
-        //randomBonusesAreUseful     = configfile.getBoolean("UsefulBonuses", CATEGORY_Leveling, true, "Increases chance of getting a useful modifier for the tool drastically (compared to completely random)");
+        randomBonusesAreUseful     = configfile.getBoolean("UsefulBonuses", CATEGORY_Leveling, true, "Disables less-useful modifiers on levelups. Like a sword with silktouch, or a pickaxe with beheading.");
         randomBonusesAreRandom     = configfile.getBoolean("CompletelyRandomBonuses", CATEGORY_Leveling, false, "Each modifier is equally likely on levelup. Disables useful bonuses.");
 
 
@@ -107,27 +112,30 @@ public class Config {
         configfile.setCategoryComment(CATEGORY_PickLeveling, "Leveling Module: Allows pickaxes to gain a mining level with enough XP. Should be used with the HarvestLevel Module.");
 
         // pick boosting behaviour
-        pickaxeBoostRequired    = configfile.getBoolean("pickaxeBoostRequired", CATEGORY_PickLeveling, false, "Every Pickaxes Mining Level is reduced by 1 and needs a mining levelup (separate from tool level) or, if enabled, a mob head modifier to advance");
-        levelingPickaxeBoost    = configfile.getBoolean("allowLevelingBoost", CATEGORY_PickLeveling, true, "Pickaxes gain Mining Xp. A pickaxes mining level can be boosted through gaining XP");
+        pickaxeBoostRequired    = configfile.getBoolean("pickaxeBoostRequired", CATEGORY_PickLeveling, true, "Every Pickaxes Mining Level is reduced by 1 and needs a mining levelup (separate from tool level) or, if enabled, a mob head modifier to advance");
+        levelingPickaxeBoost    = configfile.getBoolean("allowLevelingBoost", CATEGORY_PickLeveling, true, "Pickaxes gain Mining Xp. A pickaxes mining level can be boosted through gaining XP. Should be used with pickaxeBoostRequired, otherwise tools will be able to mine higher than normally.");
         mobHeadPickaxeBoost     = configfile.getBoolean("addMobHeadBoost", CATEGORY_PickLeveling, true, "Mob heads can be used to boost a pickaxe's mining xp (REQUIRES allowLevelBoost)");
         mobHeadRequiresModifier = configfile.getBoolean("mobHeadBoostNeedsModifier", CATEGORY_PickLeveling, false, "Mob head boosting requires a free modifier");
 
         levelingPickaxeBoostXpPercentage = configfile.getInt("xpRequiredPickBoostPercentage", CATEGORY_PickLeveling, 100, 1, 999, "Change the percentage of XP required to boost a pick (i.e. 200 means 2x normal boost xp required)");
+        xpPerBoostLevelMultiplier        = configfile.getFloat("xpPerBoostLevelMultiplier", CATEGORY_Leveling, 1.12f, 1.0f, 9.99f, "Exponential multiplier for required boost xp per level");
 
         /** HarvestLevel Module **/
         configfile.setCategoryComment(CATEGORY_HarvestLevels, "Harvest Level Tweak Module: Introduces a slower mining level progression.");
+
+        // bronze levels
+        nerfBronze = configfile.getBoolean("nerfBronze", CATEGORY_HarvestLevels, false, "Reduces the mining level of bronze by 1. This means bronze can not be used to harvest obsidian. ATTENTION: ONLY USE IF YOU HAVE A WAY OF GETTING STEEL (or something with equivalent mining level)");
 
         // Tool durability/speed changes
         durabilityPercentage  = configfile.getInt("durabilityPercentage", CATEGORY_HarvestLevels, 80, 1, 999, "Change durability of all tool materials (in percent)");
         miningSpeedPercentage = configfile.getInt("miningSpeedPercentage", CATEGORY_HarvestLevels, 100, 1, 999, "Change mining speed of all tool materials (in percent)");
 
         /** PartReplacement Module **/
-        removeMobHeadOnPartReplacement = configfile.getBoolean("removeMobHead", CATEGORY_PartReplacement, false, "Removes the Mob Head Modifier on Tool-Head replacement, allowing it to be reapplied. Sholud be used with PickBoostXpPenality.");
+        removeMobHeadOnPartReplacement = configfile.getBoolean("removeMobHead", CATEGORY_PartReplacement, true, "Removes the Mob Head Modifier on Tool-Head replacement, allowing it to be reapplied. Sholud be used with PickBoostXpPenality.");
         partReplacementXpPenality      = configfile.getInt("XpPenality", CATEGORY_PartReplacement, 0, 0, 100, "How much of the current XP% shall be removed when replacing parts (So if you had 50%, and penality is 10% it'll remove 5% xp, resulting in 45%). Does not remove Skill Levels.");
         partReplacementBoostXpPenality = configfile.getInt("PickBoostXpPenality", CATEGORY_PartReplacement, 5, 0, 100, "How much of the current XP% to the next mining level shall be removed when replacing the pickaxe head. Useful to remove the mining level boost on part replacement.");
 
         /** MobHeads **/
-        // todo: implement
         configfile.setCategoryComment(CATEGORY_Heads, "Mob Head Module: Adds additional Mob heads and drops");
 
         // drop behaviour
@@ -138,17 +146,21 @@ public class Config {
         /** Vanilla/TConstruct Tweaks **/
         configfile.setCategoryComment(CATEGORY_Tweaks, "Tweak Module: Tweaks to vanilla Minecraft and Tinker's Construct");
 
+        nerfVanillaTools = configfile.getBoolean("ohNoYouAreNOTgoingToUseThatTool", CATEGORY_Tweaks, true, "Makes all non-TConstruct tools mine nothing");
+
         // gravel/flint tweaks
         removeFlintDrop = configfile.getBoolean("removeFlintDrop", CATEGORY_Tweaks, true, "Removes the random chance of getting flint from gravel");
         addFlintRecipe = configfile.getBoolean("addFlintRecipe", CATEGORY_Tweaks, true, "Adds a shapeless recipe to get flint from gravel");
-        recipeGravelPerFlint = configfile.getInt("gravelPerFlint", CATEGORY_Tweaks, 4, 1, 9, "How many gravel are required to craft one Flint");
+        recipeGravelPerFlint = configfile.getInt("gravelPerFlint", CATEGORY_Tweaks, 3, 1, 9, "How many gravel are required to craft one Flint");
 
         // ticon tweaks
         disableStoneTools = configfile.getBoolean("disablestoneTools", CATEGORY_Tweaks, true, "Stone Tools can only be used to create casts, but no tools");
+        castsBurnMaterial = configfile.getBoolean("castingBurnsMaterial", CATEGORY_Tweaks, true, "Creating a metal cast burns up the material that was used to create it");
+        easyToolRepair    = configfile.getBoolean("easyToolRepair", CATEGORY_Tweaks, true, "Allows to repair your tool in a crafting grid, without tool station");
 
         // stuff
         removeStoneTorchRecipe = configfile.getBoolean("removeStoneTorchRecipe", CATEGORY_Tweaks, false, "Removes the recipe for Tinker's Construct's stone torch");
-        toolsNeverDespawn      = configfile.getBoolean("toolsNeverDespawn", CATEGORY_Tweaks, true, "Causes Tinker's tools to never despawn");
+        //toolsNeverDespawn      = configfile.getBoolean("toolsNeverDespawn", CATEGORY_Tweaks, true, "Causes Tinker's tools to never despawn");
 
 
         /**  Debug **/
@@ -156,7 +168,7 @@ public class Config {
 
         showDebugXP = configfile.getBoolean("showDebugXP", CATEGORY_Debug, false, "Current Tool/Pick XP is shown as debug (F3) text");
 
-        logHarvestLevelChanges = configfile.getBoolean("logBlockHarvestLevelChange", CATEGORY_Debug, true, "Logs when the harvest level of a block is changed");
+        logHarvestLevelChanges = configfile.getBoolean("logBlockHarvestLevelChange", CATEGORY_Debug, true, "Logs when the harvest level of a prefix is changed");
         logMiningLevelChanges  = configfile.getBoolean("logToolMiningLevelChange", CATEGORY_Debug, true, "Logs when the mining level of a (non-tinker) tool is changed");
         logToolMaterialChanges = configfile.getBoolean("logTinkerMaterialChange", CATEGORY_Debug, true, "Logs when the mining level of a tinkers tool material is changed");
 
@@ -232,7 +244,7 @@ public class Config {
 		moreExpensiveSilkyCloth = moreExpensiveSilkyClothProperty.getBoolean(true);
 
 		Property moreExpensiveSilkyJewelProperty = configfile.get("modifiers", "moreExpensiveSilkyJewel", true);
-		moreExpensiveSilkyJewelProperty.comment = "Silky Jewel needs emerald block, instead of one emerald";
+		moreExpensiveSilkyJewelProperty.comment = "Silky Jewel needs emerald prefix, instead of one emerald";
 		moreExpensiveSilkyJewel = moreExpensiveSilkyJewelProperty.getBoolean(true);
 
 		Property mossRepairSpeedProperty = configfile.get("modifiers", "mossRepairSpeed", 3);

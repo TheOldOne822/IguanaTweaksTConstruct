@@ -1,26 +1,29 @@
-package iguanaman.iguanatweakstconstruct.claybuckets.items;
+package iguanaman.iguanatweakstconstruct.mobheads.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import iguanaman.iguanatweakstconstruct.claybuckets.IguanaItems;
+import iguanaman.iguanatweakstconstruct.mobheads.IguanaMobHeads;
 import iguanaman.iguanatweakstconstruct.reference.Reference;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
-public class WearableBucket extends Item {
-    private static final String[] textureTypes = new String[] {"bucket_helmet", "enderman_jaw"};
+public class Wearable extends Item {
+    private static final String[] textureTypes = new String[] {"bucketHoley", "clayBucketCracked", "endermanJaw", "bathat"};
     private IIcon[] icons;
 
-    public WearableBucket() {
+    public Wearable() {
         super();
-        this.setContainerItem(IguanaItems.wearableBuckets);
-        this.setUnlocalizedName(Reference.item(".wearable_bucket"));
+        this.setContainerItem(IguanaMobHeads.wearables);
+        this.setUnlocalizedName(Reference.prefix("wearable"));
 
         this.setMaxStackSize(1);
     }
@@ -31,6 +34,12 @@ public class WearableBucket extends Item {
     }
 
     @Override
+    public void addInformation(ItemStack item, EntityPlayer player, List tooltips, boolean advanced) {
+        // specul tooltips
+        tooltips.add(EnumChatFormatting.DARK_GRAY +  StatCollector.translateToLocal("tooltip." + textureTypes[item.getItemDamage()]));
+    }
+
+    @Override
     public String getUnlocalizedName(ItemStack par1ItemStack)
     {
         int i = par1ItemStack.getItemDamage();
@@ -38,7 +47,7 @@ public class WearableBucket extends Item {
         if (i < 0 || i >= textureTypes.length)
             i = 0;
 
-        return Reference.item(textureTypes[i]);
+        return getUnlocalizedName() + "." + textureTypes[i];
     }
 
     @Override

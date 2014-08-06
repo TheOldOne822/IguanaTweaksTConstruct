@@ -1,14 +1,11 @@
 package iguanaman.iguanatweakstconstruct.claybuckets;
 
-import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-import iguanaman.iguanatweakstconstruct.IguanaTweaksTConstruct;
 import iguanaman.iguanatweakstconstruct.claybuckets.items.ClayBucket;
 import iguanaman.iguanatweakstconstruct.claybuckets.items.ClayBucketMilk;
 import iguanaman.iguanatweakstconstruct.claybuckets.items.ClayBucketTinkerLiquids;
-import iguanaman.iguanatweakstconstruct.claybuckets.items.WearableBucket;
 import iguanaman.iguanatweakstconstruct.reference.Reference;
 import iguanaman.iguanatweakstconstruct.util.Log;
 import mantle.pulsar.pulse.Handler;
@@ -24,8 +21,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import tconstruct.blocks.slime.SlimeFluid;
-import tconstruct.smeltery.TinkerSmeltery;
 import tconstruct.world.TinkerWorld;
 
 import static tconstruct.smeltery.TinkerSmeltery.*;
@@ -39,19 +34,17 @@ public class IguanaItems {
     public static Item clayBucketMilk;
     public static Item clayBucketsTinkers;
 
-    public static Item wearableBuckets;
-
     @Handler
     public void preInit(FMLPreInitializationEvent event)
     {
         Log.info("Adding Items");
-        // unfired clay bucket is a regular item
-        clayBucketUnfired = new Item().setUnlocalizedName(Reference.MOD_ID + ".clayBucketUnfired").setTextureName(Reference.resource("clayBucketUnfired")).setMaxStackSize(16).setCreativeTab(CreativeTabs.tabMisc);
+        // unfired clay bucket is a regular prefix
+        clayBucketUnfired = new Item().setUnlocalizedName(Reference.prefix("clayBucketUnfired")).setTextureName(Reference.resource("clayBucketUnfired")).setMaxStackSize(16).setCreativeTab(CreativeTabs.tabMisc);
         GameRegistry.registerItem(clayBucketUnfired, "clayBucketUnfired");
 
         clayBucketFired = new ClayBucket(Blocks.air, "clayBucketFired", "clayBucketFired").setMaxStackSize(16);
-        clayBucketWater = new ClayBucket(Blocks.flowing_water, "clayBucketWater", "clayBucketWater");
-        clayBucketLava = new ClayBucket(Blocks.flowing_lava, "clayBucketLava", "clayBucketLava");
+        clayBucketWater = new ClayBucket(Blocks.flowing_water, "clayBucket.Water", "clayBucketWater");
+        clayBucketLava = new ClayBucket(Blocks.flowing_lava, "clayBucket.Lava", "clayBucketLava");
         clayBucketMilk = new ClayBucketMilk();
 
         clayBucketsTinkers = new ClayBucketTinkerLiquids(null);
@@ -61,12 +54,6 @@ public class IguanaItems {
         GameRegistry.registerItem(clayBucketLava,  "clayBucketLava");
         GameRegistry.registerItem(clayBucketMilk,  "clayBucketMilk");
         GameRegistry.registerItem(clayBucketsTinkers, "clayBucketsTinkers");
-
-        // secrit bucketssss
-        if(IguanaTweaksTConstruct.isMobHeadsActive) {
-            wearableBuckets = new WearableBucket();
-            GameRegistry.registerItem(wearableBuckets, "wearableBucket");
-        }
 
         // register milkbucket to the ordictionary
         OreDictionary.registerOre("listAllmilk", clayBucketMilk); // i suppose this is for pams harvestcraft.

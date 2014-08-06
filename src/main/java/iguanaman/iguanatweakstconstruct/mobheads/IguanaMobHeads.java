@@ -1,17 +1,17 @@
 package iguanaman.iguanatweakstconstruct.mobheads;
 
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import iguanaman.iguanatweakstconstruct.IguanaTweaksTConstruct;
 import iguanaman.iguanatweakstconstruct.mobheads.blocks.IguanaSkullBlock;
 import iguanaman.iguanatweakstconstruct.mobheads.handlers.MobHeadHandler;
 import iguanaman.iguanatweakstconstruct.mobheads.items.IguanaSkull;
+import iguanaman.iguanatweakstconstruct.mobheads.items.Wearable;
 import iguanaman.iguanatweakstconstruct.mobheads.proxy.MobHeadCommonProxy;
 import iguanaman.iguanatweakstconstruct.mobheads.handlers.RenderPlayerHandler;
 import iguanaman.iguanatweakstconstruct.mobheads.tileentities.IguanaSkullTileEntity;
-import iguanaman.iguanatweakstconstruct.old.blocks.IguanaTileEntitySkull;
 import iguanaman.iguanatweakstconstruct.reference.Reference;
 import iguanaman.iguanatweakstconstruct.util.Log;
 import mantle.pulsar.pulse.Handler;
@@ -27,6 +27,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class IguanaMobHeads {
     public static Item skullItem;
     public static Block skullBlock;
+    public static Item wearables; // secret thing
 
     @SidedProxy(clientSide = "iguanaman.iguanatweakstconstruct.mobheads.proxy.MobHeadClientProxy", serverSide = "iguanaman.iguanatweakstconstruct.mobheads.proxy.MobHeadCommonProxy")
     public static MobHeadCommonProxy proxy;
@@ -36,16 +37,19 @@ public class IguanaMobHeads {
     {
         proxy.initialize();
 
-        if(Loader.isModLoaded("ThermalFoundation"))
+        if(IguanaTweaksTConstruct.modTEDetected)
             integrateThermalExpansion();
 
         skullItem = new IguanaSkull();
-        GameRegistry.registerItem(skullItem, "SkullItem");
+        GameRegistry.registerItem(skullItem, "skullItem");
 
         skullBlock = new IguanaSkullBlock();
-        GameRegistry.registerBlock(skullBlock, "SkullBlock");
-        GameRegistry.registerTileEntity(IguanaSkullTileEntity.class, "SkullEntity");
+        GameRegistry.registerBlock(skullBlock, "skullBlock");
+        GameRegistry.registerTileEntity(IguanaSkullTileEntity.class, "skullTE");
 
+        // psssssst!
+        wearables = new Wearable();
+        GameRegistry.registerItem(wearables, "wearableBucket");
     }
 
     @Handler

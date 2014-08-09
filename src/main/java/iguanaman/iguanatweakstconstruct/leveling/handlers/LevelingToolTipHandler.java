@@ -1,16 +1,17 @@
 package iguanaman.iguanatweakstconstruct.leveling.handlers;
 
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import iguanaman.iguanatweakstconstruct.leveling.LevelingLogic;
 import iguanaman.iguanatweakstconstruct.leveling.LevelingTooltips;
 import iguanaman.iguanatweakstconstruct.reference.Config;
-import net.minecraft.client.Minecraft;
+import iguanaman.iguanatweakstconstruct.util.TooltipHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import org.lwjgl.input.Keyboard;
 import tconstruct.items.tools.Hammer;
 import tconstruct.items.tools.Pickaxe;
 import tconstruct.library.tools.ToolCore;
@@ -22,7 +23,7 @@ public class LevelingToolTipHandler {
     // the prefix used for "+ X attack damage". Thanks Tic Tooltips ;)
     private static String plusPrefix = "\u00A79+";
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGH) // insert before tic-tooltips
     public void onItemToolTip(ItemTooltipEvent event) {
         if(event.entityPlayer == null)
             return;
@@ -32,14 +33,14 @@ public class LevelingToolTipHandler {
             return;
 
         // don't display tooltip when CTRL is held (also tic tooltips compatibility)
-        if(ctrlHeld())
+        if(TooltipHelper.ctrlHeld())
             return;
 
         ItemStack stack = event.itemStack;
         // find spot to insert our tooltip data
         ListIterator<String> inserter = findInsertSpot(event.toolTip);
         // does the user hold shift?
-        boolean advanced = shiftHeld();
+        boolean advanced = TooltipHelper.shiftHeld();
         // only allow advanced (xp) tooltip if config option is set
         advanced &= Config.showTooltipXP;
 
@@ -47,7 +48,7 @@ public class LevelingToolTipHandler {
 
         ToolCore tool = (ToolCore)event.itemStack.getItem();
         NBTTagCompound tags = stack.getTagCompound().getCompoundTag(tool.getBaseTagName()); // tinker tags
-        boolean hasMiningLevel = tool instanceof Pickaxe || tool instanceof Hammer;
+        boolean hasMiningLevel = tool.getHarvestLevel(event.itemStack, "pickaxe") >= 0 || tool instanceof Pickaxe || tool instanceof Hammer;
 
         // add mining level if applicable
         if(hasMiningLevel)
@@ -91,7 +92,12 @@ public class LevelingToolTipHandler {
 
         // add info that you can hold shift for more details
         if(!advanced && Config.showTooltipXP && !Loader.isModLoaded("TiCTooltips")) // don't display if TicToolTips is installed
-            event.toolTip.add(EnumChatFormatting.GRAY.toString() + EnumChatFormatting.ITALIC.toString() + "Hold SHIFT for XP");
+            inserter.add(StatCollector.translateToLocalFormatted("tooltip.level.advanced", EnumChatFormatting.YELLOW.toString() + EnumChatFormatting.ITALIC + "Shift" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY));
+
+        // remove the trailing empty line we used as insert reference n stuff
+        String empty = inserter.next();
+        if(empty.isEmpty())
+            inserter.remove();
     }
 
     private ListIterator<String> findInsertSpot(List<String> tooltip)
@@ -106,10 +112,11 @@ public class LevelingToolTipHandler {
                 iterator.previous();
                 break;
             }
+            /*
             else if(Loader.isModLoaded("TiCTooltips") && str.contains("Shift")) {
                 iterator.previous();
                 break;
-            }
+            }*/
         }
 
         //  iterator.previous();
@@ -117,22 +124,5 @@ public class LevelingToolTipHandler {
         // we're either directly before the "+ damage" or at the end now
 
         return iterator;
-    }
-
-    // all hail ticTooltips for that information ;)
-    private boolean shiftHeld()
-    {
-        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
-    }
-
-    private boolean ctrlHeld()
-    {
-
-        // prioritize CONTROL, but allow OPTION as well on Mac (note: GuiScreen's isCtrlKeyDown only checks for the OPTION key on Mac)
-        boolean isCtrlKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || Keyboard.isKeyDown(Keyboard.KEY_RCONTROL);
-        if (!isCtrlKeyDown && Minecraft.isRunningOnMac)
-            isCtrlKeyDown = Keyboard.isKeyDown(Keyboard.KEY_LMETA) || Keyboard.isKeyDown(Keyboard.KEY_RMETA);
-
-        return isCtrlKeyDown;
     }
 }

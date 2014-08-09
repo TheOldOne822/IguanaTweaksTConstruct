@@ -1,8 +1,5 @@
 package iguanaman.iguanatweakstconstruct.old.modifiers;
 
-import java.util.Arrays;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,6 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import tconstruct.library.ActiveToolMod;
 import tconstruct.library.tools.ToolCore;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class IguanaActiveToolMod extends ActiveToolMod {
 
@@ -28,7 +28,7 @@ public class IguanaActiveToolMod extends ActiveToolMod {
 		Block block = entity.worldObj.getBlock(x, y, z);
 		int meta = entity.worldObj.getBlockMetadata(x, y, z);
 
-		if (block == null || materialBlacklist.contains(block.blockMaterial)) return false;
+		if (block == null || materialBlacklist.contains(block.getMaterial())) return false;
 
 		NBTTagCompound tags = stack.getTagCompound().getCompoundTag("InfiTool");
 
@@ -42,10 +42,10 @@ public class IguanaActiveToolMod extends ActiveToolMod {
 		if (miningSpeedHandle > 0) tags.setInteger("MiningSpeedHandle", miningSpeedHandle * 2);
 		if (miningSpeedExtra > 0) tags.setInteger("MiningSpeedExtra", miningSpeedExtra * 2);
 
-		//IguanaLog.log(tool.canHarvestBlock(block) + " " + Float.toString(tool.getStrVsBlock(stack, block, meta)));
+		//IguanaLog.log(tool.canHarvestBlock(prefix) + " " + Float.toString(tool.getStrVsBlock(stack, prefix, meta)));
 
 		// TODO: Find replacement for canHarvestBlock and getStrVsBlock
-		//if (tool.canHarvestBlock(block) && tool.getStrVsBlock(stack, block, meta) > 1f)
+		//if (tool.canHarvestBlock(prefix) && tool.getStrVsBlock(stack, prefix, meta) > 1f)
 			//IguanaLog.log("xp added");
 		    // TODO: Find replacement for canHarvestBlock and getStrVsBlock
 			//IguanaLevelingLogic.addXP(stack, (EntityPlayer)entity, 1L);

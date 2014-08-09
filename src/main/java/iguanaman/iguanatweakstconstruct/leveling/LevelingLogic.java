@@ -1,24 +1,20 @@
 package iguanaman.iguanatweakstconstruct.leveling;
 
-import iguanaman.iguanatweakstconstruct.old.modifiers.*;
 import iguanaman.iguanatweakstconstruct.reference.Config;
 import iguanaman.iguanatweakstconstruct.reference.Reference;
 import iguanaman.iguanatweakstconstruct.util.HarvestLevels;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import tconstruct.items.tools.*;
 import tconstruct.library.TConstructRegistry;
-import tconstruct.library.modifier.ItemModifier;
 import tconstruct.library.tools.HarvestTool;
+import tconstruct.library.tools.ToolCore;
 import tconstruct.library.tools.Weapon;
-import tconstruct.modifiers.tools.ModAntiSpider;
-import tconstruct.modifiers.tools.ModInteger;
-import tconstruct.modifiers.tools.ModReinforced;
-import tconstruct.modifiers.tools.ModSmite;
 
 /**
  * Utility class that takes care of all the Tool XP related things.
@@ -62,7 +58,7 @@ public abstract class LevelingLogic {
      * Add the leveling specific NBT.
      * @param tag The tag that should recieve the data. Usually InfiTool Tag.
      */
-    public static void addLevelingTags(NBTTagCompound tag)
+    public static void addLevelingTags(NBTTagCompound tag, ToolCore tool)
     {
         // we start with level 1
         tag.setInteger(TAG_LEVEL, 1);
@@ -70,16 +66,23 @@ public abstract class LevelingLogic {
         tag.setLong(TAG_EXP, 0);
 
         // mining level boost
-        int hlvl = tag.getInteger("HarvestLevel");
-        // only tools with >stone level can be boosted
-        if(Config.levelingPickaxeBoost && hlvl > 0) {
-            tag.setLong(TAG_BOOST_EXP, 0);
-            tag.setBoolean(TAG_IS_BOOSTED, false);
+        addBoostTags(tag, tool);
+    }
 
-            // reduce harvestlevel by 1 if pickaxe boosting is required
-            if(Config.pickaxeBoostRequired) {
-                    tag.setInteger("HarvestLevel", hlvl - 1);
-            }
+    public static void addBoostTags(NBTTagCompound tag, ToolCore tool)
+    {
+        int hlvl = tag.getInteger("HarvestLevel");
+        if(!Config.levelingPickaxeBoost)
+            return;
+        if(hlvl == 0 || !(tool instanceof Pickaxe || tool instanceof Hammer))
+            return;
+
+        tag.setLong(TAG_BOOST_EXP, 0);
+        tag.setBoolean(TAG_IS_BOOSTED, false);
+
+        // reduce harvestlevel by 1 if pickaxe boosting is required
+        if(Config.pickaxeBoostRequired) {
+            tag.setInteger("HarvestLevel", hlvl - 1);
         }
     }
 
@@ -182,26 +185,37 @@ public abstract class LevelingLogic {
 		}
 		else
 		{
+            base = 100f;
+            if(tags.hasKey("HarvestLevel") && LevelingLogic.getHarvestLevel(tags) < 1)
+                base -= 20;
+            if(tags.hasKey("HarvestLevel") && LevelingLogic.getHarvestLevel(tags) < 2)
+                base -= 15;
+
+            // main-head mining speed
+            int baseMiningSpeed = TConstructRegistry.getMaterial(tags.getInteger("Head")).toolSpeed();
 			int miningSpeed = tags.getInteger("MiningSpeed");
-			int divider = 1;
+            // and mining speeds of additional heads.
+			float divider = 2.4f;
 			if (tags.hasKey("MiningSpeed2"))
 			{
+                baseMiningSpeed += TConstructRegistry.getMaterial(tags.getInteger("Accessory")).toolSpeed();
 				miningSpeed += tags.getInteger("MiningSpeed2");
 				divider += 1;
 			}
 			if (tags.hasKey("MiningSpeedHandle"))
 			{
+                baseMiningSpeed += TConstructRegistry.getMaterial(tags.getInteger("Handle")).toolSpeed();
 				miningSpeed += tags.getInteger("MiningSpeedHandle");
 				divider += 1;
 			}
 			if (tags.hasKey("MiningSpeedExtra"))
 			{
+                baseMiningSpeed += TConstructRegistry.getMaterial(tags.getInteger("Extra")).toolSpeed();
 				miningSpeed += tags.getInteger("MiningSpeedExtra");
 				divider += 1;
 			}
 
-			base = 100f;
-			base += (float)miningSpeed / (float)divider / 2f;
+            base += ((float)baseMiningSpeed + (float)(miningSpeed-baseMiningSpeed)/5f)/divider;
 
 			if (tool.getItem() instanceof Hatchet) base /= 2f;
 			else if (tool.getItem() instanceof Shovel) base *= 2f;
@@ -216,14 +230,18 @@ public abstract class LevelingLogic {
 		if (miningBoost)
 		{
 			int harvestLevelCopper = HarvestLevels._2_copper;
-			int harvestLevel = TConstructRegistry.getMaterial(tags.getInteger("Head")).harvestLevel();
-			if (harvestLevel >= harvestLevelCopper) base *= Math.pow(Config.xpPerLevelMultiplier, harvestLevel - harvestLevelCopper);
+			int harvestLevel = getHarvestLevel(tags);
+			if (harvestLevel >= harvestLevelCopper) base *= Math.pow(Config.xpPerBoostLevelMultiplier, harvestLevel - harvestLevelCopper);
+            if (harvestLevel == 0) base /= Config.xpPerBoostLevelMultiplier * Config.xpPerBoostLevelMultiplier;
+
 			base *= Config.levelingPickaxeBoostXpPercentage / 100f;
 		}
 		else
 		{
 			int level = tags.getInteger("ToolLevel");
 			if (level >= 1) base *= Math.pow(Config.xpPerLevelMultiplier, level - 1);
+            if(tags.hasKey("HarvestLevel") && LevelingLogic.getHarvestLevel(tags) == 0)
+                base /= Config.xpPerLevelMultiplier * Config.xpPerLevelMultiplier;
 		}
 
 		return Math.round(base);
@@ -237,12 +255,17 @@ public abstract class LevelingLogic {
 		NBTTagCompound tags = stack.getTagCompound().getCompoundTag("InfiTool");
 		World world = player.worldObj;
 
+        // Add random bonuses on leveling up?
+        // this is done first so the extra-chance can be incorporated correctly
+        if (Config.toolLevelingRandomBonuses)
+        {
+            RandomBonuses.tryModifying(player, stack);
+        }
+
         // *ding* levelup!
 		int level = getLevel(tags);
         level++;
 		tags.setInteger(TAG_LEVEL, level);
-
-		boolean isTool = stack.getItem() instanceof HarvestTool;
 
         // reset tool xp to 0, since we're at a new level now
         tags.setLong(TAG_EXP, 0L);
@@ -250,19 +273,9 @@ public abstract class LevelingLogic {
         // tell the player how awesome he is
         if (!world.isRemote)
         {
-            String message = "";
-            switch (level)
+            if(StatCollector.canTranslate("message.levelup." + level))
             {
-                case 2: message = "\u00a73You begin to feel comfortable handling the " + stack.getDisplayName(); break;
-                case 3: message = "\u00a73You are now accustomed to the weight of the " + stack.getDisplayName(); break;
-                case 4: message = "\u00a73You have become adept at handling the " + stack.getDisplayName(); break;
-                case 5: message = "\u00a73You are now an expert at using the " + stack.getDisplayName() + "\u00a73!"; break;
-                case 6: message = "\u00a73You have mastered the " + stack.getDisplayName() + "\u00a73!"; break;
-            }
-
-            if (!message.equalsIgnoreCase(""))
-            {
-                player.addChatMessage(new ChatComponentText(message));
+                player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocalFormatted("message.levelup." + level, stack.getDisplayName())));
             }
         }
 
@@ -285,21 +298,13 @@ public abstract class LevelingLogic {
 
                 // fancy message on clientside
                 if(!world.isRemote) {
-                    // todo: solve "modifier(s)" more beautiful because localization
                     if(world.rand.nextInt(10) < modifiersToAdd)
-                        player.addChatMessage(new ChatComponentText("\u00a79More Bling for your Thing (+" + modifiersToAdd + " modifier" + (modifiersToAdd>1 ? "s" : "") + ")."));
+                        player.addChatMessage(new ChatComponentText(LevelingTooltips.getInfoString(StatCollector.translateToLocal("message.levelup.newmodifier.2"), EnumChatFormatting.DARK_AQUA, String.format("+%d %s", modifiersToAdd, StatCollector.translateToLocal("message.levelup.modifier")), EnumChatFormatting.GOLD)));
                     else
-                        player.addChatMessage(new ChatComponentText("\u00a79You notice room for improvement (+" + modifiersToAdd + " modifier" + (modifiersToAdd>1 ? "s" : "") + ")."));
+                        player.addChatMessage(new ChatComponentText(LevelingTooltips.getInfoString(StatCollector.translateToLocal("message.levelup.newmodifier.1"), EnumChatFormatting.DARK_AQUA, String.format("+%d %s", modifiersToAdd, StatCollector.translateToLocal("message.levelup.modifier")), EnumChatFormatting.GOLD)));
                 }
             }
         }
-
-
-        // Add random bonuses on leveling up?
-		if (Config.toolLevelingRandomBonuses)
-		{
-            RandomBonusses.tryModifying(player, stack);
-		}
 	}
 
 	public static void levelUpMiningLevel(ItemStack stack, EntityPlayer player, boolean leveled)
@@ -317,10 +322,7 @@ public abstract class LevelingLogic {
         // fancy message
 		if (player != null) {
             if(!player.worldObj.isRemote) {
-                if (!leveled)
-                    player.addChatMessage(new ChatComponentText("\u00a73Suddenly, a flash of light shines from the tip of your " + stack.getDisplayName() + "\u00a73 (+1 mining level)"));
-                else
-                    player.addChatMessage(new ChatComponentText("\u00a79Suddenly, a flash of light shines from the tip of the pickaxe (+1 mining level)"));
+                player.addChatMessage(new ChatComponentText(LevelingTooltips.getInfoString(StatCollector.translateToLocalFormatted("message.levelup.miningboost", stack.getDisplayName()), EnumChatFormatting.DARK_AQUA, String.format("+%d %s", 1, StatCollector.translateToLocal("message.levelup.mininglevel")), EnumChatFormatting.GOLD)));
             }
         }
 
@@ -333,7 +335,7 @@ public abstract class LevelingLogic {
 	private static boolean tryModify(EntityPlayer player, ItemStack stack, int rnd, boolean isTool)
 	{
 		ItemModifier mod = null;
-		Item item = stack.getItem();
+		Item prefix = stack.getItem();
 
 		ItemStack[] nullItemStack = new ItemStack[] {};
 		if (rnd < 1)
@@ -342,7 +344,7 @@ public abstract class LevelingLogic {
 			if (!player.worldObj.isRemote)
 				player.addChatMessage(new ChatComponentText("\u00a79It seems to have accumulated a patch of moss (+1 repair)"));
 		}
-		else if (rnd < 2 && (!isTool && !(item instanceof Shortbow) || isTool && (item instanceof Pickaxe || item instanceof Hammer)))
+		else if (rnd < 2 && (!isTool && !(prefix instanceof Shortbow) || isTool && (prefix instanceof Pickaxe || prefix instanceof Hammer)))
 		{
 			mod = new IguanaModLapis(nullItemStack, 10, new int[]{100});
 			if (((IguanaModLapis)mod).canModify(stack, nullItemStack)) {
@@ -350,7 +352,7 @@ public abstract class LevelingLogic {
 					player.addChatMessage(new ChatComponentText("\u00a79Perhaps holding on to it will bring you luck? (+100 luck)"));
 			} else return false;
 		}
-		else if (rnd < 6 && (isTool || item instanceof Shortbow))
+		else if (rnd < 6 && (isTool || prefix instanceof Shortbow))
 		{
 			mod = new IguanaModRedstone(nullItemStack, 2, 50);
 			if (((IguanaModRedstone)mod).canModify(stack, nullItemStack, true)) {
@@ -358,7 +360,7 @@ public abstract class LevelingLogic {
 					player.addChatMessage(new ChatComponentText("\u00a79You spin it around with a flourish (+1 haste)"));
 			} else return false;
 		}
-		else if (rnd < 3 && !isTool && !(item instanceof Shortbow))
+		else if (rnd < 3 && !isTool && !(prefix instanceof Shortbow))
 		{
 			mod = new IguanaModAttack("Quartz", nullItemStack, 11, 30);
 			if (((IguanaModAttack)mod).canModify(stack, nullItemStack, true)) {
@@ -366,13 +368,13 @@ public abstract class LevelingLogic {
 					player.addChatMessage(new ChatComponentText("\u00a79You take the time to sharpen the dull edges of the blade (+1 attack)"));
 			} else return false;
 		}
-		else if (rnd < 4 && !isTool && !(item instanceof Shortbow))
+		else if (rnd < 4 && !isTool && !(prefix instanceof Shortbow))
 		{
 			mod = new ModInteger(nullItemStack, 13, "Beheading", 1, "\u00a7d", "Beheading");
 			if (!player.worldObj.isRemote)
 				player.addChatMessage(new ChatComponentText("\u00a79You could take someones head off with that! (+1 beheading)"));
 		}
-		else if (rnd < 5 && !isTool && !(item instanceof Shortbow))
+		else if (rnd < 5 && !isTool && !(prefix instanceof Shortbow))
 		{
 			mod = new IguanaModBlaze(nullItemStack, 7, new int[]{25});
 			if (((IguanaModBlaze)mod).canModify(stack, nullItemStack)) {
@@ -380,19 +382,19 @@ public abstract class LevelingLogic {
 					player.addChatMessage(new ChatComponentText("\u00a79It starts to feels more hot to the touch (+1 fire aspect)"));
 			} else return false;
 		}
-		else if (rnd < 6 && !isTool && !(item instanceof Shortbow))
+		else if (rnd < 6 && !isTool && !(prefix instanceof Shortbow))
 		{
 			mod = new ModInteger(nullItemStack, 8, "Necrotic", 1, "\u00a78", "Life Steal");
 			if (!player.worldObj.isRemote)
 				player.addChatMessage(new ChatComponentText("\u00a79It shudders with a strange energy (+1 life steal)"));
 		}
-		else if (rnd < 7 && !isTool && !(item instanceof Shortbow))
+		else if (rnd < 7 && !isTool && !(prefix instanceof Shortbow))
 		{
 			mod = new ModSmite("Smite", 14, nullItemStack, new int[]{ 36});
 			if (!player.worldObj.isRemote)
 				player.addChatMessage(new ChatComponentText("\u00a79It begins to radiate a slight glow (+1 smite)"));
 		}
-		else if (rnd < 8 && !isTool && !(item instanceof Shortbow))
+		else if (rnd < 8 && !isTool && !(prefix instanceof Shortbow))
 		{
 			mod = new ModAntiSpider("Anti-Spider",15, nullItemStack, new int[]{ 4});
 			if (!player.worldObj.isRemote)

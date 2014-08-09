@@ -1,8 +1,5 @@
 package iguanaman.iguanatweakstconstruct.old;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 //import tconstruct.common.TContent;
 //import cpw.mods.fml.common.ICraftingHandler;
 
@@ -10,9 +7,9 @@ import net.minecraft.item.ItemStack;
 public class IguanaPatternCraftingHandler /*implements ICraftingHandler*/ {
 
 	/*@Override
-	public void onCrafting(EntityPlayer player, ItemStack item, IInventory craftMatrix) {
+	public void onCrafting(EntityPlayer player, ItemStack prefix, IInventory craftMatrix) {
 
-		if (item.getItem().itemID == TContent.woodPattern.itemID)
+		if (prefix.getItem().itemID == TContent.woodPattern.itemID)
 			for (int i = 0; i < craftMatrix.getSizeInventory(); i++)
 			{
 				ItemStack inSlot = craftMatrix.getStackInSlot(i);
@@ -24,6 +21,6 @@ public class IguanaPatternCraftingHandler /*implements ICraftingHandler*/ {
 	}
 
 	@Override
-	public void onSmelting(EntityPlayer player, ItemStack item) {}*/
+	public void onSmelting(EntityPlayer player, ItemStack prefix) {}*/
 
 }

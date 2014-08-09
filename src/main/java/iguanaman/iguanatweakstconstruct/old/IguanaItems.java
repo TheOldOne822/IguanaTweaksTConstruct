@@ -1,12 +1,9 @@
 package iguanaman.iguanatweakstconstruct.old;
 
-import iguanaman.iguanatweakstconstruct.reference.*;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import iguanaman.iguanatweakstconstruct.old.items.*;
 import iguanaman.iguanatweakstconstruct.util.Log;
-import iguanaman.iguanatweakstconstruct.old.items.ClayBucket;
-import iguanaman.iguanatweakstconstruct.old.items.ClayBucketFilled;
-import iguanaman.iguanatweakstconstruct.old.items.ClayBucketMilk;
-import iguanaman.iguanatweakstconstruct.old.items.IguanaPattern;
-import iguanaman.iguanatweakstconstruct.old.items.IguanaToolPart;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -21,8 +18,6 @@ import tconstruct.library.crafting.ToolBuilder;
 import tconstruct.library.util.IPattern;
 import tconstruct.tools.BowRecipe;
 import tconstruct.tools.TinkerTools;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class IguanaItems {
 
@@ -115,13 +110,13 @@ public class IguanaItems {
 		ToolBuilder.addCustomToolRecipe(new BowRecipe(TinkerTools.toolRod, TinkerTools.bowstring, TinkerTools.toolRod, TinkerTools.shortbow));
 
 		//SKULL ITEM
-		Log.info("Adding skull item");
-		// TODO: find a way to replace vanilla skull
-		/*Item.itemsList[Item.skull.itemID] = null;
-		Item.skull = new IguanaItemSkull(141).setUnlocalizedName("skull").setTextureName("skull");
-		LanguageRegistry.addName(new ItemStack(Item.skull, 1, 5), "Enderman Head");
-		LanguageRegistry.addName(new ItemStack(Item.skull, 1, 6), "Zombie Pigman Head");
-		LanguageRegistry.addName(new ItemStack(Item.skull, 1, 7), "Blaze Head");*/
+		Log.info("Adding skullItem prefix");
+		// TODO: find a way to replace vanilla skullItem
+		/*Item.itemsList[Item.skullItem.itemID] = null;
+		Item.skullItem = new IguanaItemSkull(141).setUnlocalizedName("skullItem").setTextureName("skullItem");
+		LanguageRegistry.addName(new ItemStack(Item.skullItem, 1, 5), "Enderman Head");
+		LanguageRegistry.addName(new ItemStack(Item.skullItem, 1, 6), "Zombie Pigman Head");
+		LanguageRegistry.addName(new ItemStack(Item.skullItem, 1, 7), "Blaze Head");*/
 
 
 		//COBALT ARMOR
@@ -143,8 +138,8 @@ public class IguanaItems {
 
 			for (int j = 0; j < recipeItems.length; ++j)
 			{
-				Item item = (Item)recipeItems[j];
-				CraftingManager.getInstance().addRecipe(new ItemStack(item), new Object[] {recipePatterns[j], 'X', new ItemStack(TContent.materials, 1, 3)});
+				Item prefix = (Item)recipeItems[j];
+				CraftingManager.getInstance().addRecipe(new ItemStack(prefix), new Object[] {recipePatterns[j], 'X', new ItemStack(TContent.materials, 1, 3)});
 			}*/
 		}
 

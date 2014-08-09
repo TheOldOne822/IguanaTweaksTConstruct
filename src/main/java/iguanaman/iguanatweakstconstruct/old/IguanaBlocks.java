@@ -1,14 +1,14 @@
 package iguanaman.iguanatweakstconstruct.old;
 
-import iguanaman.iguanatweakstconstruct.util.Log;
+import cpw.mods.fml.common.registry.GameRegistry;
 import iguanaman.iguanatweakstconstruct.old.blocks.IguanaToolForgeBlock;
 import iguanaman.iguanatweakstconstruct.old.blocks.IguanaToolStationBlock;
+import iguanaman.iguanatweakstconstruct.util.Log;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import tconstruct.common.itemblocks.MetadataItemBlock;
 import tconstruct.tools.TinkerTools;
 import tconstruct.tools.itemblocks.ToolStationItemBlock;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class IguanaBlocks {
 
@@ -36,11 +36,11 @@ public class IguanaBlocks {
 
 
 		//SKULLS
-		Log.info("Adding skull blocks");
+		Log.info("Adding skullItem blocks");
 		// TODO: Find a way to change vanilla skulls
-		/*Blocks.skull = null;
-		newSkullBlock = new IguanaBlockSkull().setHardness(1.0F).setStepSound(Block.soundTypeSand).setBlockName("skull").setBlockTextureName("skull");
-		Blocks.skull = newSkullBlock;
+		/*Blocks.skullItem = null;
+		newSkullBlock = new IguanaBlockSkull().setHardness(1.0F).setStepSound(Block.soundTypeSand).setBlockName("skullItem").setBlockTextureName("skullItem");
+		Blocks.skullItem = newSkullBlock;
 		GameRegistry.registerBlock(newSkullBlock, "Skull");
 		GameRegistry.registerTileEntity(IguanaTileEntitySkull.class, "SkullEntity");*/
 

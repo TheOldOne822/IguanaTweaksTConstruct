@@ -1,14 +1,11 @@
-package iguanaman.iguanatweakstconstruct.leveling.commands;
+package iguanaman.iguanatweakstconstruct.debug;
 
-import iguanaman.iguanatweakstconstruct.leveling.RandomBonusses;
-import iguanaman.iguanatweakstconstruct.util.Log;
+import iguanaman.iguanatweakstconstruct.leveling.RandomBonuses;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
-import scala.Int;
 import tconstruct.library.crafting.ToolBuilder;
 import tconstruct.library.tools.ToolCore;
 import tconstruct.tools.TinkerTools;
@@ -16,7 +13,7 @@ import tconstruct.tools.TinkerTools;
 import java.util.HashMap;
 import java.util.Map;
 
-public class debug extends CommandBase {
+public class DebugCommand extends CommandBase {
 
     @Override
     public String getCommandName() {
@@ -38,18 +35,26 @@ public class debug extends CommandBase {
         EntityPlayerMP entityplayermp = astring.length >= 1 ? getPlayer(icommandsender, astring[0]) : getCommandSenderAsPlayer(icommandsender);
         ItemStack equipped = entityplayermp.getCurrentEquippedItem();
         if (equipped != null && equipped.getItem() instanceof ToolCore) {
-            HashMap<RandomBonusses.Modifier, Integer> foo = new HashMap<RandomBonusses.Modifier, Integer>();
+            //Config.randomBonusesAreUseful = true;
+            //Config.randomBonusesAreRandom = false;
+            HashMap<RandomBonuses.Modifier, Integer> foo = new HashMap<RandomBonuses.Modifier, Integer>();
             for(int i = 0; i < 1000; i++) {
                 {
+                    // pick
+                    //ItemStack head = new ItemStack(TinkerTools.pickaxeHead, 0, 2);
+                    //ItemStack handle = new ItemStack(TinkerTools.toolRod, 0, 3);
+                    //ItemStack accessory = new ItemStack(TinkerTools.binding, 0, 4);
+                    // sword
                     //ItemStack head = new ItemStack(TinkerTools.swordBlade, 0, 2);
                     //ItemStack handle = new ItemStack(TinkerTools.toolRod, 0, 3);
                     //ItemStack accessory = new ItemStack(TinkerTools.wideGuard, 0, 4);
+                    // bow
                     ItemStack head = new ItemStack(TinkerTools.toolRod, 0, 2);
                     ItemStack handle = new ItemStack(TinkerTools.bowstring, 0, 0);
                     ItemStack accessory = new ItemStack(TinkerTools.toolRod, 0, 4);
                     ItemStack tool = ToolBuilder.instance.buildTool(head, handle, accessory, "testtool");
                     for(int j = 0; j < 5; j++) {
-                        RandomBonusses.Modifier mod = RandomBonusses.tryModifying(entityplayermp, tool);
+                        RandomBonuses.Modifier mod = RandomBonuses.tryModifying(entityplayermp, tool);
                         if (!foo.containsKey(mod))
                             foo.put(mod, 1);
                         else
@@ -58,7 +63,7 @@ public class debug extends CommandBase {
                 }
             }
 
-            for(Map.Entry<RandomBonusses.Modifier, Integer> bar : foo.entrySet())
+            for(Map.Entry<RandomBonuses.Modifier, Integer> bar : foo.entrySet())
                 icommandsender.addChatMessage(new ChatComponentText(bar.getKey().toString() + ": " + bar.getValue()));
             /*
             NBTTagCompound tags = equipped.getTagCompound().getCompoundTag("InfiTool");

@@ -1,24 +1,16 @@
 package iguanaman.iguanatweakstconstruct.claybuckets.items;
 
+import iguanaman.iguanatweakstconstruct.IguanaTweaksTConstruct;
 import iguanaman.iguanatweakstconstruct.claybuckets.IguanaItems;
+import iguanaman.iguanatweakstconstruct.mobheads.IguanaMobHeads;
 import iguanaman.iguanatweakstconstruct.reference.Reference;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.eventhandler.Event;
-import net.minecraftforge.event.entity.player.FillBucketEvent;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.IFluidBlock;
 
 public class ClayBucket extends ItemBucket
 {
@@ -28,19 +20,23 @@ public class ClayBucket extends ItemBucket
     {
         this(contents);
 
-        this.setUnlocalizedName(Reference.MOD_ID + "." + name);
+        this.setUnlocalizedName(Reference.prefix(name));
         this.setTextureName(Reference.resource(texture));
     }
 
     public ClayBucket(Block contents)
     {
         super(contents);
-        this.setContainerItem(iguanaman.iguanatweakstconstruct.claybuckets.IguanaItems.clayBucketFired);
 
         if(contents == Blocks.flowing_lava)
+        {
             isHot = true;
-        else
+            this.setContainerItem(null);
+        }
+        else {
             isHot = false;
+            this.setContainerItem(IguanaItems.clayBucketFired);
+        }
     }
 
 
@@ -53,6 +49,11 @@ public class ClayBucket extends ItemBucket
             if(isHot)
             {
                 itemStack.stackSize--;
+
+                // very very rarely, you'll get a broken bucket!
+                if(IguanaTweaksTConstruct.isMobHeadsActive && itemStack.stackSize == 0 && IguanaTweaksTConstruct.random.nextInt(1000) == 0)
+                    return new ItemStack(IguanaMobHeads.wearables, 1, 1);
+
                 return itemStack;
             }
 

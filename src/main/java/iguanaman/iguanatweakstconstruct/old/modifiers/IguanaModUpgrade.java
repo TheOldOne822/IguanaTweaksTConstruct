@@ -1,15 +1,10 @@
 package iguanaman.iguanatweakstconstruct.old.modifiers;
 
+import iguanaman.iguanatweakstconstruct.IguanaTweaksTConstruct;
 import iguanaman.iguanatweakstconstruct.leveling.LevelingLogic;
 import iguanaman.iguanatweakstconstruct.leveling.LevelingTooltips;
 import iguanaman.iguanatweakstconstruct.old.IguanaConfig;
 import iguanaman.iguanatweakstconstruct.reference.Config;
-import iguanaman.iguanatweakstconstruct.IguanaTweaksTConstruct;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import iguanaman.iguanatweakstconstruct.util.HarvestLevels;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,6 +19,10 @@ import tconstruct.library.tools.ToolCore;
 import tconstruct.library.tools.ToolMaterial;
 import tconstruct.tools.BowRecipe;
 import tconstruct.tools.TinkerTools;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class IguanaModUpgrade extends ItemModifier {
 
@@ -180,7 +179,7 @@ public class IguanaModUpgrade extends ItemModifier {
 		int oldExtra = tags.getInteger("Extra");
 
 
-		//get current item parts
+		//get current prefix parts
 		ItemStack headStack = new ItemStack(toolClass.getHeadItem(), 1, oldHead);
 		ItemStack handleStack = new ItemStack(toolClass.getHandleItem(), 1, oldHandle);
 		ItemStack accessoryStack = null;

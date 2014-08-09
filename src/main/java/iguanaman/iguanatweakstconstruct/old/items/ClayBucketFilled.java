@@ -1,6 +1,7 @@
 package iguanaman.iguanatweakstconstruct.old.items;
 
-import tconstruct.smeltery.items.FilledBucket;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,8 +9,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import tconstruct.smeltery.items.FilledBucket;
 
 public class ClayBucketFilled extends FilledBucket {
 
@@ -18,7 +18,7 @@ public class ClayBucketFilled extends FilledBucket {
 	}
 
 	/**
-	 * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
+	 * Called whenever this prefix is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
 	 */
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)

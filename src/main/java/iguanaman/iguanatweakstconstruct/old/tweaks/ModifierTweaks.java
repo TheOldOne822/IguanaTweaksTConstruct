@@ -1,17 +1,9 @@
 package iguanaman.iguanatweakstconstruct.old.tweaks;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import iguanaman.iguanatweakstconstruct.old.IguanaConfig;
+import iguanaman.iguanatweakstconstruct.old.modifiers.*;
 import iguanaman.iguanatweakstconstruct.util.Log;
-import iguanaman.iguanatweakstconstruct.old.modifiers.IguanaModAttack;
-import iguanaman.iguanatweakstconstruct.old.modifiers.IguanaModClean;
-import iguanaman.iguanatweakstconstruct.old.modifiers.IguanaModHeads;
-import iguanaman.iguanatweakstconstruct.old.modifiers.IguanaModLapis;
-import iguanaman.iguanatweakstconstruct.old.modifiers.IguanaModRedstone;
-import iguanaman.iguanatweakstconstruct.old.modifiers.IguanaModRepair;
-import iguanaman.iguanatweakstconstruct.old.modifiers.IguanaModUpgrade;
-
-import java.util.Iterator;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -23,7 +15,8 @@ import tconstruct.library.tools.ToolCore;
 import tconstruct.modifiers.tools.ModDurability;
 import tconstruct.modifiers.tools.ModInteger;
 import tconstruct.tools.TinkerTools;
-import cpw.mods.fml.common.registry.GameRegistry;
+
+import java.util.Iterator;
 
 public class ModifierTweaks
 {
@@ -63,9 +56,9 @@ public class ModifierTweaks
         if (IguanaConfig.partReplacement)
         	ModifyBuilder.registerModifier(new IguanaModUpgrade());
         ModifyBuilder.registerModifier(new IguanaModRepair());
-        // TODO: Find a way to replace vanilla skull
+        // TODO: Find a way to replace vanilla skullItem
         /*if (!IguanaIguanaConfig.toolLevelingRandomBonuses)
-        	ModifyBuilder.registerModifier(new ModExtraModifier(new ItemStack[] { new ItemStack(Items.sk, 1, 6), new ItemStack(Item.skull, 1, 7) }, "Tier2Free"));*/
+        	ModifyBuilder.registerModifier(new ModExtraModifier(new ItemStack[] { new ItemStack(Items.sk, 1, 6), new ItemStack(Item.skullItem, 1, 7) }, "Tier2Free"));*/
         ModifyBuilder.registerModifier(new ModInteger(new ItemStack[] { new ItemStack(TinkerTools.materials, 1, 6) }, 4, "Moss", IguanaConfig.mossRepairSpeed, "\u00a72", "Auto-Repair"));
         ModifyBuilder.registerModifier(new ModDurability(new ItemStack[] { new ItemStack(Items.emerald) }, 1, 0, 0.5f, TConstructRegistry.getMaterial("Bronze").harvestLevel(), "Emerald",
                 "\u00a72Durability +50%", "\u00a72"));

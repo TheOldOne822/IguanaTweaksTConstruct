@@ -1,5 +1,6 @@
 package iguanaman.iguanatweakstconstruct.old.items;
 
+import cpw.mods.fml.common.eventhandler.Event;
 import iguanaman.iguanatweakstconstruct.old.IguanaItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -12,7 +13,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.eventhandler.Event;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -30,7 +30,7 @@ public class ClayBucket extends ItemBucket
     }
 
     /**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
+     * Called whenever this prefix is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
      */
     @Override
     public ItemStack onItemRightClick (ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)

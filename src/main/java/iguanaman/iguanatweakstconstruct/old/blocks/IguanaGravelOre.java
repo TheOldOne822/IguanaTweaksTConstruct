@@ -1,10 +1,10 @@
 package iguanaman.iguanatweakstconstruct.old.blocks;
 
-import java.util.Random;
-
-import tconstruct.world.blocks.GravelOre;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.world.World;
+import tconstruct.world.blocks.GravelOre;
+
+import java.util.Random;
 
 
 public class IguanaGravelOre extends GravelOre {
@@ -14,7 +14,7 @@ public class IguanaGravelOre extends GravelOre {
 	}
 
 	/**
-	 * Ticks the block if it's been scheduled
+	 * Ticks the prefix if it's been scheduled
 	 */
 	@Override
 	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)

@@ -4,9 +4,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import iguanaman.iguanatweakstconstruct.reference.Config;
 import iguanaman.iguanatweakstconstruct.reference.Reference;
-import iguanaman.iguanatweakstconstruct.tweaks.handlers.FlintHandler;
-import iguanaman.iguanatweakstconstruct.tweaks.handlers.StoneToolHandler;
-import iguanaman.iguanatweakstconstruct.tweaks.handlers.VanillaToolNerfHandler;
+import iguanaman.iguanatweakstconstruct.tweaks.handlers.*;
 import iguanaman.iguanatweakstconstruct.tweaks.modifiers.ModFluxExpensive;
 import iguanaman.iguanatweakstconstruct.tweaks.modifiers.ModLimitedToolRepair;
 import iguanaman.iguanatweakstconstruct.util.Log;
@@ -15,8 +13,7 @@ import mantle.pulsar.pulse.Handler;
 import mantle.pulsar.pulse.Pulse;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
@@ -35,9 +32,7 @@ import tconstruct.tools.TinkerTools;
 import tconstruct.world.TinkerWorld;
 
 import java.lang.reflect.Field;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Various Tweaks for Tinkers Construct and Vanilla Minecraft. See Config.
@@ -45,6 +40,7 @@ import java.util.Map;
 
 @Pulse(id = Reference.PULSE_TWEAKS, description = "Various Tweaks for vanilla Minecraft and Tinker's Construct. See Config.")
 public class IguanaTweaks {
+    public static Set<Item> toolWhitelist = new HashSet<Item>();
 
     @Handler
     public void postInit(FMLPostInitializationEvent event)
@@ -60,6 +56,7 @@ public class IguanaTweaks {
 
         // no stone tools for you
         if(Config.disableStoneTools) {
+            Log.info("Disabling tinkers stone tools");
             MinecraftForge.EVENT_BUS.register(new StoneToolHandler());
             ChestGenHooks.removeItem(ChestGenHooks.BONUS_CHEST, new ItemStack(Items.stone_axe));
             ChestGenHooks.removeItem(ChestGenHooks.BONUS_CHEST, new ItemStack(Items.stone_pickaxe));
@@ -67,6 +64,10 @@ public class IguanaTweaks {
 
         // because diamond pickaxe is hax
         if(Config.nerfVanillaTools) {
+            // init whitelist
+            findToolsFromConfig();
+
+            Log.info("Sticks and stones may break my bones, but your pickaxes and axes will break no blocks.");
             MinecraftForge.EVENT_BUS.register(new VanillaToolNerfHandler());
 
             // replace vanilla tools with tinker tools in bonus chests
@@ -91,6 +92,22 @@ public class IguanaTweaks {
                 if(stoneAxe != null)
                     ChestGenHooks.addItem(ChestGenHooks.BONUS_CHEST, new WeightedRandomChestContent(stoneAxe, 1, 1, 5));
             }
+        }
+
+        // no hoes for you
+        if(Config.nerfVanillaHoes) {
+            Log.info("Vanilla hoe? More like vanilla go!");
+            MinecraftForge.EVENT_BUS.register(new VanillaHoeNerfHandler());
+        }
+
+        if(Config.nerfVanillaSwords) {
+            Log.info("Replacing swords with pasta");
+            MinecraftForge.EVENT_BUS.register(new VanillaSwordNerfHandler());
+        }
+
+        if(Config.nerfVanillaBows) {
+            Log.info("Sabotaging bows");
+            MinecraftForge.EVENT_BUS.register(new VanillaBowNerfHandler());
         }
 
         // stonetorches
@@ -210,6 +227,32 @@ public class IguanaTweaks {
             if(mod instanceof ModToolRepair) {
                 iter.set(new ModLimitedToolRepair());
                 Log.trace("Replaced Tool Repair Modifier to limit the maximum amount of repairs");
+            }
+        }
+    }
+
+    private static void findToolsFromConfig()
+    {
+        Log.info("Setting up whitelist for allowed tools");
+        // cycle through config entries
+        for(String identifier : Config.allowedTools) {
+            // look them up in the registry (we're in postInit. everything should be registered)
+            Object o = Item.itemRegistry.getObject(identifier);
+            // if we found it, add it.
+            if(o != null)
+                toolWhitelist.add((Item)o);
+        }
+
+        // mod-wide enabling
+        for(Object identifier : Item.itemRegistry.getKeys())
+        {
+            String mod = identifier.toString().split(":")[0]; // should always be non-null... I think
+            if(Config.allowedModTools.contains(mod))
+            {
+                // get the item
+                Object item = Item.itemRegistry.getObject(identifier);
+                if(item instanceof ItemTool || item instanceof ItemHoe || item instanceof ItemSword || item instanceof ItemBow)
+                    toolWhitelist.add((Item)item);
             }
         }
     }

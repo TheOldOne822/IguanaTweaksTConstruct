@@ -31,8 +31,6 @@ public abstract class LevelingLogic {
     public static final String TAG_BOOST_EXP = "HeadEXP"; // HeadEXP for downwards compatibility
     public static final String TAG_IS_BOOSTED = "HarvestLevelModified";
 
-    public static final int MAX_LEVEL = 6;
-
     public static int getLevel(NBTTagCompound tags) { return tags.getInteger(TAG_LEVEL); }
     public static int getHarvestLevel(NBTTagCompound tags) { return tags.hasKey("HarvestLevel") ? tags.getInteger("HarvestLevel") : -1; }
     public static long getXp(NBTTagCompound tags) { return tags.getLong(TAG_EXP); }
@@ -41,7 +39,7 @@ public abstract class LevelingLogic {
     public static boolean hasXp(NBTTagCompound tags) { return tags.hasKey(TAG_EXP); }
     public static boolean hasBoostXp(NBTTagCompound tags) { return tags.hasKey(TAG_BOOST_EXP); }
     public static boolean isBoosted(NBTTagCompound tags) { return tags.getBoolean(TAG_IS_BOOSTED); }
-    public static boolean isMaxLevel(NBTTagCompound tags) { return getLevel(tags) >= MAX_LEVEL; }
+    public static boolean isMaxLevel(NBTTagCompound tags) { return getLevel(tags) >= Config.maxToolLevel; }
 
     /**
     * can only be boosted if:
@@ -103,7 +101,7 @@ public abstract class LevelingLogic {
 		boolean pickLeveled = false;
 
         // Update Tool XP
-		if (toolXP >= 0 && hasXp(tags) && level > 0 && level < MAX_LEVEL)
+		if (toolXP >= 0 && hasXp(tags) && level > 0 && !isMaxLevel(tags))
 		{
             // set new xp value
 			tags.setLong(TAG_EXP, toolXP);
@@ -255,6 +253,21 @@ public abstract class LevelingLogic {
 		NBTTagCompound tags = stack.getTagCompound().getCompoundTag("InfiTool");
 		World world = player.worldObj;
 
+        // *ding* levelup!
+        int level = getLevel(tags);
+        level++;
+
+        // tell the player how awesome he is
+        if (!world.isRemote)
+        {
+            // special message
+            if(StatCollector.canTranslate("message.levelup." + level))
+                player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocalFormatted("message.levelup." + level, stack.getDisplayName() + EnumChatFormatting.DARK_AQUA)));
+            // generic message
+            else
+                player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocalFormatted("message.levelup.generic", stack.getDisplayName() + EnumChatFormatting.DARK_AQUA, LevelingTooltips.getLevelString(level))));
+        }
+
         // Add random bonuses on leveling up?
         // this is done first so the extra-chance can be incorporated correctly
         if (Config.toolLevelingRandomBonuses)
@@ -262,22 +275,11 @@ public abstract class LevelingLogic {
             RandomBonuses.tryModifying(player, stack);
         }
 
-        // *ding* levelup!
-		int level = getLevel(tags);
-        level++;
+        // and NOW save the change
 		tags.setInteger(TAG_LEVEL, level);
 
         // reset tool xp to 0, since we're at a new level now
         tags.setLong(TAG_EXP, 0L);
-
-        // tell the player how awesome he is
-        if (!world.isRemote)
-        {
-            if(StatCollector.canTranslate("message.levelup." + level))
-            {
-                player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocalFormatted("message.levelup." + level, stack.getDisplayName())));
-            }
-        }
 
         int currentModifiers = tags.getInteger("Modifiers");
 

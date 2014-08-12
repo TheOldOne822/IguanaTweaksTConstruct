@@ -7,13 +7,13 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Config {
     private Configuration configfile;
 
 	// leveling
+    public static int maxToolLevel;
     public static int xpRequiredToolsPercentage;
     public static int xpRequiredWeaponsPercentage;
     public static float xpPerLevelMultiplier;
@@ -54,6 +54,9 @@ public class Config {
 
     // tweaks
     public static boolean nerfVanillaTools;
+    public static boolean nerfVanillaHoes;
+    public static boolean nerfVanillaSwords;
+    public static boolean nerfVanillaBows;
     public static boolean removeFlintDrop;
     public static boolean addFlintRecipe;
     public static int recipeGravelPerFlint;
@@ -67,6 +70,10 @@ public class Config {
     public static boolean moreModifiersForFlux;
     public static int maxToolRepairs;
     //public static float repairAmountMultiplier;
+
+    // allowed tools that should not be nerfed
+    public static List<String> allowedTools = new LinkedList<String>();
+    public static Set<String> allowedModTools = new HashSet<String>();
 
     // debug
     public static boolean showDebugXP;
@@ -92,6 +99,7 @@ public class Config {
         final String CATEGORY_PartReplacement = "PartReplacement";
         final String CATEGORY_Heads = "MobHeads";
         final String CATEGORY_Tweaks = "Tweaks";
+        final String CATEGORY_AllowedTools = "AllowedTools";
         final String CATEGORY_Debug = "Debug";
 
 		/** Leveling **/
@@ -108,6 +116,7 @@ public class Config {
         showMinimalTooltipXP = configfile.getBoolean("showMinimalTooltipXP", CATEGORY_Leveling, false, "Current XP% is shown after the level");
 
         // levelup behaviour
+        maxToolLevel               = configfile.getInt("maxToolLevel", CATEGORY_Leveling, 6, 1, 99, "");
         toolLeveling               = configfile.getBoolean("toolLeveling", CATEGORY_Leveling, true, "Can your skill with tools 'level up' as you use them?");
         toolLevelingExtraModifiers = configfile.getBoolean("ExtraModifiers", CATEGORY_Leveling, true, "Removes modifiers on new tools and gives them through leveling (requires 'toolLeveling=true')");
 		toolLevelingRandomBonuses  = configfile.getBoolean("RandomBonuses", CATEGORY_Leveling, true, "Gives a random bonus every level, if false and levelling is on modifiers are given at levels 2 and 4 (requires 'toolLeveling=true')");
@@ -164,7 +173,10 @@ public class Config {
         /** Vanilla/TConstruct Tweaks **/
         configfile.setCategoryComment(CATEGORY_Tweaks, "Tweak Module: Tweaks to vanilla Minecraft and Tinker's Construct");
 
-        nerfVanillaTools = configfile.getBoolean("ohNoYouAreNOTgoingToUseThatTool", CATEGORY_Tweaks, true, "Makes all non-TConstruct tools mine nothing");
+        nerfVanillaTools  = configfile.getBoolean("disableRegularTools", CATEGORY_Tweaks, true, "Makes all non-TConstruct tools mine nothing");
+        nerfVanillaHoes   = configfile.getBoolean("disableRegularHoes", CATEGORY_Tweaks, false, "Makes all non-TConstruct hoes to not be able to hoe ground. Use the Mattock.");
+        nerfVanillaSwords = configfile.getBoolean("disableRegularSwords", CATEGORY_Tweaks, false, "Makes all non-TConstruct swords useless. Like whacking enemies with a stick.");
+        nerfVanillaBows   = configfile.getBoolean("disableRegularBows", CATEGORY_Tweaks, false, "Makes all non-TConstruct bows useless. You suddenly forgot how to use a bow.");
 
         // gravel/flint tweaks
         removeFlintDrop = configfile.getBoolean("removeFlintDrop", CATEGORY_Tweaks, true, "Removes the random chance of getting flint from gravel");
@@ -172,7 +184,7 @@ public class Config {
         recipeGravelPerFlint = configfile.getInt("gravelPerFlint", CATEGORY_Tweaks, 3, 1, 9, "How many gravel are required to craft one Flint");
 
         // ticon tweaks
-        disableStoneTools = configfile.getBoolean("disablestoneTools", CATEGORY_Tweaks, true, "Stone Tools can only be used to create casts, but no tools");
+        disableStoneTools = configfile.getBoolean("disableStoneTools", CATEGORY_Tweaks, true, "Stone Tools can only be used to create casts, but no tools");
         castsBurnMaterial = configfile.getBoolean("castingBurnsMaterial", CATEGORY_Tweaks, true, "Creating a metal cast burns up the material that was used to create it");
         easyToolRepair    = configfile.getBoolean("easyToolRepair", CATEGORY_Tweaks, true, "Allows to repair your tool in a crafting grid, without tool station");
         allowPartReuse    = configfile.getBoolean("allowPartReuse", CATEGORY_Tweaks, true, "Allows toolparts to be used as material in the Part Builder. Like, turn a Pick head into a Shovel head.!");
@@ -187,6 +199,28 @@ public class Config {
         maxToolRepairs = configfile.getInt("repairsLimit", CATEGORY_Tweaks, -1, -1, 999, "Limits the amount how often a tool can be repaired. -1 means unlimited repairs, like normally.");
         //repairAmountMultiplier = configfile.getFloat("repairAmountMultiplier", CATEGORY_Tweaks, 1.0f, 0.01f, 9.99f, "A factor that is multiplied onto the amount a tool is repaired. (0.5 = half durability restored per repair, 2.0 = twice as much durability restored per repair)");
 
+        /** Allowed tools for nerfed vanilla tools **/
+        configfile.setCategoryComment(CATEGORY_AllowedTools, "Tweak Module: This category allows you to specify which tools ARE STILL USABLE if the option to disable non-TConstsruct tools is enabled.");
+        {
+            String[] axes =    configfile.getStringList("axes", CATEGORY_AllowedTools, defaultAllowedAxes, "Axes that shall remain useful");
+            String[] picks =   configfile.getStringList("pickaxes", CATEGORY_AllowedTools, defaultAllowedPicks, "Pickaxes that shall remain useful");
+            String[] shovels = configfile.getStringList("shovels", CATEGORY_AllowedTools, defaultAllowedShovel, "Shovels that shall remain useful");
+            String[] swords =  configfile.getStringList("swords", CATEGORY_AllowedTools, defaultAllowedSwords, "Swords that shall remain useful");
+            String[] bows   =  configfile.getStringList("bows", CATEGORY_AllowedTools, defaultAllowedBows, "bows that shall remain useful");
+            String[] hoes =    configfile.getStringList("hoes", CATEGORY_AllowedTools, defaultAllowedHoes, "Hoes that shall remain useful");
+            String[] other =   configfile.getStringList("unspecified", CATEGORY_AllowedTools, defaultAllowedOther, "Other tools. I'll be honest, the category doesn't matter, they're just for readability :P");
+
+            allowedModTools.addAll(Arrays.asList(configfile.getStringList("mods", CATEGORY_AllowedTools, defaultAllowMod, "Here you can enter a mod-id to whitelist ALL itesm of this mod.")));
+
+            allowedTools.addAll(Arrays.asList(picks));
+            allowedTools.addAll(Arrays.asList(axes));
+            allowedTools.addAll(Arrays.asList(shovels));
+            allowedTools.addAll(Arrays.asList(swords));
+            allowedTools.addAll(Arrays.asList(bows));
+            allowedTools.addAll(Arrays.asList(hoes));
+            allowedTools.addAll(Arrays.asList(other));
+        }
+
 
         /** Debug **/
         configfile.setCategoryComment(CATEGORY_Debug, "Stuff to give you/me more information");
@@ -199,91 +233,6 @@ public class Config {
         logBonusExtraChance    = configfile.getBoolean("logBonusExtraChance", CATEGORY_Debug, true, "Logs how much the extra-chance from doing stuff you had when getting a random bonus on levelup.");
 
 
-        /** not implemented anymore **/
-/*
-
-		// repairs
-		ConfigCategory repairsCategory = configfile.getCategory("repairs");
-		repairsCategory.setComment("Changes to tool repairing");
-
-		Property repairCostScalingProperty = configfile.get("repairs", "repairCostScaling", false);
-		repairCostScalingProperty.comment = "Repairs are less effective the more a tool is repaired";
-		repairCostScaling = repairCostScalingProperty.getBoolean(false);
-
-		Property repairLimitActiveProperty = configfile.get("repairs", "repairLimitActive", false);
-		repairLimitActiveProperty.comment = "Number of times TC tools can be repaired is limited";
-		repairLimitActive = repairLimitActiveProperty.getBoolean(false);
-
-		Property repairLimitProperty = configfile.get("repairs", "repairLimit", 25);
-		repairLimitProperty.comment = "Number of times TC tools can be repaired (only if 'repairLimitActive' is true) (set to 0 to disable repairs)";
-		repairLimit = Math.max(repairLimitProperty.getInt(25), 0);
-		repairLimitProperty.set(repairLimit);
-
-		Property repairScalingModifierProperty = configfile.get("repairs", "repairScalingModifier", 5);
-		repairScalingModifierProperty.comment = "Repair cost doubles after this many repairs (only if 'repairCostScaling' is true)";
-		repairScalingModifier = Math.max(repairScalingModifierProperty.getInt(5), 1);
-		repairScalingModifierProperty.set(repairScalingModifier);
-
-		Property repairCostPercentageProperty = configfile.get("repairs", "repairCostPercentage", 100);
-		repairCostPercentageProperty.comment = "Increase or decrease repair costs (higher = more expensive)";
-		repairCostPercentage = Math.max(repairCostPercentageProperty.getInt(100), 1);
-		repairCostPercentageProperty.set(repairCostPercentage);
-
-
-
-
-		// crafting
-		ConfigCategory craftingCategory = configfile.getCategory("crafting");
-		craftingCategory.setComment("Allow Tinkers crafting to be done in a normal crafting window");
-
-		Property easyBlankPatternRecipeProperty = configfile.get("crafting", "easyBlankPatternRecipe", true);
-		easyBlankPatternRecipeProperty.comment = "Allows blank patterns to be crafted with 4 sticks in a square";
-		easyBlankPatternRecipe = easyBlankPatternRecipeProperty.getBoolean(true);
-
-		Property easyPartCraftingProperty = configfile.get("crafting", "easyPartCrafting", true);
-		easyPartCraftingProperty.comment = "Allows you to make tool parts in a normal crafting window";
-		easyPartCrafting = easyPartCraftingProperty.getBoolean(true);
-
-		Property easyPatternCraftingProperty = configfile.get("crafting", "easyPatternCrafting", true);
-		easyPatternCraftingProperty.comment = "Allows you to rotate the the tier 1 patterns in a normal crafting window";
-		easyPatternCrafting = easyPatternCraftingProperty.getBoolean(true);
-
-		Property easyToolCreationProperty = configfile.get("crafting", "easyToolCreation", true);
-		easyToolCreationProperty.comment = "Allows you create tinkers tools in a normal crafting window";
-		easyToolCreation = easyToolCreationProperty.getBoolean(true);
-
-		Property easyToolModificationProperty = configfile.get("crafting", "easyToolModification", true);
-		easyToolModificationProperty.comment = "Allows you add modifications to tools in a normal crafting window";
-		easyToolModification = easyToolModificationProperty.getBoolean(true);
-
-
-		// modifiers
-		ConfigCategory modifiersCategory = configfile.getCategory("modifiers");
-		modifiersCategory.setComment("Options relating to tool modifiers");
-
-		Property addCleanModifierProperty = configfile.get("modifiers", "addCleanModifier", true);
-		addCleanModifierProperty.comment = "Silky Cloth can be used to remove all modifiers from a tool (currently safe but not working)";
-		addCleanModifier = addCleanModifierProperty.getBoolean(true);
-
-		Property moreExpensiveSilkyClothProperty = configfile.get("modifiers", "moreExpensiveSilkyCloth", true);
-		moreExpensiveSilkyClothProperty.comment = "Silky Cloth needs gold ingots, instead of nuggets";
-		moreExpensiveSilkyCloth = moreExpensiveSilkyClothProperty.getBoolean(true);
-
-		Property moreExpensiveSilkyJewelProperty = configfile.get("modifiers", "moreExpensiveSilkyJewel", true);
-		moreExpensiveSilkyJewelProperty.comment = "Silky Jewel needs emerald prefix, instead of one emerald";
-		moreExpensiveSilkyJewel = moreExpensiveSilkyJewelProperty.getBoolean(true);
-
-		Property mossRepairSpeedProperty = configfile.get("modifiers", "mossRepairSpeed", 3);
-		mossRepairSpeedProperty.comment = "Rate tools with moss repair (TC default 3)";
-		mossRepairSpeed = Math.max(mossRepairSpeedProperty.getInt(3), 0);
-		mossRepairSpeedProperty.set(mossRepairSpeed);
-
-		Property redstoneEffectProperty = configfile.get("modifiers", "redstoneEffect", 4);
-		redstoneEffectProperty.comment = "Amount each piece of redstone increases mining speed (tinkers default is 8)";
-		redstoneEffect = Math.max(redstoneEffectProperty.getInt(4), 1);
-		redstoneEffectProperty.set(redstoneEffect);
-*/
-
 		configfile.save();
 	}
 
@@ -294,4 +243,13 @@ public class Config {
             sync();
     }
 
+
+    private static String[] defaultAllowedPicks = new String[]{"Botania:terraPick", "Botania:glassPick", "Steamcraft:steamDrill"};
+    private static String[] defaultAllowedAxes = new String[]{"Steamcraft:steamAxe"};
+    private static String[] defaultAllowedShovel = new String[]{"Steamcraft:steamShovel"};
+    private static String[] defaultAllowedHoes = new String[]{};
+    private static String[] defaultAllowedSwords = new String[]{"Botania:terraSword", "Botania:enderDagger"};
+    private static String[] defaultAllowedBows = new String[]{};
+    private static String[] defaultAllowedOther = new String[]{"ThermalExpansion:tool.battleWrenchInvar", "ThermalExpansion:tool.sickleInvar"};
+    private static String[] defaultAllowMod = new String[]{"RedstoneArsenal", "ExtraUtilities", "witchery", "AWWayofTime"};
 }

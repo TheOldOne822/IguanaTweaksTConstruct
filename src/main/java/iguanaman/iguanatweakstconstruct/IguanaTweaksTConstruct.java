@@ -11,8 +11,8 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import iguanaman.iguanatweakstconstruct.claybuckets.IguanaItems;
+import iguanaman.iguanatweakstconstruct.commands.CommandDumpOredict;
 import iguanaman.iguanatweakstconstruct.debug.DebugCommand;
-import iguanaman.iguanatweakstconstruct.debug.DumpOredict;
 import iguanaman.iguanatweakstconstruct.debug.IguanaDebug;
 import iguanaman.iguanatweakstconstruct.harvestlevels.IguanaHarvestLevelTweaks;
 import iguanaman.iguanatweakstconstruct.leveling.IguanaToolLeveling;
@@ -24,11 +24,13 @@ import iguanaman.iguanatweakstconstruct.reference.Config;
 import iguanaman.iguanatweakstconstruct.reference.Reference;
 import iguanaman.iguanatweakstconstruct.replacing.IguanaToolPartReplacing;
 import iguanaman.iguanatweakstconstruct.restriction.IguanaPartRestriction;
+import iguanaman.iguanatweakstconstruct.commands.CommandDumpTools;
 import iguanaman.iguanatweakstconstruct.tweaks.IguanaTweaks;
 import iguanaman.iguanatweakstconstruct.util.HarvestLevels;
 import iguanaman.iguanatweakstconstruct.util.Log;
 import iguanaman.iguanatweakstconstruct.worldgen.IguanaWorldGen;
 import mantle.pulsar.config.ForgeCFG;
+import mantle.pulsar.config.IConfiguration;
 import mantle.pulsar.control.PulseManager;
 import mantle.pulsar.pulse.PulseMeta;
 import net.minecraft.item.Item;
@@ -63,17 +65,21 @@ public class IguanaTweaksTConstruct {
 
     // TODO: decide wether or not the same cfg as tcon should be used
     // use the PulseManager. This allows us to separate the different parts into independend modules and have stuff together. yay.
-    private ForgeCFG pulseCFG = new ForgeCFG("TinkersModules", "Addon: Iguana Tweaks for Tinkers Construct");
-    private PulseManager pulsar = new PulseManager(Reference.MOD_ID, pulseCFG);
+    private IConfiguration pulseCFG;
+    private PulseManager pulsar;
 
     public static boolean modTEDetected = false;
     public static File configPath;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-        File suggestion = event.getSuggestedConfigurationFile();
-        configPath = new File(suggestion.getParentFile(), FilenameUtils.removeExtension(suggestion.getName()));
+        configPath = new File(event.getModConfigurationDirectory(), Reference.MOD_ID);
         configPath.mkdirs();
+
+        // init pulse manager
+        pulseCFG = new PulsarCFG(new File(configPath, "Modules.cfg"), "Tinker's Construct Addon: Iguana Tweaks for Tinkers Construct");
+        pulseCFG.load();
+        pulsar = new PulseManager(Reference.MOD_ID, pulseCFG);
 
         Config config = new Config();
         config.init(new File(configPath, "main.cfg"));
@@ -123,8 +129,6 @@ public class IguanaTweaksTConstruct {
 	public void serverStarting(FMLServerStartingEvent event)
 	{
         // TODO: change this to a proper isModuleLoaded or something in Pulsar 0.4+ (when released/implemented)
-        Log.debug("Adding command: dumpOredict");
-        event.registerServerCommand(new DumpOredict());
 		if (isToolLevelingActive)
 		{
             Log.debug("Adding command: leveluptool");
@@ -132,6 +136,12 @@ public class IguanaTweaksTConstruct {
             Log.debug("Adding command: toolxp");
             event.registerServerCommand(new IguanaCommandToolXP());
 		}
+
+        Log.debug("Adding command: dumpTools");
+        event.registerServerCommand(new CommandDumpTools());
+        Log.debug("Adding command: dumpOredict");
+        event.registerServerCommand(new CommandDumpOredict());
+
         if(pulseCFG.isModuleEnabled(new PulseMeta("Debug", "", false, false)))
             event.registerServerCommand(new DebugCommand());
 	}

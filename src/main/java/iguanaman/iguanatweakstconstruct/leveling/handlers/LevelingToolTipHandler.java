@@ -3,9 +3,11 @@ package iguanaman.iguanatweakstconstruct.leveling.handlers;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import iguanaman.iguanatweakstconstruct.OldToolConversionHandler;
 import iguanaman.iguanatweakstconstruct.leveling.LevelingLogic;
 import iguanaman.iguanatweakstconstruct.leveling.LevelingTooltips;
 import iguanaman.iguanatweakstconstruct.reference.Config;
+import iguanaman.iguanatweakstconstruct.util.ModSupportHelper;
 import iguanaman.iguanatweakstconstruct.util.TooltipHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,6 +39,19 @@ public class LevelingToolTipHandler {
             return;
 
         ItemStack stack = event.itemStack;
+        // first off, let's check if we have to display a warning.
+        if(OldToolConversionHandler.toolNeedsUpdating(stack)) {
+            event.toolTip.add(1, EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("tooltip.oldToolWarning1"));
+            event.toolTip.add(2, EnumChatFormatting.DARK_RED + StatCollector.translateToLocal("tooltip.oldToolWarning2"));
+        }
+
+        ToolCore tool = (ToolCore)event.itemStack.getItem();
+        NBTTagCompound tags = stack.getTagCompound().getCompoundTag(tool.getBaseTagName()); // tinker tags
+
+        // we only need a tooltip if we have a level
+        if(!LevelingLogic.hasLevel(tags))
+            return;
+
         // find spot to insert our tooltip data
         ListIterator<String> inserter = findInsertSpot(event.toolTip);
         // does the user hold shift?
@@ -44,10 +59,6 @@ public class LevelingToolTipHandler {
         // only allow advanced (xp) tooltip if config option is set
         advanced &= Config.showTooltipXP;
 
-
-
-        ToolCore tool = (ToolCore)event.itemStack.getItem();
-        NBTTagCompound tags = stack.getTagCompound().getCompoundTag(tool.getBaseTagName()); // tinker tags
         boolean hasMiningLevel = tool.getHarvestLevel(event.itemStack, "pickaxe") >= 0 || tool instanceof Pickaxe || tool instanceof Hammer;
 
         // add mining level if applicable
@@ -56,7 +67,7 @@ public class LevelingToolTipHandler {
             int hLevel = tags.getInteger("HarvestLevel");
             String mLvl = LevelingTooltips.getMiningLevelTooltip(hLevel);
             // display minimal tooltip?
-            if(Config.showMinimalTooltipXP && !advanced)
+            if(Config.showMinimalTooltipXP && !advanced && Config.levelingPickaxeBoost)
             {
                 if(LevelingLogic.hasBoostXp(tags) && LevelingLogic.canBoostMiningLevel(tags))
                     mLvl += " (" + LevelingTooltips.getBoostXpString(stack, tags, false) + ")";
@@ -65,7 +76,7 @@ public class LevelingToolTipHandler {
             inserter.add(mLvl);
 
             // display extended tooltip?
-            if(Config.showTooltipXP && advanced && LevelingLogic.hasBoostXp(tags))
+            if(Config.showTooltipXP && advanced && LevelingLogic.hasBoostXp(tags) && Config.pickaxeBoostRequired)
             {
                 // xp if not boosted
                 if(LevelingLogic.canBoostMiningLevel(tags))
@@ -78,20 +89,22 @@ public class LevelingToolTipHandler {
 
         // add skill level
         int level = LevelingLogic.getLevel(tags);
-        String lvl = LevelingTooltips.getLevelTooltip(level);
-        if(!advanced && Config.showMinimalTooltipXP && !LevelingLogic.isMaxLevel(tags))
-            lvl += " (" + LevelingTooltips.getXpString(stack, tags, false) + ")";
-        inserter.add(lvl);
+        if(level > 0 && Config.toolLeveling) {
+            String lvl = LevelingTooltips.getLevelTooltip(level);
+            if (!advanced && Config.showMinimalTooltipXP && !LevelingLogic.isMaxLevel(tags))
+                lvl += " (" + LevelingTooltips.getXpString(stack, tags, false) + ")";
+            inserter.add(lvl);
 
-        // skill level progress
-        if(advanced && Config.showTooltipXP && !LevelingLogic.isMaxLevel(tags))
-            inserter.add(LevelingTooltips.getXpToolTip(stack, tags));
+            // skill level progress
+            if(advanced && Config.showTooltipXP && !LevelingLogic.isMaxLevel(tags))
+                inserter.add(LevelingTooltips.getXpToolTip(stack, tags));
+        }
 
         // since we added at least one line we'll add an empty spacing line at the end
         inserter.add("");
 
         // add info that you can hold shift for more details
-        if(!advanced && Config.showTooltipXP && !Loader.isModLoaded("TiCTooltips")) // don't display if TicToolTips is installed
+        if(!advanced && Config.showTooltipXP && !ModSupportHelper.tiCTooltips && Config.toolLeveling) // don't display if TicToolTips is installed
             inserter.add(StatCollector.translateToLocalFormatted("tooltip.level.advanced", EnumChatFormatting.YELLOW.toString() + EnumChatFormatting.ITALIC + "Shift" + EnumChatFormatting.RESET + EnumChatFormatting.GRAY));
 
         // remove the trailing empty line we used as insert reference n stuff

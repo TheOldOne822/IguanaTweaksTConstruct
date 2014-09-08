@@ -6,19 +6,20 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.registry.GameRegistry;
 import iguanaman.iguanatweakstconstruct.claybuckets.IguanaItems;
 import iguanaman.iguanatweakstconstruct.commands.CommandDumpOredict;
 import iguanaman.iguanatweakstconstruct.debug.DebugCommand;
 import iguanaman.iguanatweakstconstruct.debug.IguanaDebug;
+import iguanaman.iguanatweakstconstruct.harvestlevels.HarvestLevelTweaks;
 import iguanaman.iguanatweakstconstruct.harvestlevels.IguanaHarvestLevelTweaks;
 import iguanaman.iguanatweakstconstruct.leveling.IguanaToolLeveling;
 import iguanaman.iguanatweakstconstruct.leveling.commands.IguanaCommandLevelUpTool;
 import iguanaman.iguanatweakstconstruct.leveling.commands.IguanaCommandToolXP;
 import iguanaman.iguanatweakstconstruct.mobheads.IguanaMobHeads;
+import iguanaman.iguanatweakstconstruct.modcompat.fmp.IguanaFMPCompat;
+import iguanaman.iguanatweakstconstruct.override.IguanaOverride;
 import iguanaman.iguanatweakstconstruct.proxy.CommonProxy;
 import iguanaman.iguanatweakstconstruct.reference.Config;
 import iguanaman.iguanatweakstconstruct.reference.Reference;
@@ -29,12 +30,10 @@ import iguanaman.iguanatweakstconstruct.tweaks.IguanaTweaks;
 import iguanaman.iguanatweakstconstruct.util.HarvestLevels;
 import iguanaman.iguanatweakstconstruct.util.Log;
 import iguanaman.iguanatweakstconstruct.worldgen.IguanaWorldGen;
-import mantle.pulsar.config.ForgeCFG;
 import mantle.pulsar.config.IConfiguration;
 import mantle.pulsar.control.PulseManager;
 import mantle.pulsar.pulse.PulseMeta;
 import net.minecraft.item.Item;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.util.List;
@@ -54,51 +53,32 @@ public class IguanaTweaksTConstruct {
 
     public static Random random = new Random();
 
-    public static boolean isToolLevelingActive = false;
-    public static boolean isHarvestTweaksActive = false;
-    public static boolean isMobHeadsActive = false;
-    public static boolean isTweaksActive = false;
-    public static boolean isItemsActive = false;
-    public static boolean isPartReplacementActive = false;
-
-	public static List<Item> toolParts = null;
-
-    // TODO: decide wether or not the same cfg as tcon should be used
     // use the PulseManager. This allows us to separate the different parts into independend modules and have stuff together. yay.
     private IConfiguration pulseCFG;
-    private PulseManager pulsar;
+    public static PulseManager pulsar;
 
-    public static boolean modTEDetected = false;
     public static File configPath;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-        configPath = new File(event.getModConfigurationDirectory(), Reference.MOD_ID);
+        Log.init(event.getModLog());
+        configPath = new File(event.getModConfigurationDirectory(), "IguanaTinkerTweaks");
+        // update old config path
+        File oldPath = new File(event.getModConfigurationDirectory(), Reference.MOD_ID);
+        if(oldPath.exists())
+            oldPath.renameTo(configPath);
+
         configPath.mkdirs();
 
         // init pulse manager
-        pulseCFG = new PulsarCFG(new File(configPath, "Modules.cfg"), "Tinker's Construct Addon: Iguana Tweaks for Tinkers Construct");
+        pulseCFG = new PulsarCFG(Reference.configFile("Modules.cfg"), "Tinker's Construct Addon: Iguana Tweaks for Tinkers Construct");
         pulseCFG.load();
         pulsar = new PulseManager(Reference.MOD_ID, pulseCFG);
 
         Config config = new Config();
-        config.init(new File(configPath, "main.cfg"));
+        config.init(Reference.configFile("main.cfg"));
         // register config as eventhandler to get config changed updates
         FMLCommonHandler.instance().bus().register(config);
-
-        // workaround to know which modules are active.. :I
-        isToolLevelingActive = pulseCFG.isModuleEnabled(new PulseMeta(Reference.PULSE_LEVELING, "", false, false));
-        isHarvestTweaksActive = pulseCFG.isModuleEnabled(new PulseMeta(Reference.PULSE_HARVESTTWEAKS, "", false, false));
-        isMobHeadsActive = pulseCFG.isModuleEnabled(new PulseMeta(Reference.PULSE_MOBHEADS, "", false, false));
-        isTweaksActive = pulseCFG.isModuleEnabled(new PulseMeta(Reference.PULSE_TWEAKS, "", false, false));
-        isItemsActive = pulseCFG.isModuleEnabled(new PulseMeta(Reference.PULSE_ITEMS, "", false, false));
-        isPartReplacementActive = pulseCFG.isModuleEnabled(new PulseMeta(Reference.PULSE_REPLACING, "", false, false));
-
-        modTEDetected = Loader.isModLoaded("ThermalFoundation");
-
-        // if we don't use our custom harvest levels, we have to adjust what we're using
-        if(!isHarvestTweaksActive)
-            HarvestLevels.adjustToVanillaLevels();
 
         // order matters here
         pulsar.registerPulse(new IguanaHarvestLevelTweaks());
@@ -110,8 +90,24 @@ public class IguanaTweaksTConstruct {
         // replacing has to be after tweaks and restrictions, because its tooltips have to be handled last
         pulsar.registerPulse(new IguanaToolPartReplacing());
         pulsar.registerPulse(new IguanaWorldGen());
+        pulsar.registerPulse(new IguanaOverride());
         pulsar.registerPulse(new IguanaDebug());
+
+        // mod compat
+        pulsar.registerPulse(new IguanaFMPCompat());
+
+
+        // if we don't use our custom harvest levels, we have to adjust what we're using
+        if(!pulsar.isPulseLoaded(Reference.PULSE_HARVESTTWEAKS))
+            HarvestLevels.adjustToVanillaLevels();
+        // update harvest level strings
+        HarvestLevels.updateHarvestLevelNames();
+
+        // start up the pulses
         pulsar.preInit(event);
+
+        // versionchecker support
+        FMLInterModComms.sendRuntimeMessage(Reference.MOD_ID, "VersionChecker", "addVersionCheck", "https://raw.githubusercontent.com/SlimeKnights/IguanaTweaksTConstruct/master/version.json");
 	}
 
 
@@ -123,13 +119,16 @@ public class IguanaTweaksTConstruct {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
         pulsar.postInit(event);
+
+        FMLCommonHandler.instance().bus().register(new OldToolConversionHandler());
+
+        GameRegistry.addRecipe(new ToolUpdateRecipe());
 	}
 
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event)
 	{
-        // TODO: change this to a proper isModuleLoaded or something in Pulsar 0.4+ (when released/implemented)
-		if (isToolLevelingActive)
+		if (pulsar.isPulseLoaded(Reference.PULSE_LEVELING))
 		{
             Log.debug("Adding command: leveluptool");
             event.registerServerCommand(new IguanaCommandLevelUpTool());
@@ -145,11 +144,4 @@ public class IguanaTweaksTConstruct {
         if(pulseCFG.isModuleEnabled(new PulseMeta("Debug", "", false, false)))
             event.registerServerCommand(new DebugCommand());
 	}
-
-
-    // backwards compatibility
-    public static String getHarvestLevelName (int num)
-    {
-        return HarvestLevels.getHarvestLevelName(num);
-    }
 }

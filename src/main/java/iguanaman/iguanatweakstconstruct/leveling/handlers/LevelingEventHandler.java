@@ -1,6 +1,7 @@
 package iguanaman.iguanatweakstconstruct.leveling.handlers;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import iguanaman.iguanatweakstconstruct.leveling.LevelingLogic;
@@ -17,10 +18,7 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.UseHoeEvent;
-import tconstruct.items.tools.Battleaxe;
-import tconstruct.items.tools.Hammer;
-import tconstruct.items.tools.Pickaxe;
-import tconstruct.items.tools.Shortbow;
+import tconstruct.items.tools.*;
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.event.ToolCraftEvent;
 import tconstruct.library.tools.ToolCore;
@@ -47,50 +45,59 @@ public class LevelingEventHandler {
         if (stack == null || !stack.hasTagCompound())
             return;
 
+        if(stack.getItem() == null || !(stack.getItem() instanceof ToolCore))
+            return;
+
+        int xp = 0;
         // is a weapon?
-        if (stack.getItem() instanceof Weapon || stack.getItem() instanceof Battleaxe || stack.getItem() instanceof Shortbow && event.source.damageType.equals("arrow")) {
-            long xp = Math.round(event.ammount);
-            if (event.entityLiving instanceof EntityAnimal) xp = Math.round(event.ammount / 4f);
+        if (stack.getItem() instanceof Weapon || stack.getItem() instanceof Battleaxe || stack.getItem() instanceof Shortbow && event.source.damageType.equals("arrow"))
+            xp = Math.round(event.ammount);
+        else
+            xp = Math.round((event.ammount-0.1f)/2);
 
-            if (xp > 0)
-            {
-                LevelingLogic.addXP(stack, player, xp);
+        // reduce xp for hitting poor animals
+        if (event.entityLiving instanceof EntityAnimal)
+            xp = Math.max(1, xp/2);
 
-                NBTTagCompound tags = stack.getTagCompound().getCompoundTag("InfiTool");
+        if (xp > 0)
+        {
+            LevelingLogic.addXP(stack, player, xp);
 
-                // bonus chance for luck if hitting passive mob
-                if(event.entityLiving instanceof EntityAnimal)
-                    RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.LAPIS, (int)xp+5, tags);
-                // otherwise damage chance
-                else
-                    RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.ATTACK, (int)xp, tags);
+            NBTTagCompound tags = stack.getTagCompound().getCompoundTag("InfiTool");
 
-                // spiders also increase bane chance
-                if(event.entityLiving instanceof EntitySpider)
-                    RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.BANE, (int)xp, tags);
-                // blazes give fiery chance (yes, blizz gives fiery :P)
-                else if(event.entityLiving instanceof EntityBlaze)
-                    RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.BLAZE, (int)xp, tags);
-                // zombie pigman gives lifesteal
-                else if(event.entityLiving instanceof EntityPigZombie)
-                    RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.LIFESTEAL, (int)xp, tags);
-                // zombie gives smite
-                else if(event.entityLiving instanceof EntityZombie)
-                    RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.SMITE, (int)xp, tags);
-                // wither skeleton gives lifesteal
-                else if(event.entityLiving instanceof EntitySkeleton) {
-                    if (((EntitySkeleton) event.entityLiving).getSkeletonType() != 0)
-                        RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.LIFESTEAL, (int)xp+2, tags);
-                }
-                // enderman gives beheading
-                else if(event.entityLiving instanceof EntityEnderman)
-                    RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.BEHEADING, (int)xp+3, tags);
+            // bonus chance for luck if hitting passive mob
+            if(event.entityLiving instanceof EntityAnimal)
+                RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.LAPIS, xp+5, tags);
+            // otherwise damage chance
+            else
+                RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.ATTACK, xp, tags);
 
-                // knocking back enemies with spriting gives knockback chance
-                if(player.isSprinting())
-                    RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.KNOCKBACK, (int)xp+2, tags);
+            // spiders also increase bane chance
+            if(event.entityLiving instanceof EntitySpider)
+                RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.BANE, Math.max(1,xp/2), tags);
+            // blazes give fiery chance (yes, blizz gives fiery :P)
+            else if(event.entityLiving instanceof EntityBlaze)
+                RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.BLAZE, Math.max(1,xp/2), tags);
+            // zombie pigman gives lifesteal
+            else if(event.entityLiving instanceof EntityPigZombie)
+                RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.LIFESTEAL, Math.max(1,xp/2), tags);
+            // zombie gives smite
+            else if(event.entityLiving instanceof EntityZombie)
+                RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.SMITE, Math.max(1,xp/2), tags);
+            // wither skeleton gives lifesteal
+            else if(event.entityLiving instanceof EntitySkeleton) {
+                if (((EntitySkeleton) event.entityLiving).getSkeletonType() != 0)
+                    RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.LIFESTEAL, Math.max(1,xp/2)+2, tags);
             }
+            // enderman gives beheading
+            else if(event.entityLiving instanceof EntityEnderman)
+                RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.BEHEADING, Math.max(1,xp/2)+3, tags);
+
+            // knocking back enemies with spriting gives knockback chance
+            if(player.isSprinting())
+                RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.KNOCKBACK, xp+2, tags);
         }
+
     }
 
     @SubscribeEvent
@@ -104,38 +111,40 @@ public class LevelingEventHandler {
     }
 
     @SubscribeEvent
-    public void onCraftTool (ToolCraftEvent.NormalTool event) {
-        // arrows don't get levels
-        if(event.tool == TinkerTools.arrow)
+    public void onCrafting(PlayerEvent.ItemCraftedEvent event)
+    {
+        if(event.crafting == null)
             return;
 
-        NBTTagCompound toolTag = event.toolTag.getCompoundTag("InfiTool");
-        int head = toolTag.getInteger("Head");
-        int handle = toolTag.getInteger("Handle");
-        int accessory = toolTag.getInteger("Accessory");
-        int extra = toolTag.hasKey("Extra") ? toolTag.getInteger("Extra") : -1;
+        // was a chisel involved?
+        ItemStack chisel = null;
+        for(int i = 0; i < event.craftMatrix.getSizeInventory(); i++)
+            if(event.craftMatrix.getStackInSlot(i) != null && event.craftMatrix.getStackInSlot(i).getItem() instanceof Chisel)
+                chisel = event.craftMatrix.getStackInSlot(i);
+
+        // no chisel found
+        if(chisel == null)
+            return;
+
+        // we don't check for chisel recipes specifically, since there is no other recipe that requires a chisel
+        // and it's very likely that there never will be
+
+        LevelingLogic.addXP(chisel, event.player, 1);
+    }
+
+    @SubscribeEvent
+    public void onCraftTool (ToolCraftEvent.NormalTool event) {
+        // arrows don't get levels
+        if(event.tool instanceof Arrow)
+            return;
 
         // add tags for tool leveling
+        NBTTagCompound toolTag = event.toolTag.getCompoundTag("InfiTool");
         LevelingLogic.addLevelingTags(toolTag, event.tool);
 
 
-
-        if (Config.toolLeveling && Config.toolLevelingExtraModifiers)
-            toolTag.setInteger("Modifiers", Math.max(toolTag.getInteger("Modifiers") - 3, 0));
-
-        /* what is this? o_O
-        if (event.tool == TinkerTools.hammer || event.tool == TinkerTools.excavator || event.tool == TinkerTools.lumberaxe)
-        {
-            List<String> replaceTags = new ArrayList<String>(Arrays.asList(
-                    "MiningSpeed", "MiningSpeed2", "MiningSpeedHandle", "MiningSpeedExtra"
-            ));
-
-            for (String replaceTag : replaceTags)
-                if (toolTag.hasKey(replaceTag)) toolTag.setInteger(replaceTag, Math.round(toolTag.getInteger(replaceTag) / 2f));
-
-            event = event;
-        }
-        */
+        // remove modifiers
+        toolTag.setInteger("Modifiers", Math.max(toolTag.getInteger("Modifiers") - (3-Config.toolLevelingExtraModifiers), 0));
     }
 
 

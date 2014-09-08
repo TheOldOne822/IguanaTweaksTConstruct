@@ -21,9 +21,10 @@ public class Config {
     public static boolean showMinimalTooltipXP;
 	public static boolean detailedXpTooltip;
 	public static boolean toolLeveling;
-	public static boolean toolLevelingExtraModifiers;
+	public static int toolLevelingExtraModifiers;
     public static int[] toolModifiersAtLevels;
 	public static boolean toolLevelingRandomBonuses;
+    public static int[] randomBonusesAtlevels;
     public static boolean randomBonusesAreUseful;
     public static boolean randomBonusesAreRandom;
 
@@ -39,7 +40,7 @@ public class Config {
     public static float xpPerBoostLevelMultiplier;
 
     // Harvest Leveling
-    public static boolean nerfBronze;
+    public static boolean changeDiamondModifier;
     public static int durabilityPercentage;
     public static int miningSpeedPercentage;
 
@@ -61,8 +62,16 @@ public class Config {
     public static boolean addFlintRecipe;
     public static int recipeGravelPerFlint;
     public static boolean disableStoneTools;
+    public static boolean disableBonusMods;
     public static boolean castsBurnMaterial;
+    public static boolean allowStringBinding;
+
     public static boolean easyToolRepair;
+    public static boolean easyPartCrafting;
+    public static boolean easyToolBuilding;
+    public static boolean easyAdvancedToolBuilding;
+
+    public static boolean allowStencilReuse;
     public static boolean allowPartReuse;
     public static boolean removeStoneTorchRecipe;
     public static boolean moreExpensiveSilkyCloth;
@@ -72,8 +81,9 @@ public class Config {
     //public static float repairAmountMultiplier;
 
     // allowed tools that should not be nerfed
-    public static List<String> allowedTools = new LinkedList<String>();
-    public static Set<String> allowedModTools = new HashSet<String>();
+    public static boolean excludedToolsIsWhitelist;
+    public static Set<String> excludedTools = new HashSet<String>();
+    public static Set<String> excludedModTools = new HashSet<String>();
 
     // debug
     public static boolean showDebugXP;
@@ -81,6 +91,7 @@ public class Config {
 	public static boolean logMiningLevelChanges;
     public static boolean logToolMaterialChanges;
     public static boolean logBonusExtraChance;
+    public static boolean logOverrideChanges;
 
 
     public void init(File file) {
@@ -118,9 +129,10 @@ public class Config {
         // levelup behaviour
         maxToolLevel               = configfile.getInt("maxToolLevel", CATEGORY_Leveling, 6, 1, 99, "");
         toolLeveling               = configfile.getBoolean("toolLeveling", CATEGORY_Leveling, true, "Can your skill with tools 'level up' as you use them?");
-        toolLevelingExtraModifiers = configfile.getBoolean("ExtraModifiers", CATEGORY_Leveling, true, "Removes modifiers on new tools and gives them through leveling (requires 'toolLeveling=true')");
+        toolLevelingExtraModifiers = configfile.getInt("ExtraModifiers", CATEGORY_Leveling, 0, 0, 9, "The amount of modifiers new tools have.");
+        toolModifiersAtLevels      = configfile.get(CATEGORY_Leveling, "ModifiersAtLevels", new int[]{2,4,6}, "Adds an extra modifier on these levleups if 'ExtraModifiers' is enabled").getIntList();
 		toolLevelingRandomBonuses  = configfile.getBoolean("RandomBonuses", CATEGORY_Leveling, true, "Gives a random bonus every level, if false and levelling is on modifiers are given at levels 2 and 4 (requires 'toolLeveling=true')");
-        toolModifiersAtLevels      = configfile.get(CATEGORY_Leveling, "ModifiersAtLevels", new int[]{2,4,6}, "Adds an extra modifier on these levleups if 'toolLevelingExtraModifiers' is enabled").getIntList();
+        randomBonusesAtlevels      = configfile.get(CATEGORY_Leveling, "BonusesAtLevels", new int[]{2,3,4,5,6}, "Adds a random bonus on these levleups if 'RandomBonuses' is enabled").getIntList();
         randomBonusesAreUseful     = configfile.getBoolean("UsefulBonuses", CATEGORY_Leveling, true, "Disables less-useful modifiers on levelups. Like a sword with silktouch, or a pickaxe with beheading.");
         randomBonusesAreRandom     = configfile.getBoolean("CompletelyRandomBonuses", CATEGORY_Leveling, false, "Each modifier is equally likely on levelup. Disables useful bonuses.");
 
@@ -140,8 +152,8 @@ public class Config {
 
         // pick boosting behaviour
         pickaxeBoostRequired    = configfile.getBoolean("pickaxeBoostRequired", CATEGORY_PickLeveling, true, "Every Pickaxes Mining Level is reduced by 1 and needs a mining levelup (separate from tool level) or, if enabled, a mob head modifier to advance");
-        levelingPickaxeBoost    = configfile.getBoolean("allowLevelingBoost", CATEGORY_PickLeveling, true, "Pickaxes gain Mining Xp. A pickaxes mining level can be boosted through gaining XP. Should be used with pickaxeBoostRequired, otherwise tools will be able to mine higher than normally.");
-        mobHeadPickaxeBoost     = configfile.getBoolean("addMobHeadBoost", CATEGORY_PickLeveling, true, "Mob heads can be used to boost a pickaxe's mining xp (REQUIRES allowLevelBoost)");
+        levelingPickaxeBoost    = configfile.getBoolean("allowLevelingBoost", CATEGORY_PickLeveling, true, "Pickaxes gain Mining Xp by using the pickaxe.");
+        mobHeadPickaxeBoost     = configfile.getBoolean("addMobHeadBoost", CATEGORY_PickLeveling, true, "Mob heads can be used to boost a pickaxe's mining xp.");
         mobHeadRequiresModifier = configfile.getBoolean("mobHeadBoostNeedsModifier", CATEGORY_PickLeveling, false, "Mob head boosting requires a free modifier");
 
         levelingPickaxeBoostXpPercentage = configfile.getInt("xpRequiredPickBoostPercentage", CATEGORY_PickLeveling, 100, 1, 999, "Change the percentage of XP required to boost a pick (i.e. 200 means 2x normal boost xp required)");
@@ -150,8 +162,8 @@ public class Config {
         /** HarvestLevel Module **/
         configfile.setCategoryComment(CATEGORY_HarvestLevels, "Harvest Level Tweak Module: Introduces a slower mining level progression.");
 
-        // bronze levels
-        nerfBronze = configfile.getBoolean("nerfBronze", CATEGORY_HarvestLevels, false, "Reduces the mining level of bronze by 1. This means bronze can not be used to harvest obsidian. ATTENTION: ONLY USE IF YOU HAVE A WAY OF GETTING STEEL (or something with equivalent mining level)");
+        // changed diamond/emerald modifier
+        changeDiamondModifier = configfile.getBoolean("diamondRequired", CATEGORY_HarvestLevels, true, "Changes the Diamond and Emerald modifier: Apply it to a bronze level tool to obtain diamond level. Required unless you have steel or similar.");
 
         // Tool durability/speed changes
         durabilityPercentage  = configfile.getInt("durabilityPercentage", CATEGORY_HarvestLevels, 80, 1, 999, "Change durability of all tool materials (in percent)");
@@ -186,8 +198,16 @@ public class Config {
         // ticon tweaks
         disableStoneTools = configfile.getBoolean("disableStoneTools", CATEGORY_Tweaks, true, "Stone Tools can only be used to create casts, but no tools");
         castsBurnMaterial = configfile.getBoolean("castingBurnsMaterial", CATEGORY_Tweaks, true, "Creating a metal cast burns up the material that was used to create it");
-        easyToolRepair    = configfile.getBoolean("easyToolRepair", CATEGORY_Tweaks, true, "Allows to repair your tool in a crafting grid, without tool station");
+        allowStencilReuse = configfile.getBoolean("allowStencilReuse", CATEGORY_Tweaks, false, "Allows to use stencils as blank patterns in the stencil table");
         allowPartReuse    = configfile.getBoolean("allowPartReuse", CATEGORY_Tweaks, true, "Allows toolparts to be used as material in the Part Builder. Like, turn a Pick head into a Shovel head.!");
+        allowStringBinding= configfile.getBoolean("allowStringBinding", CATEGORY_Tweaks, true, "Allows you to use a piece of string as a binding");
+        disableBonusMods  = configfile.getBoolean("disableBonusModifierModifiers", CATEGORY_Tweaks, false, "Removes the ability to add modifiers with Gold, Diamond, Netherstars etc.");
+
+        // easy crafting
+        easyToolRepair           = configfile.getBoolean("easyToolRepair", CATEGORY_Tweaks, true, "Allows to repair your tool in a crafting grid, without tool station");
+        easyPartCrafting         = configfile.getBoolean("easyPartCrafting", CATEGORY_Tweaks, false, "Allows to craft tool parts with a pattern and the material in any crafting grid.");
+        easyToolBuilding         = configfile.getBoolean("easyToolBuilding", CATEGORY_Tweaks, false, "Allows to create Tool Station Tools (2-3 Parts) in any crafting grid");
+        easyAdvancedToolBuilding = configfile.getBoolean("easyToolBuildingForge", CATEGORY_Tweaks, false, "Allows to also create Tool Forge Tools (4 Parts) in any crafting grid");
 
         // stuff
         removeStoneTorchRecipe  = configfile.getBoolean("removeStoneTorchRecipe", CATEGORY_Tweaks, false, "Removes the recipe for Tinker's Construct's stone torch");
@@ -200,25 +220,26 @@ public class Config {
         //repairAmountMultiplier = configfile.getFloat("repairAmountMultiplier", CATEGORY_Tweaks, 1.0f, 0.01f, 9.99f, "A factor that is multiplied onto the amount a tool is repaired. (0.5 = half durability restored per repair, 2.0 = twice as much durability restored per repair)");
 
         /** Allowed tools for nerfed vanilla tools **/
-        configfile.setCategoryComment(CATEGORY_AllowedTools, "Tweak Module: This category allows you to specify which tools ARE STILL USABLE if the option to disable non-TConstsruct tools is enabled.");
+        configfile.setCategoryComment(CATEGORY_AllowedTools, "Tweak Module: This category allows you to specify which tools ARE NOT USABLE or alternatively ARE STILL USABLE if the option to disable non-TConstsruct tools is enabled.\nTo make this easier a /dumpTools command is provided, that dumps the names of all applicable items in your world. Copy'n'Paste away!");
         {
-            String[] axes =    configfile.getStringList("axes", CATEGORY_AllowedTools, defaultAllowedAxes, "Axes that shall remain useful");
-            String[] picks =   configfile.getStringList("pickaxes", CATEGORY_AllowedTools, defaultAllowedPicks, "Pickaxes that shall remain useful");
-            String[] shovels = configfile.getStringList("shovels", CATEGORY_AllowedTools, defaultAllowedShovel, "Shovels that shall remain useful");
-            String[] swords =  configfile.getStringList("swords", CATEGORY_AllowedTools, defaultAllowedSwords, "Swords that shall remain useful");
-            String[] bows   =  configfile.getStringList("bows", CATEGORY_AllowedTools, defaultAllowedBows, "bows that shall remain useful");
-            String[] hoes =    configfile.getStringList("hoes", CATEGORY_AllowedTools, defaultAllowedHoes, "Hoes that shall remain useful");
-            String[] other =   configfile.getStringList("unspecified", CATEGORY_AllowedTools, defaultAllowedOther, "Other tools. I'll be honest, the category doesn't matter, they're just for readability :P");
+            String type = configfile.getString("exclusionType", CATEGORY_AllowedTools, "blacklist", "Change the type of the exclusion.\n'blacklist' means the listed tools are made unusable.\n'whitelist' means ALL tools except the listed ones are unusable.", new String[] {"whitelist","blacklist"});
+            excludedToolsIsWhitelist = "whitelist".equals(type);
 
-            allowedModTools.addAll(Arrays.asList(configfile.getStringList("mods", CATEGORY_AllowedTools, defaultAllowMod, "Here you can enter a mod-id to whitelist ALL itesm of this mod.")));
+            String[] tools =   configfile.getStringList("tools", CATEGORY_AllowedTools, defaultExcludedTools, "Tools that are excluded if the option to nerf non-tinkers tools is enabled.");
+            String[] swords =  configfile.getStringList("swords", CATEGORY_AllowedTools, defaultExcludedSwords, "Swords that are excluded if the option to nerf non-tinkers swords is enabled.");
+            String[] bows   =  configfile.getStringList("bows", CATEGORY_AllowedTools, defaultExcludedBows, "Bows that are excluded if the option to nerf non-tinkers bows is enabled.");
+            String[] hoes =    configfile.getStringList("hoes", CATEGORY_AllowedTools, defaultExcludedHoes, "Hoes that are excluded if the option to nerf non-tinkers hoes is enabled.");
 
-            allowedTools.addAll(Arrays.asList(picks));
-            allowedTools.addAll(Arrays.asList(axes));
-            allowedTools.addAll(Arrays.asList(shovels));
-            allowedTools.addAll(Arrays.asList(swords));
-            allowedTools.addAll(Arrays.asList(bows));
-            allowedTools.addAll(Arrays.asList(hoes));
-            allowedTools.addAll(Arrays.asList(other));
+            excludedModTools.addAll(Arrays.asList(configfile.getStringList("mods", CATEGORY_AllowedTools, defaultAllowMod, "Here you can exclude entire mods by adding their mod-id (the first part of the string).")));
+
+            if(nerfVanillaTools)
+                excludedTools.addAll(Arrays.asList(tools));
+            if(nerfVanillaSwords)
+                excludedTools.addAll(Arrays.asList(swords));
+            if(nerfVanillaBows)
+                excludedTools.addAll(Arrays.asList(bows));
+            if(nerfVanillaHoes)
+                excludedTools.addAll(Arrays.asList(hoes));
         }
 
 
@@ -231,6 +252,7 @@ public class Config {
         logMiningLevelChanges  = configfile.getBoolean("logToolMiningLevelChange", CATEGORY_Debug, true, "Logs when the mining level of a (non-tinker) tool is changed");
         logToolMaterialChanges = configfile.getBoolean("logTinkerMaterialChange", CATEGORY_Debug, true, "Logs when the mining level of a tinkers tool material is changed");
         logBonusExtraChance    = configfile.getBoolean("logBonusExtraChance", CATEGORY_Debug, true, "Logs how much the extra-chance from doing stuff you had when getting a random bonus on levelup.");
+        logOverrideChanges     = configfile.getBoolean("logExcessiveOverrideChanges", CATEGORY_Debug, false, "Logs every single thing done by the Override module. Use at your own risk. ;)");
 
 
 		configfile.save();
@@ -244,12 +266,56 @@ public class Config {
     }
 
 
-    private static String[] defaultAllowedPicks = new String[]{"Botania:terraPick", "Botania:glassPick", "Steamcraft:steamDrill"};
-    private static String[] defaultAllowedAxes = new String[]{"Steamcraft:steamAxe"};
-    private static String[] defaultAllowedShovel = new String[]{"Steamcraft:steamShovel"};
-    private static String[] defaultAllowedHoes = new String[]{};
-    private static String[] defaultAllowedSwords = new String[]{"Botania:terraSword", "Botania:enderDagger"};
-    private static String[] defaultAllowedBows = new String[]{};
-    private static String[] defaultAllowedOther = new String[]{"ThermalExpansion:tool.battleWrenchInvar", "ThermalExpansion:tool.sickleInvar"};
-    private static String[] defaultAllowMod = new String[]{"RedstoneArsenal", "ExtraUtilities", "witchery", "AWWayofTime"};
+    private static String[] defaultExcludedTools = new String[]{
+            // botania
+            "Botania:manasteelAxe",
+            "Botania:manasteelPick",
+            "Botania:manasteelShovel",
+            // Flaxbeards Steam Power
+            "Steamcraft:axeGildedGold",
+            "Steamcraft:pickGildedGold",
+            "Steamcraft:shovelGildedGold",
+            "Steamcraft:axeBrass",
+            "Steamcraft:pickBrass",
+            "Steamcraft:shovelBrass",
+            // TE
+            "ThermalExpansion:tool.axeInvar",
+            "ThermalExpansion:tool.pickaxeInvar",
+            "ThermalExpansion:tool.shovelInvar",
+            // IC2
+            "IC2:itemToolBronzeAxe",
+            "IC2:itemToolBronzePickaxe",
+            "IC2:itemToolBronzeSpade",
+            // Railcraft
+            "Railcraft:tool.steel.axe",
+            "Railcraft:tool.steel.pickaxe",
+            "Railcraft:tool.steel.shovel"
+    };
+    private static String[] defaultExcludedHoes = new String[]{
+            "Steamcraft:hoeGildedGold",
+            "Steamcraft:hoeBrass",
+            "ThermalExpansion:tool.hoeInvar",
+            "IC2:itemToolBronzeHoe",
+            "Railcraft:tool.steel.hoe"
+    };
+    private static String[] defaultExcludedSwords = new String[]{
+            "Botania:manasteelSword",
+            "Steamcraft:swordGildedGold",
+            "Steamcraft:swordBrass",
+            "ThermalExpansion:tool.swordInvar",
+            "IC2:itemToolBronzeSword",
+            "Railcraft:tool.steel.sword"
+    };
+    private static String[] defaultExcludedBows = new String[]{
+            "ThermalExpansion:tool.bowInvar"
+    };
+    private static String[] defaultAllowMod = new String[]{
+            "minecraft",
+            "Metallurgy",
+            "Natura",
+            "BiomesOPlenty",
+            "ProjRed|Exploration",
+            "appliedenergistics2",
+            "MekanismTool"
+    };
 }

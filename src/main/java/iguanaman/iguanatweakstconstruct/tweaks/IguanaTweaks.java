@@ -1,6 +1,7 @@
 package iguanaman.iguanatweakstconstruct.tweaks;
 
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import iguanaman.iguanatweakstconstruct.reference.Config;
 import iguanaman.iguanatweakstconstruct.reference.Reference;
@@ -8,23 +9,23 @@ import iguanaman.iguanatweakstconstruct.tweaks.handlers.*;
 import iguanaman.iguanatweakstconstruct.tweaks.modifiers.ModFluxExpensive;
 import iguanaman.iguanatweakstconstruct.tweaks.modifiers.ModLimitedToolRepair;
 import iguanaman.iguanatweakstconstruct.util.Log;
-import iguanaman.iguanatweakstconstruct.util.RecipeRemover;
 import mantle.pulsar.pulse.Handler;
 import mantle.pulsar.pulse.Pulse;
+import mantle.utils.RecipeRemover;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import tconstruct.library.TConstructRegistry;
-import tconstruct.library.crafting.CastingRecipe;
-import tconstruct.library.crafting.ModifyBuilder;
-import tconstruct.library.crafting.PatternBuilder;
-import tconstruct.library.crafting.ToolBuilder;
+import tconstruct.library.client.TConstructClientRegistry;
+import tconstruct.library.crafting.*;
 import tconstruct.library.modifier.ItemModifier;
 import tconstruct.library.util.IPattern;
+import tconstruct.modifiers.tools.ModExtraModifier;
 import tconstruct.modifiers.tools.ModFlux;
 import tconstruct.modifiers.tools.ModToolRepair;
 import tconstruct.smeltery.TinkerSmeltery;
@@ -48,8 +49,25 @@ public class IguanaTweaks {
         // flint recipes n stuff
         flintTweaks();
 
-        if(Config.castsBurnMaterial)
-            castCreatingConsumesPart();
+        // add string bindings. yay.
+        if(Config.allowStringBinding) {
+            Log.info("Register String binding");
+            TConstructRegistry.addToolMaterial(40, "String", 0, 33, 1, 0, 0.01F, 0, 0f, EnumChatFormatting.WHITE.toString(), "");
+            TConstructClientRegistry.addMaterialRenderMapping(40, "tinker", "paper", true);
+            MinecraftForge.EVENT_BUS.register(new StringBindingHandler());
+        }
+
+
+        if(Config.allowStencilReuse) {
+            Log.info("Make stencils reusable");
+            for (ItemStack stack : StencilBuilder.getStencils())
+                StencilBuilder.registerBlankStencil(stack);
+        }
+
+        if(Config.castsBurnMaterial) {
+            Log.info("Burn casting materials to a crisp");
+            MinecraftForge.EVENT_BUS.register(new CastHandler());
+        }
 
         if(Config.allowPartReuse)
             reusableToolParts();
@@ -114,7 +132,7 @@ public class IguanaTweaks {
         if(Config.removeStoneTorchRecipe)
         {
             Log.info("Removing stone torch recipe");
-            RecipeRemover.removeAnyRecipeFor(Item.getItemFromBlock(TinkerWorld.stoneTorch));
+            RecipeRemover.removeAnyRecipe(new ItemStack(TinkerWorld.stoneTorch, 4));
         }
 
         // silky jewel nerfs
@@ -135,6 +153,9 @@ public class IguanaTweaks {
 
         if(Config.moreModifiersForFlux)
             exchangeFluxModifier();
+        
+        if(Config.disableBonusMods)
+            removeBonusModifierModifiers();
 
         if(Config.maxToolRepairs > -1)
             limitToolRepair();
@@ -142,6 +163,12 @@ public class IguanaTweaks {
         // has to be added after exchanging the repair modifier, to obtain the correct cache
         if(Config.easyToolRepair)
             GameRegistry.addRecipe(new RepairCraftingRecipe());
+
+        if(Config.easyPartCrafting)
+            GameRegistry.addRecipe(new PartCraftingRecipe());
+
+        if(Config.easyToolBuilding)
+            GameRegistry.addRecipe(new ToolCraftingRecipe());
     }
 
     private void flintTweaks()
@@ -160,25 +187,6 @@ public class IguanaTweaks {
 
             // add recipe
             GameRegistry.addShapelessRecipe(new ItemStack(Items.flint), recipe);
-        }
-    }
-
-    private void castCreatingConsumesPart()
-    {
-        Log.info("Modifying cast creation to consume toolpart");
-        try {
-            Field consume = CastingRecipe.class.getDeclaredField("consumeCast");
-            consume.setAccessible(true);
-
-            for(CastingRecipe recipe : TConstructRegistry.getTableCasting().getCastingRecipes())
-                if(recipe.getResult().getItem() == TinkerSmeltery.metalPattern)
-                    consume.set(recipe, true);
-        } catch (NoSuchFieldException e) {
-            Log.error("Couldn't find field to modify");
-            Log.error(e);
-        } catch (IllegalAccessException e) {
-            Log.error("Couldn't modify casting pattern");
-            Log.error(e);
         }
     }
 
@@ -216,6 +224,20 @@ public class IguanaTweaks {
         }
     }
 
+    private void removeBonusModifierModifiers()
+    {
+        Log.info("Removing bonus modifier modifiers");
+        List<ItemModifier> mods = ModifyBuilder.instance.itemModifiers;
+        for(ListIterator<ItemModifier> iter = mods.listIterator(); iter.hasNext();)
+        {
+            ItemModifier mod = iter.next();
+            // flux mod
+            if(mod instanceof ModExtraModifier) {
+                iter.remove();
+            }
+        }
+    }
+
     private void limitToolRepair()
     {
 
@@ -233,25 +255,28 @@ public class IguanaTweaks {
 
     private static void findToolsFromConfig()
     {
-        Log.info("Setting up whitelist for allowed tools");
-        // cycle through config entries
-        for(String identifier : Config.allowedTools) {
-            // look them up in the registry (we're in postInit. everything should be registered)
-            Object o = Item.itemRegistry.getObject(identifier);
-            // if we found it, add it.
-            if(o != null)
-                toolWhitelist.add((Item)o);
-        }
+        Log.info("Setting up whitelist/blacklist for allowed tools");
 
-        // mod-wide enabling
+        // cycle through all items
         for(Object identifier : Item.itemRegistry.getKeys())
         {
+            Object item = Item.itemRegistry.getObject(identifier);
+            // do we care about this item?
+            if(!(item instanceof ItemTool || item instanceof ItemHoe || item instanceof ItemSword || item instanceof ItemBow))
+                continue;
+
             String mod = identifier.toString().split(":")[0]; // should always be non-null... I think
-            if(Config.allowedModTools.contains(mod))
+
+            // whitelist
+            if(Config.excludedToolsIsWhitelist)
             {
-                // get the item
-                Object item = Item.itemRegistry.getObject(identifier);
-                if(item instanceof ItemTool || item instanceof ItemHoe || item instanceof ItemSword || item instanceof ItemBow)
+                // on the whitelist?
+                if(Config.excludedModTools.contains(mod) || Config.excludedTools.contains(identifier))
+                    toolWhitelist.add((Item)item);
+            }
+            // blacklist
+            else {
+                if(!Config.excludedModTools.contains(mod) && !Config.excludedTools.contains(identifier))
                     toolWhitelist.add((Item)item);
             }
         }

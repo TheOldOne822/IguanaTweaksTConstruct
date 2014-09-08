@@ -1,9 +1,11 @@
 package iguanaman.iguanatweakstconstruct.leveling;
 
 import iguanaman.iguanatweakstconstruct.IguanaTweaksTConstruct;
+import iguanaman.iguanatweakstconstruct.leveling.modifiers.ModCritical;
 import iguanaman.iguanatweakstconstruct.util.Log;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -20,7 +22,6 @@ import java.util.List;
 
 // This class is responsible for actually getting XP when mining!
 public class LevelingActiveToolMod extends ActiveToolMod {
-    // TODO: make this customizable?
     static List<Material> materialBlacklist = Arrays.asList(
             Material.leaves, Material.vine, Material.circuits,
             Material.glass, Material.piston, Material.snow
@@ -88,7 +89,7 @@ public class LevelingActiveToolMod extends ActiveToolMod {
             itsHotInHere |= entity.worldObj.getBlock(x, y, z-1).getMaterial() == Material.lava;
             // it only took 7 lines to make this pun
             if(itsHotInHere)
-                RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.AUTOSMELT, 1, tags);
+                RandomBonuses.addModifierExtraWeight(RandomBonuses.Modifier.AUTOSMELT, 10, tags);
         }
 
         return false;
@@ -97,7 +98,16 @@ public class LevelingActiveToolMod extends ActiveToolMod {
 
     @Override
     public boolean afterBlockBreak() {
-        Log.info("afterBlockBreak is implemented. Somebody tell me that so I can update xp giving.");
+        Log.debug("afterBlockBreak is implemented. Somebody tell me that so I can update xp giving.");
         return super.afterBlockBreak();
+    }
+
+    @Override
+    public boolean doesCriticalHit(ToolCore tool, NBTTagCompound tags, NBTTagCompound toolTags, ItemStack stack, EntityLivingBase player, Entity entity) {
+        // crit modifier adds additional 10% crit chance
+        if(toolTags.hasKey(ModCritical.modCritical.key))
+            return IguanaTweaksTConstruct.random.nextInt(10) == 0;
+
+        return false;
     }
 }

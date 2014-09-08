@@ -1,6 +1,7 @@
 package iguanaman.iguanatweakstconstruct.leveling;
 
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import iguanaman.iguanatweakstconstruct.IguanaTweaksTConstruct;
@@ -10,11 +11,11 @@ import iguanaman.iguanatweakstconstruct.leveling.handlers.MobHeadTooltipHandler;
 import iguanaman.iguanatweakstconstruct.leveling.modifiers.ModMiningLevelBoost;
 import iguanaman.iguanatweakstconstruct.leveling.modifiers.ModXpAwareRedstone;
 import iguanaman.iguanatweakstconstruct.mobheads.IguanaMobHeads;
-import iguanaman.iguanatweakstconstruct.mobheads.handlers.MobHeadHandler;
 import iguanaman.iguanatweakstconstruct.reference.Config;
 import iguanaman.iguanatweakstconstruct.reference.Reference;
 import iguanaman.iguanatweakstconstruct.util.HarvestLevels;
 import iguanaman.iguanatweakstconstruct.util.Log;
+import iguanaman.iguanatweakstconstruct.util.ModSupportHelper;
 import mantle.pulsar.pulse.Handler;
 import mantle.pulsar.pulse.Pulse;
 import net.minecraft.init.Items;
@@ -30,7 +31,6 @@ import tconstruct.tools.TinkerTools;
 
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 
 /**
  * The Leveling Pulse. If Leveling were a separate mod instead of pulse-model, this'd be a @Mod
@@ -42,7 +42,8 @@ public class IguanaToolLeveling {
     @Handler
     public void init(FMLInitializationEvent event)
     {
-        TConstructRegistry.registerActiveToolMod(new LevelingActiveToolMod());
+        // has to be before the original toolmod, otherwise we can't reward xp because of some modifications it does
+        TConstructRegistry.activeModifiers.add(0, new LevelingActiveToolMod());
 
         // substitute modifiers that need an xp-aware implementation
         takeOverModifiers();
@@ -55,7 +56,9 @@ public class IguanaToolLeveling {
     @Handler
     public void postInit(FMLPostInitializationEvent event)
     {
-        MinecraftForge.EVENT_BUS.register(new LevelingEventHandler());
+        LevelingEventHandler handler = new LevelingEventHandler();
+        MinecraftForge.EVENT_BUS.register(handler);
+        FMLCommonHandler.instance().bus().register(handler);
         MinecraftForge.EVENT_BUS.register(new LevelingToolTipHandler());
         if(Config.mobHeadPickaxeBoost)
             MinecraftForge.EVENT_BUS.register(new MobHeadTooltipHandler());
@@ -91,13 +94,13 @@ public class IguanaToolLeveling {
         // creeper head
         ModifyBuilder.registerModifier(new ModMiningLevelBoost(getVanillaMobHead(4), 22, HarvestLevels._5_diamond));
 
-        if(IguanaTweaksTConstruct.isMobHeadsActive) {
+        if(IguanaTweaksTConstruct.pulsar.isPulseLoaded(Reference.PULSE_MOBHEADS)) {
             // pigman head
             ModifyBuilder.registerModifier(new ModMiningLevelBoost(getIguanaMobHead(1), 23, HarvestLevels._5_diamond));
             // blaze head
             ModifyBuilder.registerModifier(new ModMiningLevelBoost(getIguanaMobHead(2), 24, HarvestLevels._6_obsidian));
             // blizz head
-            if(IguanaTweaksTConstruct.modTEDetected)
+            if(ModSupportHelper.ThermalFoundation)
                 ModifyBuilder.registerModifier(new ModMiningLevelBoost(getIguanaMobHead(3), 25, HarvestLevels._6_obsidian));
             // enderman head
             ModifyBuilder.registerModifier(new ModMiningLevelBoost(getIguanaMobHead(0), 26, HarvestLevels._7_ardite));

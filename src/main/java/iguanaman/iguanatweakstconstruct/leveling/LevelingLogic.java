@@ -25,13 +25,13 @@ import tconstruct.library.tools.Weapon;
  *  - If pick-boosting is enabled, all the xp you gain also fills a secondary xp-bar, the mining-boost-xp
  *  - When your mining-boost-xp is full, your mining level is increased by 1. Only works once per pick.
  */
-public abstract class LevelingLogic {
+public final class LevelingLogic {
+    private LevelingLogic() {} // non-instantiable
+
     public static final String TAG_EXP = "ToolEXP";
     public static final String TAG_LEVEL = "ToolLevel";
     public static final String TAG_BOOST_EXP = "HeadEXP"; // HeadEXP for downwards compatibility
     public static final String TAG_IS_BOOSTED = "HarvestLevelModified";
-
-    public static final int MAX_LEVEL = 6;
 
     public static int getLevel(NBTTagCompound tags) { return tags.getInteger(TAG_LEVEL); }
     public static int getHarvestLevel(NBTTagCompound tags) { return tags.hasKey("HarvestLevel") ? tags.getInteger("HarvestLevel") : -1; }
@@ -41,7 +41,7 @@ public abstract class LevelingLogic {
     public static boolean hasXp(NBTTagCompound tags) { return tags.hasKey(TAG_EXP); }
     public static boolean hasBoostXp(NBTTagCompound tags) { return tags.hasKey(TAG_BOOST_EXP); }
     public static boolean isBoosted(NBTTagCompound tags) { return tags.getBoolean(TAG_IS_BOOSTED); }
-    public static boolean isMaxLevel(NBTTagCompound tags) { return getLevel(tags) >= MAX_LEVEL; }
+    public static boolean isMaxLevel(NBTTagCompound tags) { return getLevel(tags) >= Config.maxToolLevel; }
 
     /**
     * can only be boosted if:
@@ -72,7 +72,7 @@ public abstract class LevelingLogic {
     public static void addBoostTags(NBTTagCompound tag, ToolCore tool)
     {
         int hlvl = tag.getInteger("HarvestLevel");
-        if(!Config.levelingPickaxeBoost)
+        if(!Config.pickaxeBoostRequired)
             return;
         if(hlvl == 0 || !(tool instanceof Pickaxe || tool instanceof Hammer))
             return;
@@ -80,10 +80,8 @@ public abstract class LevelingLogic {
         tag.setLong(TAG_BOOST_EXP, 0);
         tag.setBoolean(TAG_IS_BOOSTED, false);
 
-        // reduce harvestlevel by 1 if pickaxe boosting is required
-        if(Config.pickaxeBoostRequired) {
-            tag.setInteger("HarvestLevel", hlvl - 1);
-        }
+        // reduce harvestlevel by 1
+        tag.setInteger("HarvestLevel", hlvl - 1);
     }
 
     /**
@@ -103,7 +101,7 @@ public abstract class LevelingLogic {
 		boolean pickLeveled = false;
 
         // Update Tool XP
-		if (toolXP >= 0 && hasXp(tags) && level > 0 && level < MAX_LEVEL)
+		if (toolXP >= 0 && hasXp(tags) && level > 0 && !isMaxLevel(tags) && Config.toolLeveling)
 		{
             // set new xp value
 			tags.setLong(TAG_EXP, toolXP);
@@ -176,16 +174,19 @@ public abstract class LevelingLogic {
 	{
 		if (tags == null) tags = tool.getTagCompound().getCompoundTag("InfiTool");
 
-		float base = 400;
+		float base = 100f;
 
 		if (tool.getItem() instanceof Weapon || tool.getItem() instanceof Shortbow)
 		{
+            base = 140f;
+            base *= ((ToolCore)tool.getItem()).getDamageModifier();
+            base *= tags.getInteger("Attack") * 1.2f;
+
 			if (tool.getItem() instanceof Scythe) base *= 1.5f;
 			base *= Config.xpRequiredWeaponsPercentage / 100f;
 		}
 		else
 		{
-            base = 100f;
             if(tags.hasKey("HarvestLevel") && LevelingLogic.getHarvestLevel(tags) < 1)
                 base -= 20;
             if(tags.hasKey("HarvestLevel") && LevelingLogic.getHarvestLevel(tags) < 2)
@@ -217,12 +218,13 @@ public abstract class LevelingLogic {
 
             base += ((float)baseMiningSpeed + (float)(miningSpeed-baseMiningSpeed)/5f)/divider;
 
-			if (tool.getItem() instanceof Hatchet) base /= 2f;
-			else if (tool.getItem() instanceof Shovel) base *= 2f;
-			else if (tool.getItem() instanceof Mattock) base *= 2.5f;
-			else if (tool.getItem() instanceof LumberAxe) base *= 3f;
-			else if (tool.getItem() instanceof Hammer) base *= 6f;
-			else if (tool.getItem() instanceof Excavator) base *= 9f;
+            // shovels need a bit more xp because their blocks berak much faster
+
+            if(tool.getItem() instanceof Hammer) base *= 5.1f;
+            if(tool.getItem() instanceof Excavator) base *= 6.2f;
+            if(tool.getItem() instanceof LumberAxe) base *= 1.38f;
+            if(tool.getItem() instanceof Shovel) base *= 1.2f; // shovels break their blocks faster than picks
+            if(tool.getItem() instanceof Hatchet) base *= 0.66f; // not much wood to chop, but usable as weapon
 
 			base *= Config.xpRequiredToolsPercentage / 100f;
 		}
@@ -256,57 +258,62 @@ public abstract class LevelingLogic {
 		World world = player.worldObj;
 
         // *ding* levelup!
-		int level = getLevel(tags);
+        int level = getLevel(tags);
         level++;
-		tags.setInteger(TAG_LEVEL, level);
-
-		boolean isTool = stack.getItem() instanceof HarvestTool;
-
-        // reset tool xp to 0, since we're at a new level now
-        tags.setLong(TAG_EXP, 0L);
 
         // tell the player how awesome he is
         if (!world.isRemote)
         {
+            // special message
             if(StatCollector.canTranslate("message.levelup." + level))
-            {
-                player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocalFormatted("message.levelup." + level, stack.getDisplayName())));
-            }
+                player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocalFormatted("message.levelup." + level, stack.getDisplayName() + EnumChatFormatting.DARK_AQUA)));
+            // generic message
+            else
+                player.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocalFormatted("message.levelup.generic", stack.getDisplayName() + EnumChatFormatting.DARK_AQUA, LevelingTooltips.getLevelString(level))));
         }
+
+        // Add random bonuses on leveling up?
+        // this is done first so the extra-chance can be incorporated correctly
+        if (Config.toolLevelingRandomBonuses)
+        {
+            int bonusesToAdd = 0;
+            for(int lvl : Config.randomBonusesAtlevels)
+                if(level == lvl)
+                    bonusesToAdd++;
+
+            while(bonusesToAdd-- > 0)
+                RandomBonuses.tryModifying(player, stack);
+        }
+
+        // and NOW save the change
+		tags.setInteger(TAG_LEVEL, level);
+
+        // reset tool xp to 0, since we're at a new level now
+        tags.setLong(TAG_EXP, 0L);
 
         int currentModifiers = tags.getInteger("Modifiers");
 
         // Add Modifier for leveling up?
-        if(Config.toolLevelingExtraModifiers)
+        int modifiersToAdd = 0;
+        // check if we are supposed to add a modifier at this levelup
+        for(int lvl : Config.toolModifiersAtLevels)
+            if(level == lvl)
+                modifiersToAdd++;
+                // yes, no break. this means if a level is in the list multiple times, you get multiple modifiers
+
+        if(modifiersToAdd > 0)
         {
-            int modifiersToAdd = 0;
-            // check if we are supposed to add a modifier at this levelup
-            for(int lvl : Config.toolModifiersAtLevels)
-                if(level == lvl)
-                    modifiersToAdd++;
-                    // yes, no break. this means if a level is in the list multiple times, you get multiple modifiers
+            currentModifiers += modifiersToAdd;
+            tags.setInteger("Modifiers", currentModifiers);
 
-            if(modifiersToAdd > 0)
-            {
-                currentModifiers += modifiersToAdd;
-                tags.setInteger("Modifiers", currentModifiers);
-
-                // fancy message on clientside
-                if(!world.isRemote) {
-                    if(world.rand.nextInt(10) < modifiersToAdd)
-                        player.addChatMessage(new ChatComponentText(LevelingTooltips.getInfoString(StatCollector.translateToLocal("message.levelup.newmodifier.2"), EnumChatFormatting.DARK_AQUA, String.format("+%d %s", modifiersToAdd, StatCollector.translateToLocal("message.levelup.modifier")), EnumChatFormatting.GOLD)));
-                    else
-                        player.addChatMessage(new ChatComponentText(LevelingTooltips.getInfoString(StatCollector.translateToLocal("message.levelup.newmodifier.1"), EnumChatFormatting.DARK_AQUA, String.format("+%d %s", modifiersToAdd, StatCollector.translateToLocal("message.levelup.modifier")), EnumChatFormatting.GOLD)));
-                }
+            // fancy message on clientside
+            if(!world.isRemote) {
+                if(world.rand.nextInt(10) < modifiersToAdd)
+                    player.addChatMessage(new ChatComponentText(LevelingTooltips.getInfoString(StatCollector.translateToLocal("message.levelup.newmodifier.2"), EnumChatFormatting.DARK_AQUA, String.format("+%d %s", modifiersToAdd, StatCollector.translateToLocal("message.levelup.modifier")), EnumChatFormatting.GOLD)));
+                else
+                    player.addChatMessage(new ChatComponentText(LevelingTooltips.getInfoString(StatCollector.translateToLocal("message.levelup.newmodifier.1"), EnumChatFormatting.DARK_AQUA, String.format("+%d %s", modifiersToAdd, StatCollector.translateToLocal("message.levelup.modifier")), EnumChatFormatting.GOLD)));
             }
         }
-
-
-        // Add random bonuses on leveling up?
-		if (Config.toolLevelingRandomBonuses)
-		{
-            RandomBonuses.tryModifying(player, stack);
-		}
 	}
 
 	public static void levelUpMiningLevel(ItemStack stack, EntityPlayer player, boolean leveled)

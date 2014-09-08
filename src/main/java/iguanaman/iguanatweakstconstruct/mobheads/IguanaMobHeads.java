@@ -7,17 +7,21 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import iguanaman.iguanatweakstconstruct.IguanaTweaksTConstruct;
 import iguanaman.iguanatweakstconstruct.mobheads.blocks.IguanaSkullBlock;
 import iguanaman.iguanatweakstconstruct.mobheads.handlers.MobHeadHandler;
+import iguanaman.iguanatweakstconstruct.mobheads.handlers.RenderPlayerHandler;
 import iguanaman.iguanatweakstconstruct.mobheads.items.IguanaSkull;
 import iguanaman.iguanatweakstconstruct.mobheads.items.Wearable;
 import iguanaman.iguanatweakstconstruct.mobheads.proxy.MobHeadCommonProxy;
-import iguanaman.iguanatweakstconstruct.mobheads.handlers.RenderPlayerHandler;
 import iguanaman.iguanatweakstconstruct.mobheads.tileentities.IguanaSkullTileEntity;
 import iguanaman.iguanatweakstconstruct.reference.Reference;
 import iguanaman.iguanatweakstconstruct.util.Log;
+import iguanaman.iguanatweakstconstruct.util.ModSupportHelper;
 import mantle.pulsar.pulse.Handler;
 import mantle.pulsar.pulse.Pulse;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.MinecraftForge;
 
 /**
@@ -37,7 +41,7 @@ public class IguanaMobHeads {
     {
         proxy.initialize();
 
-        if(IguanaTweaksTConstruct.modTEDetected)
+        if(ModSupportHelper.ThermalFoundation)
             integrateThermalExpansion();
 
         skullItem = new IguanaSkull();
@@ -55,10 +59,13 @@ public class IguanaMobHeads {
     @Handler
     public void postInit(FMLPostInitializationEvent event)
     {
-        MinecraftForge.EVENT_BUS.register(new RenderPlayerHandler());
         MinecraftForge.EVENT_BUS.register(new MobHeadHandler());
 
         proxy.postInit();
+
+        // :>
+        ChestGenHooks.addItem(ChestGenHooks.VILLAGE_BLACKSMITH, new WeightedRandomChestContent(new ItemStack(wearables, 1, 0), 0, 1, 1));
+        ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_LIBRARY, new WeightedRandomChestContent(new ItemStack(wearables, 1, 3), 0, 1, 1));
     }
 
     private void integrateThermalExpansion()

@@ -1,20 +1,18 @@
 package iguanaman.iguanatweakstconstruct.replacing;
 
 import cpw.mods.fml.common.eventhandler.Event;
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import iguanaman.iguanatweakstconstruct.reference.Config;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import tconstruct.library.TConstructRegistry;
-import tconstruct.library.tools.ToolCore;
 import tconstruct.library.util.IToolPart;
-import tconstruct.tools.items.ToolPart;
 
 public class PartToolTipHandler {
 
-    @SubscribeEvent
+    @SubscribeEvent(priority=EventPriority.LOW)
     public void onItemToolTip(ItemTooltipEvent event) {
         if(event.entityPlayer == null)
             return;
@@ -35,13 +33,13 @@ public class PartToolTipHandler {
         // paper or thaumium?
         if(ability.equals(StatCollector.translateToLocal("materialtraits.writable")) ||
            ability.equals(StatCollector.translateToLocal("materialtraits.thaumic"))) {
-            event.toolTip.add(1, "");
-            event.toolTip.add(2, EnumChatFormatting.RED + StatCollector.translateToLocal("tooltip.part.needsmodifier1"));
-            event.toolTip.add(3, EnumChatFormatting.RED + StatCollector.translateToLocal("tooltip.part.needsmodifier2"));
+            event.toolTip.add("");
+            event.toolTip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("tooltip.part.needsmodifier1"));
+            event.toolTip.add(EnumChatFormatting.RED + StatCollector.translateToLocal("tooltip.part.needsmodifier2"));
         }
         else {
-            event.toolTip.add(1, "");
-            event.toolTip.add(2, EnumChatFormatting.GOLD + StatCollector.translateToLocal("tooltip.part.replaceable"));
+            event.toolTip.add("");
+            event.toolTip.add(EnumChatFormatting.GOLD + StatCollector.translateToLocal("tooltip.part.replaceable"));
         }
     }
 }

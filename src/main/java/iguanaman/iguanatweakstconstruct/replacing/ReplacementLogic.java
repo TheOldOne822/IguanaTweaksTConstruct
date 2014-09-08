@@ -7,13 +7,8 @@ import iguanaman.iguanatweakstconstruct.util.Log;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.oredict.OreDictionary;
-import scala.actors.threadpool.Arrays;
-import tconstruct.items.tools.Hammer;
-import tconstruct.items.tools.Pickaxe;
 import tconstruct.library.TConstructRegistry;
 import tconstruct.library.crafting.ModifyBuilder;
 import tconstruct.library.crafting.ToolBuilder;
@@ -21,19 +16,13 @@ import tconstruct.library.crafting.ToolRecipe;
 import tconstruct.library.modifier.ItemModifier;
 import tconstruct.library.tools.ToolCore;
 import tconstruct.library.tools.ToolMaterial;
-import tconstruct.library.util.IToolPart;
 import tconstruct.modifiers.tools.ModAttack;
 import tconstruct.modifiers.tools.ModRedstone;
-import tconstruct.tools.items.ToolPart;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.logging.Level;
 
 import static iguanaman.iguanatweakstconstruct.replacing.ReplacementLogic.PartTypes.*;
 
-public abstract class ReplacementLogic {
-
+public final class ReplacementLogic {
+    private ReplacementLogic() {} // non-instantiable
 
     public static void exchangeToolPart(ToolCore tool, NBTTagCompound tags, PartTypes type, ItemStack partStack, ItemStack toolStack)
     {
@@ -55,30 +44,23 @@ public abstract class ReplacementLogic {
         ItemStack originalTool = ToolBuilder.instance.buildTool(headStack, handleStack, accessoryStack, extraStack, "Original Tool");
         if(originalTool == null) {
             Log.error("Tool to modify is impossible?");
+            return;
         }
 
-        int partMaterialId = ToolBuilder.instance.getMaterialID(partStack);
-        int oldMaterialId = -1;
-
-        if(type == HEAD && headStack != null) {
-            headStack.setItemDamage(partMaterialId);
-            oldMaterialId = getToolPartMaterial(tags, HEAD);
-        }
-        if(type == HANDLE && handleStack != null) {
-            handleStack.setItemDamage(partMaterialId);
-            oldMaterialId = getToolPartMaterial(tags, HANDLE);
-        }
-        if(type == ACCESSORY && accessoryStack != null) {
-            accessoryStack.setItemDamage(partMaterialId);
-            oldMaterialId = getToolPartMaterial(tags, ACCESSORY);
-        }
-        if(type == EXTRA && extraStack != null) {
-            extraStack.setItemDamage(partMaterialId);
-            oldMaterialId = getToolPartMaterial(tags, EXTRA);
-        }
+        if(type == HEAD && headStack != null)
+            headStack = partStack;
+        if(type == HANDLE && handleStack != null)
+            handleStack = partStack;
+        if(type == ACCESSORY && accessoryStack != null)
+            accessoryStack = partStack;
+        if(type == EXTRA && extraStack != null)
+            extraStack = partStack;
 
         ItemStack newTool = ToolBuilder.instance.buildTool(headStack, handleStack, accessoryStack, extraStack, "Modified Tool");
         NBTTagCompound newTags = newTool.getTagCompound().getCompoundTag("InfiTool");
+
+        int partMaterialId = getToolPartMaterial(newTags, type);
+        int oldMaterialId = getToolPartMaterial(tags, type);
 
         // Things that can change from replacing a part:
         // - durability
@@ -155,6 +137,10 @@ public abstract class ReplacementLogic {
 
         if(Config.removeMobHeadOnPartReplacement && type == HEAD)
             removeMobHeadModifier(tags);
+
+        // if boosted, remove boost tag
+        if(tags.hasKey("GemBoost"))
+            tags.removeTag("GemBoost");
 
         // handle Leveling/xp (has to be done first before we change the stats so we get the correct old values)
         if(LevelingLogic.hasXp(tags))
@@ -235,6 +221,7 @@ public abstract class ReplacementLogic {
         // nothing to do fi they're the same :)
         if(oldMaterialId == newMaterialId)
             return;
+
         ToolMaterial oldMat = TConstructRegistry.getMaterial(oldMaterialId);
         ToolMaterial newMat = TConstructRegistry.getMaterial(newMaterialId);
 
@@ -270,6 +257,8 @@ public abstract class ReplacementLogic {
         if(!tags.hasKey("Redstone"))
             return;
 
+        int modifiers = tags.getInteger("Modifiers"); // backup modifiers
+
         // find the redstone modifier
         for(ItemModifier mod : ModifyBuilder.instance.itemModifiers)
             if(mod instanceof ModRedstone)
@@ -293,6 +282,9 @@ public abstract class ReplacementLogic {
                 while(rLvl-- > 0)
                     modRedstone.modify(new ItemStack[]{new ItemStack(Items.redstone)}, itemStack); // tags belong to oldTool
             }
+
+        // restore modifiers
+        tags.setInteger("Modifiers", modifiers);
     }
 
     // same as reapplyRedstone but for Attack modifier
@@ -302,7 +294,9 @@ public abstract class ReplacementLogic {
         if(!tags.hasKey("ModAttack"))
             return;
 
-        // find the redstone modifier
+        int modifiers = tags.getInteger("Modifiers"); // backup modifiers
+
+        // find the correct(!!, not glove attack) modifier
         for(ItemModifier mod : ModifyBuilder.instance.itemModifiers)
             if(mod.key.equals("ModAttack"))
             {
@@ -323,6 +317,9 @@ public abstract class ReplacementLogic {
                 while(qLvl-- > 0)
                     modAttack.modify(new ItemStack[]{new ItemStack(Items.quartz)}, itemStack); // tags belong to oldTool
             }
+
+        // restore modifiers
+        tags.setInteger("Modifiers", modifiers);
     }
 
     // removes the mobhead modifier and rendering

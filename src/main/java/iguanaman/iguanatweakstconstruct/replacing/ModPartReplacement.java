@@ -1,7 +1,7 @@
 package iguanaman.iguanatweakstconstruct.replacing;
 
 import iguanaman.iguanatweakstconstruct.leveling.LevelingLogic;
-import iguanaman.iguanatweakstconstruct.util.Log;
+import iguanaman.iguanatweakstconstruct.reference.Config;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,14 +11,10 @@ import tconstruct.library.crafting.ToolBuilder;
 import tconstruct.library.crafting.ToolRecipe;
 import tconstruct.library.modifier.ItemModifier;
 import tconstruct.library.tools.ToolCore;
-import tconstruct.library.tools.ToolMaterial;
 import tconstruct.library.util.IToolPart;
-import tconstruct.tools.items.ToolPart;
+
 import static iguanaman.iguanatweakstconstruct.replacing.ReplacementLogic.*;
 import static iguanaman.iguanatweakstconstruct.replacing.ReplacementLogic.PartTypes.*;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class ModPartReplacement extends ItemModifier {
     public ModPartReplacement() {
@@ -41,6 +37,20 @@ public class ModPartReplacement extends ItemModifier {
 
         if(tags.getInteger("Damage") > 0)
             return false;
+
+        // check if any of the tools parts contain stone. we have to prevent exchanging that with disabled stone tools
+        // because otherwise the replacement-logic would not be able to obtain neccessary information and crash.
+        if(Config.disableStoneTools)
+        {
+            if(tool.getHeadItem() != null && getToolPartMaterial(tags, HEAD) == 1)
+                return false;
+            if(tool.getHandleItem() != null && getToolPartMaterial(tags, HANDLE) == 1)
+                return false;
+            if(tool.getAccessoryItem() != null && getToolPartMaterial(tags, ACCESSORY) == 1)
+                return false;
+            if(tool.getExtraItem() != null && getToolPartMaterial(tags, EXTRA) == 1)
+                return false;
+        }
 
         // get the recipe of the tool
         ToolRecipe recipe = findRecipe(tool);
@@ -128,7 +138,7 @@ public class ModPartReplacement extends ItemModifier {
         ToolRecipe recipe = findRecipe(tool);
         NBTTagCompound tags = itemStack.getTagCompound().getCompoundTag("InfiTool");
 
-        // get prefix
+        // get item
         Item replacementPartItem = null;
         int partIndex = -1;
         for(int i = 0; i < parts.length; i++) {

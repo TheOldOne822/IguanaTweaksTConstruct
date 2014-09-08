@@ -1,16 +1,22 @@
 package iguanaman.iguanatweakstconstruct.tweaks;
 
+import iguanaman.iguanatweakstconstruct.reference.Reference;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.RecipeSorter;
 import tconstruct.library.crafting.ModifyBuilder;
 import tconstruct.library.modifier.ItemModifier;
 import tconstruct.library.tools.ToolCore;
-import tconstruct.modifiers.tools.ModRepair;
 import tconstruct.modifiers.tools.ModToolRepair;
 
 public class RepairCraftingRecipe implements IRecipe {
+    static {
+        // register the recipe with the recipesorter
+        RecipeSorter.register(Reference.MOD_ID + ":repair", RepairCraftingRecipe.class, RecipeSorter.Category.SHAPELESS, "");
+    }
+
     private ModToolRepair modifier = null;
     private ItemStack modifiedTool = null;
 

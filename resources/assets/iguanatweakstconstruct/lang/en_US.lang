@@ -13,6 +13,12 @@ message.levelup.3=You are now accustomed to the weight of the %s
 message.levelup.4=You have become adept at handling the %s
 message.levelup.5=You are now an expert at using the %s !
 message.levelup.6=You have mastered the %s!
+message.levelup.7=You have grandmastered the %s!
+message.levelup.8=You feel like you could fulfill mighty deeds with your %s!
+message.levelup.9=You and your %s are living legends!
+message.levelup.10=No god could stand in the way of you and your %s!
+message.levelup.11=Your %s is pure awesome.
+message.levelup.generic=Your %s has reached level %s
 
 message.levelup.newmodifier.1=You notice room for improvement
 message.levelup.newmodifier.2=More Bling for your Thing
@@ -20,8 +26,9 @@ message.levelup.modifier=Modifier
 message.levelup.miningboost=Suddenly, a flash of light shines from the tip of your %s
 message.levelup.mininglevel=Mining Level
 
-message.levelup.redstone=You spin it around with a flourish
+materialtraits.critical=Critical Strike
 
+message.levelup.redstone=You spin it around with a flourish
 message.levelup.lapis=Perhaps holding on to it will bring you luck?
 message.levelup.autosmelt=Fwoosh. A flame bursts from the tip
 message.levelup.silktouch=Is that... butter?
@@ -36,6 +43,9 @@ message.levelup.antispider=A strange odor emanates from the weapon
 message.levelup.beheading=You could take someones head off with that!
 message.levelup.lifesteal=It shudders with a strange energy
 message.levelup.knockback=Feeling more confident, you can more easily keep your assailants at bay
+message.levelup.jagged=It has suffered from too much usage
+message.levelup.stonebound=It has become attracted to stone
+message.levelup.critical=You swing it around skillfully
 
 message.levelup.redstone.tag=Haste
 message.levelup.lapis.tag=Luck
@@ -52,29 +62,52 @@ message.levelup.antispider.tag=Bane of Arthropods
 message.levelup.beheading.tag=Beheading
 message.levelup.lifesteal.tag=Life steal
 message.levelup.knockback.tag=Knockback
+message.levelup.jagged.tag=Jagged
+message.levelup.stonebound.tag=Stonebound
+message.levelup.critical.tag=Critical Chance
 
 tooltip.level.mininglevel=Mining Level
 tooltip.level.miningxp=Mining XP
 tooltip.level.boosted=Boosted
 tooltip.level.skilllevel=Skill Level
+tooltip.level.advanced=Hold %s for XP
 
 tooltip.level.skillxp=Skill XP
+tooltip.level.skill.0=Like new
 tooltip.level.skill.1=Clumsy
 tooltip.level.skill.2=Comfortable
 tooltip.level.skill.3=Accustomed
 tooltip.level.skill.4=Adept
 tooltip.level.skill.5=Expert
 tooltip.level.skill.6=Master
+tooltip.level.skill.7=Grandmaster
+tooltip.level.skill.8=Heroic
+tooltip.level.skill.9=Legendary
+tooltip.level.skill.10=Godlike
+tooltip.level.skill.11=Awesome
+tooltip.level.skill.19=MoxieGrrl
+tooltip.level.skill.42=boni
+tooltip.level.skill.66=Jadedcat
+tooltip.level.skill.99=Hacker
+
+tooltip.oldToolWarning1=THIS TOOL HAS INCORRECT DATA
+tooltip.oldToolWarning2=Place this tool in a crafting window to update it
 
 tooltip.mobhead.level=Applicable up to: %s
 tooltip.uselessTool1=This tool cannot mine anything!
 tooltip.uselessTool2=It can only be used for crafting
+tooltip.uselessHoe1=This hoe cannot hoe anything!
+tooltip.uselessWeapon1=This weapon hits like a wet noodle!
+tooltip.uselessBow1=This bows bowstring snapped!
 
 tooltip.part.replaceable=Parts can be replaced
 tooltip.part.needsmodifier1=Cannot be replaced once added,
 tooltip.part.needsmodifier2=unless a modifier is available
 tooltip.part.castonly1=Can only be used to make casts,
 tooltip.part.castonly2=cannot be used to make a tool
+
+tooltip.pattern.advanced=Hold %s for Materials
+tooltip.pattern.noMaterials=No known Materials
 
 item.iguana.tcon.clayBucket.name=Clay Bucket
 item.iguana.tcon.clayBucketUnfired.name=Unfired Clay Bucket
@@ -111,6 +144,9 @@ item.iguana.tcon.clayBucket.Slime.name=Liquid Slime Clay Bucket
 item.iguana.tcon.clayBucket.PigIron.name=Molten Pig Iron Clay Bucket
 item.iguana.tcon.clayBucket.Glue.name=Sticky Glue Clay Bucket
 
+item.iguana.tcon.sawArdite.name=Ardite Saw
+item.iguana.tcon.sawCobalt.name=Cobalt Saw
+item.iguana.tcon.sawManyullyn.name=Manyullyn Saw
 
 item.iguana.tcon.skull.enderman.name=Enderman Head
 item.iguana.tcon.skull.pigman.name=Pigman Head
@@ -125,5 +161,5 @@ item.iguana.tcon.wearable.bathat.name=Bat Hat
 
 tooltip.bucketHoley=A bucket with holes. How useful.
 tooltip.clayBucketCracked=It broke. :(
-tooltip.endermanJaw=A distinct lack of head is noticable.
+tooltip.endermanJaw=A distinct lack of head is noticeable.
 tooltip.bathat=NANANANANANANANA
